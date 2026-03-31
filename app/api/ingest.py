@@ -76,7 +76,12 @@ def ingest_jira(request: JiraIngestRequest):
             project_key=request.project_key,
             max_results=request.max_results,
         )
+        logger.info("jira_fetched", project=request.project_key, issues=len(documents))
+        if not documents:
+            return JiraIngestResponse(ingested_chunks=0, issues_fetched=0)
         chunks = chunk_documents(documents)
+        if not chunks:
+            return JiraIngestResponse(ingested_chunks=0, issues_fetched=len(documents))
         embeddings = embed_chunks(chunks)
         upsert_chunks(chunks, embeddings, collection_name=request.collection)
         logger.info("jira_ingested", project=request.project_key, issues=len(documents))
