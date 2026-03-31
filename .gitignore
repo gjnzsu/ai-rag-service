@@ -1,0 +1,12 @@
+.worktrees/
+__pycache__/
+*.pyc
+*.pyo
+.env
+chroma_db/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
