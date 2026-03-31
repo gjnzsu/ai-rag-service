@@ -37,7 +37,7 @@ def ingest_pdf(
             tmp.write(file.file.read())
             tmp_path = tmp.name
         connector = PDFConnector()
-        documents = connector.fetch(file_path=tmp_path)
+        documents = connector.fetch(file_path=tmp_path, original_filename=file.filename)
         for doc in documents:
             doc.metadata["filename"] = file.filename
         chunks = chunk_documents(documents)
