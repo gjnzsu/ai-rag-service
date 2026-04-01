@@ -28,7 +28,24 @@
       "Bash(python -m json.tool)",
       "Bash(ls c:/SourceCode/ai-rag-service/*.pdf)",
       "Bash(find c:/SourceCode/ai-rag-service -name '*.pyc' -delete)",
-      "Bash(find c:/SourceCode/ai-rag-service -name '__pycache__' -type d -exec rm -rf {} +)"
+      "Bash(find c:/SourceCode/ai-rag-service -name '__pycache__' -type d -exec rm -rf {} +)",
+      "Bash(netstat -ano)",
+      "Bash(python:*)",
+      "Bash(pytest:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(pip list:*)",
+      "Bash(pip show:*)",
+      "Bash(git restore:*)",
+      "Bash(chmod +x deploy.sh)",
+      "Bash(bash deploy.sh)",
+      "Bash(gcloud container:*)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl rollout:*)",
+      "Bash(kubectl logs:*)"
     ]
   }
 }
