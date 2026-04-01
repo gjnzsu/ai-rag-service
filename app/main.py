@@ -8,7 +8,12 @@ logger = structlog.get_logger()
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="RAG Service", version="0.1.0")
+    app = FastAPI(
+        title="RAG Service",
+        version="0.1.0",
+        docs_url="/docs",
+        redoc_url="/redoc",
+    )
     app.include_router(ingest_router, prefix="/ingest", tags=["ingest"])
     app.include_router(query_router, tags=["query"])
 
