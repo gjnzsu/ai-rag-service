@@ -9,5 +9,5 @@ steps:
   args: ['push', 'gcr.io/$PROJECT_ID/rag-service:latest']
 
 images:
-- 'gcr.io/$PROJECT_ID/rag-service:$SHORT_SHA'
-- 'gcr.io/$PROJECT_ID/rag-service:latest'
+- "gcr.io/${PROJECT_ID}/rag-service:${SHORT_SHA}"
+- "gcr.io/${PROJECT_ID}/rag-service:latest"

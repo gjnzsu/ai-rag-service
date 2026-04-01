@@ -1,7 +1,7 @@
 #!/bin/bash
 PROJECT_ID="gen-lang-client-0896070179"
 REGION="us-central1"
-CLUSTER_NAME="rag-cluster"
+CLUSTER_NAME="helloworld-cluster"
 
 # Enable APIs
 gcloud services enable container.googleapis.com cloudbuild.googleapis.com
