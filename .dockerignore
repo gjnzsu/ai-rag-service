@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.git/
+.gitignore
+chroma_db/
+.pytest_cache/
