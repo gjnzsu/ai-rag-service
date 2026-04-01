@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-service
+  namespace: rag-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-service
+  template:
+    metadata:
+      labels:
+        app: rag-service
+    spec:
+      containers:
+      - name: rag-service
+        image: gcr.io/gen-lang-client-0896070179/rag-service:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: CHROMA_PERSIST_DIR
+          value: "/data/chroma_db"
+        envFrom:
+        - secretRef:
+            name: rag-secrets
+        volumeMounts:
+        - name: chroma-data
+          mountPath: /data
+      volumes:
+      - name: chroma-data
+        persistentVolumeClaim:
+          claimName: chroma-pvc
