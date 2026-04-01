@@ -7,7 +7,7 @@ CLUSTER_NAME="helloworld-cluster"
 gcloud services enable container.googleapis.com cloudbuild.googleapis.com
 
 # Build image
-gcloud builds submit --config cloudbuild.yaml .
+gcloud builds submit --config cloudbuild.yaml --substitutions=SHORT_SHA=$(git rev-parse --short HEAD) .
 
 # Get credentials
 gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION --project $PROJECT_ID
