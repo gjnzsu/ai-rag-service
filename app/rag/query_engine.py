@@ -8,6 +8,7 @@ def query(
     question: str,
     collection_name: str = "default",
     top_k: int | None = None,
+    document_type: str | None = None,
 ) -> dict:
     top_k = top_k or settings.top_k
     openai_client = OpenAI(api_key=settings.openai_api_key)
@@ -18,14 +19,21 @@ def query(
         input=[question],
     ).data[0].embedding
 
-    # 2. Retrieve from ChromaDB
+    # 2. Retrieve from ChromaDB with optional metadata filtering
     chroma_client = chromadb.PersistentClient(path=settings.chroma_persist_dir)
     collection = chroma_client.get_collection(name=collection_name)
-    results = collection.query(
-        query_embeddings=[q_embedding],
-        n_results=top_k,
-        include=["documents", "metadatas", "distances"],
-    )
+
+    query_params = {
+        "query_embeddings": [q_embedding],
+        "n_results": top_k,
+        "include": ["documents", "metadatas", "distances"],
+    }
+
+    # Add metadata filter if document_type specified
+    if document_type:
+        query_params["where"] = {"document_type": document_type}
+
+    results = collection.query(**query_params)
 
     chunks = results["documents"][0]
     metadatas = results["metadatas"][0]
@@ -65,6 +73,7 @@ def query(
             "document_id": m.get("document_id", ""),
             "source_type": m.get("source_type", ""),
             "title": m.get("title", ""),
+            "document_type": m.get("document_type", ""),
             "excerpt": chunk[:200],
             "score": round(1 - dist, 4),
         }

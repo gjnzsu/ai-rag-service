@@ -12,12 +12,14 @@ class QueryRequest(BaseModel):
     question: str
     collection: str = "default"
     top_k: int = 5
+    document_type: str | None = None
 
 
 class SourceItem(BaseModel):
     document_id: str
     source_type: str
     title: str
+    document_type: str = ""
     excerpt: str
     score: float
 
@@ -35,8 +37,9 @@ def query(request: QueryRequest):
             question=request.question,
             collection_name=request.collection,
             top_k=request.top_k,
+            document_type=request.document_type,
         )
-        logger.info("query_served", question=request.question[:80])
+        logger.info("query_served", question=request.question[:80], document_type=request.document_type)
         return QueryResponse(**result)
     except Exception as e:
         logger.error("query_error", error=str(e))
