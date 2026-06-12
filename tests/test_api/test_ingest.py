@@ -20,11 +20,13 @@ def pdf_bytes(tmp_path):
     return pdf_path.read_bytes()
 
 
-@patch("app.api.ingest.embed_chunks")
-@patch("app.api.ingest.upsert_chunks")
-def test_ingest_pdf_success(mock_upsert, mock_embed, pdf_bytes):
-    mock_embed.return_value = [[0.1] * 1536]
-    mock_upsert.return_value = None
+@patch("app.api.ingest.index_documents")
+def test_ingest_pdf_success(mock_index, pdf_bytes):
+    mock_index.return_value = {
+        "document_id": "test.pdf",
+        "chunk_count": 1,
+        "created": True,
+    }
 
     response = client.post(
         "/ingest/pdf",
@@ -35,6 +37,7 @@ def test_ingest_pdf_success(mock_upsert, mock_embed, pdf_bytes):
     assert "ingested_chunks" in data
     assert "document_id" in data
     assert data["ingested_chunks"] >= 1
+    assert mock_index.call_args.kwargs["collection_name"] == "default"
 
 
 def test_ingest_pdf_wrong_content_type():

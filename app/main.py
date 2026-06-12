@@ -2,6 +2,7 @@ import structlog
 from fastapi import FastAPI
 
 from app.api.ingest import router as ingest_router
+from app.api.lifecycle import router as lifecycle_router
 from app.api.query import router as query_router
 
 logger = structlog.get_logger()
@@ -15,6 +16,7 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
     )
     app.include_router(ingest_router, prefix="/ingest", tags=["ingest"])
+    app.include_router(lifecycle_router, tags=["lifecycle"])
     app.include_router(query_router, tags=["query"])
 
     @app.get("/health")

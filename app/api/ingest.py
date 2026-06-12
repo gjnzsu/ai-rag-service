@@ -11,6 +11,7 @@ from app.connectors.jira import JiraConnector
 from app.connectors.pdf import PDFConnector
 from app.pipeline.chunker import chunk_documents
 from app.pipeline.embedder import embed_chunks
+from app.pipeline.indexer import index_documents
 from app.pipeline.store import upsert_chunks
 
 logger = structlog.get_logger()
@@ -40,11 +41,12 @@ def ingest_pdf(
         documents = connector.fetch(file_path=tmp_path, original_filename=file.filename)
         for doc in documents:
             doc.metadata["filename"] = file.filename
-        chunks = chunk_documents(documents)
-        embeddings = embed_chunks(chunks)
-        upsert_chunks(chunks, embeddings, collection_name=collection)
-        logger.info("pdf_ingested", filename=file.filename, chunks=len(chunks))
-        return IngestResponse(ingested_chunks=len(chunks), document_id=documents[0].id)
+        result = index_documents(documents, collection_name=collection)
+        logger.info("pdf_ingested", filename=file.filename, chunks=result["chunk_count"])
+        return IngestResponse(
+            ingested_chunks=result["chunk_count"],
+            document_id=documents[0].id,
+        )
     except HTTPException:
         raise
     except Exception as e:
