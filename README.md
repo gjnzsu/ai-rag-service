@@ -14,10 +14,28 @@ The service is deployed to Google Kubernetes Engine (GKE).
 ## 🛠 Tech Stack
 
 - **Framework:** FastAPI
-- **LLM:** OpenAI (GPT-4o, text-embedding-3-small)
+- **LLM:** OpenAI GPT-4o
+- **Embedding Model:** OpenAI text-embedding-3-small
 - **Vector DB:** ChromaDB (Persistent storage on GKE PVC)
 - **Cloud:** Google Cloud Platform (GKE, Artifact Registry, Cloud Build)
 - **Parsing:** PyMuPDF, Atlassian Python API
+
+### Model Responsibilities and Integration Modes
+
+- `text-embedding-3-small` converts document chunks and user queries into
+  vectors for similarity search in ChromaDB. It does not generate answers.
+- `POST /query` provides an end-to-end RAG flow: this service retrieves the
+  relevant context and uses its configured GPT-4o model to generate the final
+  answer.
+- `POST /retrieve` provides retrieval only: it returns the relevant chunks and
+  metadata without calling GPT-4o to generate an answer. AI applications that
+  already have their own configured LLM should normally use this endpoint and
+  pass the retrieved context to their own LLM.
+
+For example, if `ai-market-studio` already defines its own LLM, the recommended
+integration is to call `/retrieve` and let that LLM generate the final answer.
+Use `/query` when the caller wants this RAG service to own both retrieval and
+answer generation with GPT-4o.
 
 ## 📥 Ingestion Endpoints
 
