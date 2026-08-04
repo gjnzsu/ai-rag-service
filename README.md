@@ -150,11 +150,12 @@ curl -X DELETE http://34.10.130.210/documents/jira_issue:PROJ-123
 ### PDF Compatibility And Future Direction
 
 `/ingest/pdf` is still the file-upload endpoint for PDF parsing and indexing,
-and `/query` is still the answer-generating query endpoint used by existing
-consumers such as AI Market Studio. Internally, PDF ingestion now shares the
-same indexing path as lifecycle upsert. A future migration can add a
-lifecycle-style file endpoint or move callers to `/documents/upsert` after they
-extract PDF text themselves.
+and `/query` remains available for consumers that want `ai-rag-service` to own
+answer generation. Applications that already have their own LLM, including AI
+Market Studio, use `/retrieve` and generate the final answer themselves.
+Internally, PDF ingestion now shares the same indexing path as lifecycle
+upsert. A future migration can add a lifecycle-style file endpoint or move
+callers to `/documents/upsert` after they extract PDF text themselves.
 
 ## 🏗 Local Development
 
