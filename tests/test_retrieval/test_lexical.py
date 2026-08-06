@@ -117,3 +117,26 @@ def test_fts_boolean_equality_and_in_filters_match_json_booleans(tmp_path):
     assert {item.document_id for item in index.search("login", 10, {"active": {"in": [True, False]}}, "alpha")} == {
         "jira:TRUE", "jira:FALSE",
     }
+
+
+def test_fts_boolean_and_integer_filters_do_not_alias(tmp_path):
+    index = SQLiteFTSIndex(tmp_path / "lexical.db")
+    chunks = [
+        _chunk("jira:TRUE:chunk:0", "login", document_id="jira:TRUE", issue_key="TRUE", active=True),
+        _chunk("jira:ONE:chunk:0", "login", document_id="jira:ONE", issue_key="ONE", active=1),
+        _chunk("jira:FALSE:chunk:0", "login", document_id="jira:FALSE", issue_key="FALSE", active=False),
+        _chunk("jira:ZERO:chunk:0", "login", document_id="jira:ZERO", issue_key="ZERO", active=0),
+    ]
+    for chunk in chunks:
+        index.upsert_document([chunk], "alpha")
+
+    assert [item.document_id for item in index.search("login", 10, {"active": True}, "alpha")] == ["jira:TRUE"]
+    assert [item.document_id for item in index.search("login", 10, {"active": 1}, "alpha")] == ["jira:ONE"]
+    assert [item.document_id for item in index.search("login", 10, {"active": False}, "alpha")] == ["jira:FALSE"]
+    assert [item.document_id for item in index.search("login", 10, {"active": 0}, "alpha")] == ["jira:ZERO"]
+    assert {item.document_id for item in index.search("login", 10, {"active": {"in": [True, False]}}, "alpha")} == {
+        "jira:TRUE", "jira:FALSE",
+    }
+    assert {item.document_id for item in index.search("login", 10, {"active": {"in": [1, 0]}}, "alpha")} == {
+        "jira:ONE", "jira:ZERO",
+    }

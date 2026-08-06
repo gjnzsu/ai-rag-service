@@ -198,18 +198,26 @@ def _filter_sql(filters: dict[str, Any] | None) -> tuple[str, list[str]]:
     values: list[str] = []
     for field, value in filters.items():
         column = {"document_id": "document_id", "source_type": "source_type", "title": "title"}.get(field)
-        expression = f"chunks.{column}" if column else "CAST(json_extract(chunks.metadata_json, ?) AS TEXT)"
-        if not column:
-            values.append(f"$.{field}")
         items = value.get("in") if isinstance(value, dict) and "in" in value else [value]
         if not isinstance(items, list):
             raise ValueError(f"Filter operator 'in' for {field} requires a list")
         if not items:
             clauses.append("1 = 0")
             continue
-        placeholders = ", ".join("?" for _ in items)
-        clauses.append(f"{expression} IN ({placeholders})")
-        values.extend(_filter_value(item) for item in items)
+        if column:
+            placeholders = ", ".join("?" for _ in items)
+            clauses.append(f"chunks.{column} IN ({placeholders})")
+            values.extend(_filter_value(item) for item in items)
+            continue
+        path = f"$.{field}"
+        item_clauses = []
+        for item in items:
+            item_clauses.append(
+                "(json_type(chunks.metadata_json, ?) = ? "
+                "AND CAST(json_extract(chunks.metadata_json, ?) AS TEXT) = ?)"
+            )
+            values.extend((path, _json_type(item), path, _filter_value(item)))
+        clauses.append("(" + " OR ".join(item_clauses) + ")")
     return " AND " + " AND ".join(clauses), values
 
 
@@ -217,3 +225,13 @@ def _filter_value(value: Any) -> str:
     if isinstance(value, bool):
         return "1" if value else "0"
     return str(value)
+
+
+def _json_type(value: Any) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, int):
+        return "integer"
+    if isinstance(value, float):
+        return "real"
+    return "text"
