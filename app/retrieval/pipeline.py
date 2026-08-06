@@ -9,6 +9,7 @@ from app.config import settings
 from app.pipeline.store import get_jira_key_context
 from app.reranking import build_reranker
 from app.reranking.base import Reranker
+from app.reranking.noop import NoOpReranker
 from app.retrieval.fusion import MAX_FUSED_CANDIDATES, ReciprocalRankFusion
 from app.retrieval.interfaces import LexicalRetriever, VectorRetriever
 from app.retrieval.lexical import SQLiteFTSIndex
@@ -20,6 +21,29 @@ logger = structlog.get_logger()
 
 RetrievalMode = Literal["vector", "lexical", "hybrid"]
 ExactLookup = Callable[[str, str, dict[str, Any] | None], list[RetrievalCandidate] | list[dict[str, Any]]]
+_SAFE_ERROR_TYPES = frozenset({
+    "APIConnectionError",
+    "APIError",
+    "APITimeoutError",
+    "AttributeError",
+    "AuthenticationError",
+    "BadRequestError",
+    "CircuitOpenError",
+    "ConflictError",
+    "ImportError",
+    "IndexError",
+    "InferenceBusyError",
+    "InternalServerError",
+    "JSONDecodeError",
+    "NotFoundError",
+    "PermissionDeniedError",
+    "RateLimitError",
+    "RuntimeError",
+    "TimeoutError",
+    "TypeError",
+    "UnprocessableEntityError",
+    "ValueError",
+})
 
 
 class RetrievalUnavailableError(RuntimeError):
@@ -70,10 +94,25 @@ class HybridRetrievalPipeline:
             else SQLiteFTSIndex() if self.mode in {"lexical", "hybrid"} else None
         )
         self.exact_lookup = exact_lookup if exact_lookup is not None else _exact_jira_lookup
-        self.reranker = (
-            reranker if reranker is not None
-            else build_reranker(reranker_provider, settings=settings)
-        )
+        self._reranker_construction_error_type: str | None = None
+        if reranker is not None:
+            self.reranker = reranker
+            self.reranker_provider = "custom"
+        else:
+            selected_provider = settings.reranker_provider if reranker_provider is None else reranker_provider
+            try:
+                self.reranker = build_reranker(selected_provider, settings=settings)
+            except Exception as error:
+                if selected_provider not in {"none", "openai", "qwen_local"}:
+                    raise
+                self.reranker = NoOpReranker()
+                self._reranker_construction_error_type = _error_type(error)
+                logger.warning(
+                    "reranker_construction_fallback",
+                    provider=selected_provider,
+                    error_type=self._reranker_construction_error_type,
+                )
+            self.reranker_provider = selected_provider
 
     def retrieve(
         self,
@@ -142,7 +181,7 @@ class HybridRetrievalPipeline:
         fused: list[RetrievalCandidate],
         top_k: int,
     ) -> tuple[list[RetrievalCandidate], dict[str, str]]:
-        provider = str(getattr(self.reranker, "provider", "custom"))
+        provider = self.reranker_provider
         fallback = [candidate.model_copy(deep=True) for candidate in fused[:top_k]]
         try:
             reranked = self.reranker.rerank(
@@ -152,22 +191,31 @@ class HybridRetrievalPipeline:
             )
             result = _trusted_reranker_order(fused, reranked, top_k)
         except Exception as error:
+            error_type = _error_type(error)
             logger.warning(
                 "reranker_fallback",
                 provider=provider,
-                error_type=type(error).__name__,
+                error_type=error_type,
             )
             return fallback, {
                 "provider": provider,
                 "status": "fallback",
-                "error_type": type(error).__name__,
+                "error_type": error_type,
             }
 
-        status = "disabled" if provider == "none" else str(getattr(self.reranker, "last_status", "ok"))
+        if self._reranker_construction_error_type is not None:
+            return result, {
+                "provider": provider,
+                "status": "fallback",
+                "error_type": self._reranker_construction_error_type,
+            }
+        if provider == "custom":
+            return result, {"provider": provider, "status": "ok"}
+        status = "disabled" if provider == "none" else _status(self.reranker)
         diagnostics = {"provider": provider, "status": status}
         error_type = getattr(self.reranker, "last_error_type", None)
-        if status == "fallback" and isinstance(error_type, str):
-            diagnostics["error_type"] = error_type
+        if status == "fallback":
+            diagnostics["error_type"] = _safe_error_type(error_type)
         return result, diagnostics
 
     def _exact_candidates(
@@ -216,7 +264,7 @@ def _trusted_reranker_order(
     canonical = {candidate.chunk_id: candidate for candidate in fused}
     seen: set[str] = set()
     trusted: list[RetrievalCandidate] = []
-    for output in reranked[:top_k]:
+    for output in reranked:
         if not isinstance(output, RetrievalCandidate):
             raise TypeError("Reranker returned an invalid candidate")
         if output.chunk_id not in canonical or output.chunk_id in seen:
@@ -225,7 +273,25 @@ def _trusted_reranker_order(
         candidate = canonical[output.chunk_id].model_copy(deep=True)
         candidate.rerank_score = output.rerank_score
         trusted.append(candidate)
-    return trusted
+    trusted.extend(
+        candidate.model_copy(deep=True)
+        for candidate in fused
+        if candidate.chunk_id not in seen
+    )
+    return trusted[:top_k]
+
+
+def _status(reranker: Reranker) -> str:
+    status = getattr(reranker, "last_status", "ok")
+    return status if status in {"ok", "fallback"} else "fallback"
+
+
+def _error_type(error: Exception) -> str:
+    return _safe_error_type(type(error).__name__)
+
+
+def _safe_error_type(value: Any) -> str:
+    return value if isinstance(value, str) and value in _SAFE_ERROR_TYPES else "Exception"
 
 
 def _exact_diagnostics(

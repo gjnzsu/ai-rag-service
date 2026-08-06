@@ -44,7 +44,7 @@ def _response(entries):
 def _reranker(content=None, error=None):
     client, completions = _client(content, error)
     return (
-        GPT5Reranker(model="gpt-5-pinned-2026-07-01", timeout_seconds=3.25, client=client),
+        GPT5Reranker(model="gpt-5-2025-08-07", timeout_seconds=3.25, client=client),
         completions,
     )
 
@@ -63,7 +63,7 @@ def test_openai_sends_one_bounded_strict_listwise_request_without_tools_or_urls(
 
     assert len(completions.calls) == 1
     request = completions.calls[0]
-    assert request["model"] == "gpt-5-pinned-2026-07-01"
+    assert request["model"] == "gpt-5-2025-08-07"
     assert request["timeout"] == 3.25
     assert request["temperature"] == 0
     assert "tools" not in request
@@ -179,3 +179,43 @@ def test_openai_rejects_negative_top_k():
         reranker.rerank("query", [_candidate("a")], top_k=-1)
 
     assert completions.calls == []
+
+
+def test_openai_constructs_the_installed_sdk_without_making_a_request(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+
+    reranker = GPT5Reranker(model="gpt-5-2025-08-07", timeout_seconds=1.0)
+
+    assert reranker.client.api_key == "test-key"
+    reranker.client.close()
+
+
+@pytest.mark.parametrize("model", ["gpt-5", "gpt-5-latest", "gpt-5-2025-8-7"])
+def test_openai_rejects_floating_or_malformed_model_ids(model):
+    client, _ = _client(_response([]))
+
+    with pytest.raises(ValueError, match="pinned"):
+        GPT5Reranker(model=model, timeout_seconds=1.0, client=client)
+
+
+@pytest.mark.parametrize("chunk_id", ["//evil.example/path", "custom://evil.example/path"])
+def test_openai_rejects_all_url_like_candidate_ids_without_a_request(chunk_id):
+    reranker, completions = _reranker(_response([{"chunk_id": chunk_id, "relevance_grade": 3}]))
+    candidate = _candidate(chunk_id)
+
+    result = reranker.rerank("query", [candidate], top_k=1)
+
+    assert result == [candidate]
+    assert completions.calls == []
+    assert reranker.last_status == "fallback"
+
+
+def test_openai_accepts_canonical_colon_delimited_chunk_ids():
+    chunk_id = "jira:PROJ-1:chunk:0"
+    reranker, completions = _reranker(_response([{"chunk_id": chunk_id, "relevance_grade": 3}]))
+
+    result = reranker.rerank("query", [_candidate(chunk_id)], top_k=1)
+
+    assert [item.chunk_id for item in result] == [chunk_id]
+    assert result[0].rerank_score == 3.0
+    assert len(completions.calls) == 1

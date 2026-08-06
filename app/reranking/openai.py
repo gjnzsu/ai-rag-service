@@ -1,12 +1,14 @@
 """OpenAI listwise reranking adapter."""
 
 import json
+import re
 from typing import Any
 
 from app.reranking.base import validate_top_k
 from app.retrieval.models import RetrievalCandidate
 
 MAX_CANDIDATES = 20
+_SNAPSHOT_PATTERN = re.compile(r"^gpt-5-\d{4}-\d{2}-\d{2}$")
 
 _RESPONSE_SCHEMA = {
     "type": "object",
@@ -39,16 +41,20 @@ class GPT5Reranker:
         *,
         model: str,
         timeout_seconds: float,
+        api_key: str | None = None,
         client: Any | None = None,
     ) -> None:
+        if not _SNAPSHOT_PATTERN.fullmatch(model):
+            raise ValueError("model must be a pinned GPT-5 snapshot")
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")
         self.model = model
         self.timeout_seconds = timeout_seconds
         if client is None:
+            import httpx
             from openai import OpenAI
 
-            client = OpenAI()
+            client = OpenAI(api_key=api_key, http_client=httpx.Client())
         self.client = client
         self.last_status = "ok"
         self.last_error_type: str | None = None
@@ -156,4 +162,4 @@ def _copies(candidates: list[RetrievalCandidate]) -> list[RetrievalCandidate]:
 
 def _looks_like_url(value: str) -> bool:
     lowered = value.lower()
-    return lowered.startswith("http://") or lowered.startswith("https://")
+    return lowered.startswith("//") or "://" in lowered

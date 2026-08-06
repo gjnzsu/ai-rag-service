@@ -1,4 +1,5 @@
 import builtins
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -37,6 +38,30 @@ def test_settings_validate_the_provider_and_default_to_none():
         _settings(reranker_provider="OPENAI")
 
 
+def test_settings_default_to_immutable_openai_and_qwen_model_versions():
+    configured = _settings()
+
+    assert configured.reranker_openai_model == "gpt-5-2025-08-07"
+    assert configured.reranker_qwen_model == "Qwen/Qwen3-Reranker-0.6B"
+    assert configured.reranker_qwen_revision == "e61197ed45024b0ed8a2d74b80b4d909f1255473"
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"reranker_openai_model": "gpt-5"},
+        {"reranker_openai_model": "gpt-5-latest"},
+        {"reranker_qwen_model": "Qwen/Qwen3-Reranker-4B"},
+        {"reranker_qwen_revision": "main"},
+        {"reranker_qwen_revision": "e61197e"},
+        {"reranker_qwen_revision": "z" * 40},
+    ],
+)
+def test_settings_reject_floating_or_non_immutable_reranker_models(overrides):
+    with pytest.raises(ValidationError):
+        _settings(**overrides)
+
+
 def test_factory_constructs_only_the_selected_openai_backend():
     client = object()
 
@@ -62,3 +87,10 @@ def test_factory_constructs_qwen_without_loading_optional_packages():
     from app.reranking.qwen import Qwen3LocalReranker
 
     assert isinstance(reranker, Qwen3LocalReranker)
+
+
+def test_default_requirements_pin_an_sdk_httpx_compatibility_pair():
+    requirements = Path("requirements.txt").read_text(encoding="utf-8").splitlines()
+
+    assert "openai==1.51.0" in requirements
+    assert "httpx>=0.27.0,<0.28.0" in requirements

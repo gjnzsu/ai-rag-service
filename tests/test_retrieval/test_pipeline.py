@@ -104,7 +104,77 @@ def test_pipeline_passes_fused_top_twenty_to_successful_reranker_and_returns_con
     assert len(reranker.calls[0][1]) == 20
     assert reranker.calls[0][2] == 7
     assert [item.chunk_id for item in result.candidates] == [f"v-{index}" for index in range(19, 12, -1)]
-    assert result.diagnostics["reranker"] == {"provider": "test", "status": "ok"}
+    assert result.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
+
+
+def test_pipeline_appends_candidates_omitted_by_a_custom_reranker_in_rrf_order():
+    returned = _candidate("c")
+    returned.content = "hostile replacement content"
+    returned.rerank_score = 0.9
+    reranker = _Reranker(result=[returned], provider="hostile provider private query")
+
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate(chunk_id) for chunk_id in ["a", "b", "c", "d"]]),
+        _Retriever([]),
+        reranker=reranker,
+        final_top_k=4,
+    ).retrieve("private query")
+
+    assert [item.chunk_id for item in result.candidates] == ["c", "a", "b", "d"]
+    assert result.candidates[0].content == "content c"
+    assert result.candidates[0].rerank_score == 0.9
+    assert result.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
+
+
+def test_pipeline_validates_the_entire_custom_reranker_response_before_ordering():
+    reranker = _Reranker(
+        result=[_candidate("b"), _candidate("a"), _candidate("unknown")],
+    )
+
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("a"), _candidate("b")]),
+        _Retriever([]),
+        reranker=reranker,
+        final_top_k=2,
+    ).retrieve("query")
+
+    assert [item.chunk_id for item in result.candidates] == ["a", "b"]
+    assert result.diagnostics["reranker"] == {
+        "provider": "custom", "status": "fallback", "error_type": "ValueError",
+    }
+
+
+def test_pipeline_never_copies_hostile_custom_diagnostic_fields_or_exception_names(monkeypatch):
+    secret = "CustomerSecret"
+    log_entries = []
+
+    class _Logger:
+        def warning(self, event, **kwargs):
+            log_entries.append((event, kwargs))
+
+    class _HostileReranker(_Reranker):
+        provider = secret
+        last_status = secret
+        last_error_type = secret
+
+    monkeypatch.setattr("app.retrieval.pipeline.logger", _Logger())
+    successful = HybridRetrievalPipeline(
+        _Retriever([_candidate("a")]), _Retriever([]), reranker=_HostileReranker(),
+    ).retrieve(secret)
+
+    hostile_error = type(secret, (RuntimeError,), {})("another private message")
+    failed = HybridRetrievalPipeline(
+        _Retriever([_candidate("a")]),
+        _Retriever([]),
+        reranker=_HostileReranker(error=hostile_error),
+    ).retrieve(secret)
+
+    assert successful.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
+    assert failed.diagnostics["reranker"] == {
+        "provider": "custom", "status": "fallback", "error_type": "Exception",
+    }
+    assert secret not in repr((successful.diagnostics, failed.diagnostics, log_entries))
+    assert "another private message" not in repr(log_entries)
 
 
 @pytest.mark.parametrize("error", [TimeoutError("private timeout detail"), RuntimeError("password=secret")])
@@ -122,7 +192,7 @@ def test_pipeline_reranker_error_preserves_exact_rrf_order_and_redacts_diagnosti
 
     assert result.candidates == baseline.candidates
     assert result.diagnostics["reranker"] == {
-        "provider": "custom-provider", "status": "fallback", "error_type": type(error).__name__,
+        "provider": "custom", "status": "fallback", "error_type": type(error).__name__,
     }
     rendered = repr(result.diagnostics["reranker"])
     assert query not in rendered
@@ -154,6 +224,34 @@ def test_pipeline_primary_fallbacks_still_reach_reranking(vector, lexical, expec
 
     assert [item.chunk_id for item in result.candidates] == expected
     assert len(reranker.calls) == 1
+
+
+def test_pipeline_reranker_construction_error_fails_open_to_rrf(monkeypatch):
+    log_entries = []
+
+    class _Logger:
+        def warning(self, event, **kwargs):
+            log_entries.append((event, kwargs))
+
+    monkeypatch.setattr("app.retrieval.pipeline.logger", _Logger())
+    monkeypatch.setattr(
+        "app.retrieval.pipeline.build_reranker",
+        lambda *args, **kwargs: (_ for _ in ()).throw(TypeError("private constructor detail")),
+    )
+
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("a"), _candidate("b")]),
+        _Retriever([]),
+        reranker_provider="openai",
+    ).retrieve("private customer query")
+
+    assert [item.chunk_id for item in result.candidates] == ["a", "b"]
+    assert result.diagnostics["reranker"] == {
+        "provider": "openai", "status": "fallback", "error_type": "TypeError",
+    }
+    rendered = repr((result.diagnostics, log_entries))
+    assert "private constructor detail" not in rendered
+    assert "private customer query" not in rendered
 
 
 def test_pipeline_rejects_a_configured_final_limit_above_twenty():

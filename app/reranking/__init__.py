@@ -22,6 +22,7 @@ def build_reranker(
         return GPT5Reranker(
             model=settings.reranker_openai_model,
             timeout_seconds=settings.reranker_openai_timeout_seconds,
+            api_key=settings.openai_api_key,
             **injectable_dependencies,
         )
     if selected == "qwen_local":
