@@ -53,7 +53,3 @@ def index_documents(
         "chunk_count": len(chunks),
         "created": all(result["created"] for result in results),
     }
-
-
-def _add_chunk_metadata(chunks: list[dict]) -> list[dict]:
-    return chunks

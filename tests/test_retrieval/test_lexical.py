@@ -103,3 +103,17 @@ def test_fts_weights_rank_identifier_then_title_then_body(tmp_path, monkeypatch)
     assert [item.document_id for item in index.search("RANKTOKEN", 10, None, "alpha")] == [
         "jira:ID-1", "jira:ID-2", "jira:ID-3",
     ]
+
+
+def test_fts_boolean_equality_and_in_filters_match_json_booleans(tmp_path):
+    index = SQLiteFTSIndex(tmp_path / "lexical.db")
+    enabled = _chunk("jira:TRUE:chunk:0", "login", document_id="jira:TRUE", issue_key="TRUE", active=True)
+    disabled = _chunk("jira:FALSE:chunk:0", "login", document_id="jira:FALSE", issue_key="FALSE", active=False)
+    index.upsert_document([enabled], "alpha")
+    index.upsert_document([disabled], "alpha")
+
+    assert [item.document_id for item in index.search("login", 10, {"active": True}, "alpha")] == ["jira:TRUE"]
+    assert [item.document_id for item in index.search("login", 10, {"active": False}, "alpha")] == ["jira:FALSE"]
+    assert {item.document_id for item in index.search("login", 10, {"active": {"in": [True, False]}}, "alpha")} == {
+        "jira:TRUE", "jira:FALSE",
+    }

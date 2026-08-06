@@ -41,6 +41,38 @@ def test_lifecycle_normalizes_caller_supplied_legacy_document_ids(mock_index):
     assert mock_index.call_args.args[0][0].id == "jira:PROJ-7"
 
 
+@patch("app.api.lifecycle.index_documents")
+def test_lifecycle_rejects_conflicting_jira_key_aliases(mock_index):
+    mock_index.return_value = {"document_id": "jira:OTHER-9", "chunk_count": 1, "created": True}
+    response = client.post("/documents/upsert", json={
+        "content": "body",
+        "metadata": {
+            "type": "jira_issue", "key": "PROJ-7", "issue_key": "OTHER-9", "project_key": "PROJ",
+            "title": "Title", "url": "https://untrusted.example", "status": "Open", "priority": "High",
+        },
+    })
+
+    assert response.status_code == 422
+    assert "issue_key" in response.text
+    mock_index.assert_not_called()
+
+
+@patch("app.api.lifecycle.index_documents")
+def test_lifecycle_normalizes_matching_jira_key_aliases(mock_index):
+    mock_index.return_value = {"document_id": "jira:PROJ-7", "chunk_count": 1, "created": True}
+    response = client.post("/documents/upsert", json={
+        "content": "body",
+        "metadata": {
+            "type": "jira_issue", "key": "PROJ-7", "issue_key": "PROJ-7", "project_key": "PROJ",
+            "title": "Title", "url": "https://untrusted.example", "status": "Open", "priority": "High",
+        },
+    })
+
+    assert response.status_code == 200
+    metadata = mock_index.call_args.args[0][0].metadata
+    assert metadata["key"] == metadata["issue_key"] == "PROJ-7"
+
+
 def test_lifecycle_confluence_requires_page_id_for_canonical_identity():
     response = client.post("/documents/upsert", json={
         "document_id": "confluence_page:legacy", "content": "body",

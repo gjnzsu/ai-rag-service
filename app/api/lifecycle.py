@@ -43,6 +43,15 @@ class UpsertDocumentRequest(BaseModel):
     @model_validator(mode="after")
     def validate_metadata(self):
         doc_type = self.metadata.get("type")
+        if doc_type == "jira_issue":
+            key = self.metadata.get("key")
+            issue_key = self.metadata.get("issue_key")
+            if key and issue_key and key != issue_key:
+                raise ValueError("Jira metadata key and issue_key must match")
+            canonical_key = canonical_jira_key(self.metadata)
+            if canonical_key:
+                self.metadata["key"] = canonical_key
+                self.metadata["issue_key"] = canonical_key
         required = REQUIRED_METADATA.get(doc_type)
         if required:
             missing = sorted(field for field in required if not self.metadata.get(field))

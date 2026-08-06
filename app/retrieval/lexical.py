@@ -209,5 +209,11 @@ def _filter_sql(filters: dict[str, Any] | None) -> tuple[str, list[str]]:
             continue
         placeholders = ", ".join("?" for _ in items)
         clauses.append(f"{expression} IN ({placeholders})")
-        values.extend(str(item) for item in items)
+        values.extend(_filter_value(item) for item in items)
     return " AND " + " AND ".join(clauses), values
+
+
+def _filter_value(value: Any) -> str:
+    if isinstance(value, bool):
+        return "1" if value else "0"
+    return str(value)
