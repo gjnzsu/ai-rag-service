@@ -167,18 +167,20 @@ def _exact_diagnostics(
     candidates: list[RetrievalCandidate],
     failure_count: int,
 ) -> dict[str, int | str]:
-    if not jira_keys:
+    attempted_count = len(jira_keys)
+    if not attempted_count:
         status = "not_requested"
-    elif failure_count and candidates:
-        status = "partial_failure"
-    elif failure_count:
+    elif failure_count == attempted_count:
         status = "unavailable"
+    elif failure_count:
+        status = "partial_failure"
     elif candidates:
-        status = "matched"
+        status = "ok"
     else:
         status = "no_match"
     return {
         "status": status,
+        "attempted_count": attempted_count,
         "failure_count": failure_count,
         "match_count": len(candidates),
     }

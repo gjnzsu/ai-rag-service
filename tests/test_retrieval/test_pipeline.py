@@ -47,7 +47,7 @@ def test_hybrid_retrieves_primary_candidates_and_prioritizes_exact_jira_matches(
     assert result.diagnostics == {
         "configured_retrievers": ["vector", "lexical"], "successful_retrievers": ["vector", "lexical"],
         "empty_retrievers": [], "failed_retrievers": [],
-        "exact_lookup": {"status": "matched", "failure_count": 0, "match_count": 1},
+        "exact_lookup": {"status": "ok", "attempted_count": 1, "failure_count": 0, "match_count": 1},
     }
 
 
@@ -153,7 +153,7 @@ def test_pipeline_reports_exact_lookup_failure_without_exposing_query_or_error_c
     ).retrieve(query)
 
     assert result.diagnostics["exact_lookup"] == {
-        "status": "unavailable", "failure_count": 1, "match_count": 0,
+        "status": "unavailable", "attempted_count": 1, "failure_count": 1, "match_count": 0,
     }
     rendered = repr((result.diagnostics, log_entries))
     assert "PROJ-7" not in rendered
@@ -167,8 +167,43 @@ def test_pipeline_reports_no_exact_match_separately_from_an_exact_lookup_failure
     ).retrieve("Find PROJ-7")
 
     assert result.diagnostics["exact_lookup"] == {
-        "status": "no_match", "failure_count": 0, "match_count": 0,
+        "status": "no_match", "attempted_count": 1, "failure_count": 0, "match_count": 0,
     }
+
+
+def test_pipeline_reports_partial_exact_failure_when_another_key_successfully_has_no_match():
+    def mixed_lookup(key, *args):
+        if key == "PROJ-7":
+            raise RuntimeError("exact backend unavailable")
+        return []
+
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("v")]), _Retriever([]), exact_lookup=mixed_lookup
+    ).retrieve("Find PROJ-7 and PROJ-8")
+
+    assert result.diagnostics["exact_lookup"] == {
+        "status": "partial_failure", "attempted_count": 2, "failure_count": 1, "match_count": 0,
+    }
+
+
+def test_pipeline_primary_warning_redacts_query_content_and_error_message(monkeypatch):
+    log_entries = []
+
+    class _Logger:
+        def warning(self, event, **kwargs):
+            log_entries.append((event, kwargs))
+
+    monkeypatch.setattr("app.retrieval.pipeline.logger", _Logger())
+    query = "private question with customer content"
+    result = HybridRetrievalPipeline(
+        _Retriever(error=RuntimeError("backend password=do-not-log")),
+        _Retriever([_candidate("l", "bm25")]),
+    ).retrieve(query)
+
+    assert result.failures == ["vector"]
+    rendered = repr(log_entries)
+    assert "private question with customer content" not in rendered
+    assert "password=do-not-log" not in rendered
 
 
 def test_default_exact_lookup_combines_aliases_with_filters_and_maps_trusted_candidates(monkeypatch):
