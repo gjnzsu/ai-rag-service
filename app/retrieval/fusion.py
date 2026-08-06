@@ -2,6 +2,8 @@
 
 from app.retrieval.models import RetrievalCandidate
 
+MAX_FUSED_CANDIDATES = 20
+
 
 class ReciprocalRankFusion:
     """Fuse ranked candidate sets without comparing their raw scores."""
@@ -18,6 +20,7 @@ class ReciprocalRankFusion:
     ) -> list[RetrievalCandidate]:
         if top_k <= 0:
             return []
+        effective_top_k = min(top_k, MAX_FUSED_CANDIDATES)
 
         candidates: dict[str, RetrievalCandidate] = {}
         encounter_order: dict[str, int] = {}
@@ -56,7 +59,7 @@ class ReciprocalRankFusion:
                 encounter_order[item.chunk_id],
             ),
         )
-        for rank, candidate in enumerate(ordered[:top_k], start=1):
+        for rank, candidate in enumerate(ordered[:effective_top_k], start=1):
             candidate.score = candidate.rrf_score
             candidate.fused_rank = rank
-        return ordered[:top_k]
+        return ordered[:effective_top_k]

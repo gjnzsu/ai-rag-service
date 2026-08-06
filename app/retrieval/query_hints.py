@@ -15,7 +15,10 @@ class QueryHints:
 
 def extract_query_hints(query: str, pattern: str | None = None) -> QueryHints:
     """Find Jira issue keys without using a model or query planner."""
-    compiled = re.compile(pattern or settings.jira_key_pattern, flags=re.IGNORECASE)
+    selected_pattern = settings.jira_key_pattern if pattern is None else pattern
+    if not selected_pattern:
+        raise ValueError("Jira-key pattern must not be empty")
+    compiled = re.compile(selected_pattern, flags=re.IGNORECASE)
     seen: set[str] = set()
     jira_keys: list[str] = []
     for match in compiled.finditer(query):

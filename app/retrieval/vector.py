@@ -14,8 +14,8 @@ class ChromaVectorRetriever:
     """Embed one query and map Chroma's records to canonical candidates."""
 
     def __init__(self, openai_client: Any | None = None, chroma_client: Any | None = None) -> None:
-        self.openai_client = openai_client or OpenAI(api_key=settings.openai_api_key)
-        self.chroma_client = chroma_client or chromadb.PersistentClient(path=settings.chroma_persist_dir)
+        self.openai_client = openai_client if openai_client is not None else OpenAI(api_key=settings.openai_api_key)
+        self.chroma_client = chroma_client if chroma_client is not None else chromadb.PersistentClient(path=settings.chroma_persist_dir)
 
     def search(
         self,

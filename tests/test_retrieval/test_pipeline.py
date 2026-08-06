@@ -46,7 +46,8 @@ def test_hybrid_retrieves_primary_candidates_and_prioritizes_exact_jira_matches(
     assert exact_calls == [("PROJ-7", "alpha", {"status": "Open"})]
     assert result.diagnostics == {
         "configured_retrievers": ["vector", "lexical"], "successful_retrievers": ["vector", "lexical"],
-        "empty_retrievers": [], "failed_retrievers": [], "exact_jira_keys": ["PROJ-7"],
+        "empty_retrievers": [], "failed_retrievers": [],
+        "exact_lookup": {"status": "matched", "failure_count": 0, "match_count": 1},
     }
 
 
@@ -61,6 +62,11 @@ def test_pipeline_applies_default_and_caller_result_limits():
     assert lexical.calls[0][1] == 30
     assert len(default.candidates) == 20
     assert len(requested.candidates) == 2
+
+
+def test_pipeline_rejects_a_configured_final_limit_above_twenty():
+    with pytest.raises(ValueError, match="final_top_k"):
+        HybridRetrievalPipeline(_Retriever(), _Retriever(), final_top_k=21)
 
 
 @pytest.mark.parametrize(
@@ -81,6 +87,39 @@ def test_pipeline_supports_single_retriever_modes(mode, vector_result, lexical_r
     assert result.retrieval_mode == mode
 
 
+@pytest.mark.parametrize(
+    ("mode", "inactive_factory"),
+    [
+        ("vector", "app.retrieval.pipeline.SQLiteFTSIndex"),
+        ("lexical", "app.retrieval.pipeline.ChromaVectorRetriever"),
+    ],
+)
+def test_pipeline_constructs_only_backends_active_for_its_mode(monkeypatch, mode, inactive_factory):
+    monkeypatch.setattr(inactive_factory, lambda: pytest.fail("constructed inactive backend"))
+    if mode == "vector":
+        monkeypatch.setattr("app.retrieval.pipeline.ChromaVectorRetriever", lambda: _Retriever([_candidate("v")]))
+    else:
+        monkeypatch.setattr("app.retrieval.pipeline.SQLiteFTSIndex", lambda: _Retriever([_candidate("l", "bm25")]))
+
+    result = HybridRetrievalPipeline(mode=mode).retrieve("ordinary")
+
+    assert len(result.candidates) == 1
+
+
+@pytest.mark.parametrize(
+    ("kwargs", "message"),
+    [
+        ({"mode": ""}, "retrieval mode"),
+        ({"candidate_top_k": 0}, "limits"),
+        ({"candidate_top_k": -1}, "limits"),
+        ({"final_top_k": 0}, "limits"),
+    ],
+)
+def test_pipeline_rejects_explicit_empty_or_invalid_configuration(kwargs, message):
+    with pytest.raises(ValueError, match=message):
+        HybridRetrievalPipeline(_Retriever(), _Retriever(), **kwargs)
+
+
 def test_pipeline_degrades_when_one_primary_retriever_fails_or_is_empty():
     vector = _Retriever(error=RuntimeError("vector service outage: secret question"))
     lexical = _Retriever([_candidate("l", "bm25")])
@@ -94,6 +133,79 @@ def test_pipeline_degrades_when_one_primary_retriever_fails_or_is_empty():
     empty = HybridRetrievalPipeline(_Retriever([]), _Retriever([_candidate("l", "bm25")])).retrieve("ordinary")
     assert empty.failures == []
     assert empty.diagnostics["empty_retrievers"] == ["vector"]
+
+
+def test_pipeline_reports_exact_lookup_failure_without_exposing_query_or_error_content(monkeypatch):
+    log_entries = []
+
+    class _Logger:
+        def warning(self, event, **kwargs):
+            log_entries.append((event, kwargs))
+
+    monkeypatch.setattr("app.retrieval.pipeline.logger", _Logger())
+
+    def unavailable_lookup(*args):
+        raise RuntimeError("exact backend error: password=do-not-log")
+
+    query = "Find PROJ-7 with private customer content"
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("v")]), _Retriever([]), exact_lookup=unavailable_lookup
+    ).retrieve(query)
+
+    assert result.diagnostics["exact_lookup"] == {
+        "status": "unavailable", "failure_count": 1, "match_count": 0,
+    }
+    rendered = repr((result.diagnostics, log_entries))
+    assert "PROJ-7" not in rendered
+    assert "private customer content" not in rendered
+    assert "password=do-not-log" not in rendered
+
+
+def test_pipeline_reports_no_exact_match_separately_from_an_exact_lookup_failure():
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("v")]), _Retriever([]), exact_lookup=lambda *args: []
+    ).retrieve("Find PROJ-7")
+
+    assert result.diagnostics["exact_lookup"] == {
+        "status": "no_match", "failure_count": 0, "match_count": 0,
+    }
+
+
+def test_default_exact_lookup_combines_aliases_with_filters_and_maps_trusted_candidates(monkeypatch):
+    calls = []
+    canonical_metadata = {
+        "chunk_id": "canonical", "document_id": "jira:PROJ-7", "source_type": "jira",
+        "source_url": "https://jira.example/browse/PROJ-7", "title": "Trusted issue", "status": "Open",
+    }
+    legacy_metadata = {
+        "chunk_id": "legacy", "document_id": "page:1", "type": "confluence",
+        "source_url": "https://wiki.example/page/1", "title": "Related page", "status": "Open",
+    }
+
+    class _ExactCollection:
+        def get(self, *, where, include):
+            calls.append((where, include))
+            base_where = where["$and"][0]
+            if base_where == {"document_id": "jira:PROJ-7"}:
+                return {"ids": ["canonical"], "documents": ["trusted body"], "metadatas": [canonical_metadata]}
+            if base_where == {"related_jira": "PROJ-7"}:
+                return {"ids": ["legacy"], "documents": ["related body"], "metadatas": [legacy_metadata]}
+            return {"ids": [], "documents": [], "metadatas": []}
+
+    monkeypatch.setattr("app.pipeline.store._get_collection", lambda collection_name: _ExactCollection())
+    result = HybridRetrievalPipeline(_Retriever([]), _Retriever([])).retrieve(
+        "PROJ-7", collection_name="alpha", filters={"status": "Open"}
+    )
+
+    assert [(item.chunk_id, item.content, item.source_type, item.title, item.exact_match) for item in result.candidates] == [
+        ("canonical", "trusted body", "jira", "Trusted issue", True),
+        ("legacy", "related body", "confluence", "Related page", True),
+    ]
+    assert all(where["$and"][1] == {"status": "Open"} for where, _ in calls)
+    assert [where["$and"][0] for where, _ in calls] == [
+        {"document_id": "jira:PROJ-7"}, {"document_id": "jira_issue:PROJ-7"},
+        {"issue_key": "PROJ-7"}, {"key": "PROJ-7"}, {"related_jira": "PROJ-7"},
+    ]
 
 
 def test_pipeline_raises_only_when_every_configured_primary_retriever_errors():

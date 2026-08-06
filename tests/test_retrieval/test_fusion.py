@@ -42,3 +42,11 @@ def test_rrf_prioritizes_exact_candidates_then_keeps_stable_ties_and_truncates()
     assert [item.chunk_id for item in result] == ["exact", "a"]
     assert result[0].exact_match is True
     assert result[0].retrieval_methods == ["exact"]
+
+
+def test_rrf_never_returns_more_than_twenty_candidates():
+    candidates = [_candidate(str(index), "vector", index + 1, 0.0) for index in range(25)]
+
+    result = ReciprocalRankFusion().fuse([candidates], top_k=25)
+
+    assert len(result) == 20

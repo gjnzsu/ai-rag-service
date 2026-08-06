@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 from app.config import settings
 from app.pipeline.store import get_jira_key_context
-from app.retrieval.fusion import ReciprocalRankFusion
+from app.retrieval.fusion import MAX_FUSED_CANDIDATES, ReciprocalRankFusion
 from app.retrieval.interfaces import LexicalRetriever, VectorRetriever
 from app.retrieval.lexical import SQLiteFTSIndex
 from app.retrieval.models import RetrievalCandidate
@@ -45,17 +45,27 @@ class HybridRetrievalPipeline:
         final_top_k: int | None = None,
         rrf_k: int | None = None,
     ) -> None:
-        self.mode = mode or settings.retrieval_mode
+        self.mode = settings.retrieval_mode if mode is None else mode
         if self.mode not in {"vector", "lexical", "hybrid"}:
             raise ValueError("Unsupported retrieval mode")
-        self.candidate_top_k = candidate_top_k or settings.retrieval_candidate_top_k
-        self.final_top_k = final_top_k or settings.retrieval_final_top_k
+        self.candidate_top_k = (
+            settings.retrieval_candidate_top_k if candidate_top_k is None else candidate_top_k
+        )
+        self.final_top_k = settings.retrieval_final_top_k if final_top_k is None else final_top_k
         self.rrf_k = rrf_k if rrf_k is not None else settings.retrieval_rrf_k
         if self.candidate_top_k <= 0 or self.final_top_k <= 0 or self.rrf_k < 0:
             raise ValueError("Retrieval limits must be positive and RRF k non-negative")
-        self.vector_retriever = vector_retriever or ChromaVectorRetriever()
-        self.lexical_retriever = lexical_retriever or SQLiteFTSIndex()
-        self.exact_lookup = exact_lookup or _exact_jira_lookup
+        if self.final_top_k > MAX_FUSED_CANDIDATES:
+            raise ValueError(f"final_top_k must not exceed {MAX_FUSED_CANDIDATES}")
+        self.vector_retriever = (
+            vector_retriever if vector_retriever is not None
+            else ChromaVectorRetriever() if self.mode in {"vector", "hybrid"} else None
+        )
+        self.lexical_retriever = (
+            lexical_retriever if lexical_retriever is not None
+            else SQLiteFTSIndex() if self.mode in {"lexical", "hybrid"} else None
+        )
+        self.exact_lookup = exact_lookup if exact_lookup is not None else _exact_jira_lookup
 
     def retrieve(
         self,
@@ -75,6 +85,7 @@ class HybridRetrievalPipeline:
 
         for name in primary_names:
             retriever = self.vector_retriever if name == "vector" else self.lexical_retriever
+            assert retriever is not None
             try:
                 candidates = retriever.search(query, self.candidate_top_k, filters, collection_name)
             except Exception as error:
@@ -93,7 +104,7 @@ class HybridRetrievalPipeline:
                 empty.append(name)
 
         exact_keys = extract_query_hints(query).jira_keys
-        exact_candidates = self._exact_candidates(exact_keys, collection_name, filters)
+        exact_candidates, exact_failure_count = self._exact_candidates(exact_keys, collection_name, filters)
         if exact_candidates:
             result_sets.append(exact_candidates)
 
@@ -106,7 +117,7 @@ class HybridRetrievalPipeline:
             "successful_retrievers": successful,
             "empty_retrievers": empty,
             "failed_retrievers": failures,
-            "exact_jira_keys": exact_keys,
+            "exact_lookup": _exact_diagnostics(exact_keys, exact_candidates, exact_failure_count),
         }
         return RetrievalResult(
             candidates=fused,
@@ -120,13 +131,15 @@ class HybridRetrievalPipeline:
         jira_keys: list[str],
         collection_name: str,
         filters: dict[str, Any] | None,
-    ) -> list[RetrievalCandidate]:
+    ) -> tuple[list[RetrievalCandidate], int]:
         candidates: list[RetrievalCandidate] = []
         seen: set[str] = set()
+        failure_count = 0
         for jira_key in jira_keys:
             try:
                 records = self.exact_lookup(jira_key, collection_name, filters)
             except Exception as error:
+                failure_count += 1
                 logger.warning(
                     "exact_jira_lookup_unavailable",
                     collection_name=collection_name,
@@ -140,13 +153,35 @@ class HybridRetrievalPipeline:
                     candidates.append(candidate)
         for rank, candidate in enumerate(candidates, start=1):
             candidate.rank_by_method = {"exact": rank}
-        return candidates[: self.candidate_top_k]
+        return candidates[: self.candidate_top_k], failure_count
 
 
 def _primary_names(mode: RetrievalMode) -> list[str]:
     if mode == "hybrid":
         return ["vector", "lexical"]
     return [mode]
+
+
+def _exact_diagnostics(
+    jira_keys: list[str],
+    candidates: list[RetrievalCandidate],
+    failure_count: int,
+) -> dict[str, int | str]:
+    if not jira_keys:
+        status = "not_requested"
+    elif failure_count and candidates:
+        status = "partial_failure"
+    elif failure_count:
+        status = "unavailable"
+    elif candidates:
+        status = "matched"
+    else:
+        status = "no_match"
+    return {
+        "status": status,
+        "failure_count": failure_count,
+        "match_count": len(candidates),
+    }
 
 
 def _exact_jira_lookup(

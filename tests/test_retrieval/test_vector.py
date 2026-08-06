@@ -29,9 +29,15 @@ class _Chroma:
 
 
 def test_vector_retriever_embeds_and_maps_canonical_candidates():
+    embedding_calls = []
+
+    def create_embedding(**kwargs):
+        embedding_calls.append(kwargs)
+        return SimpleNamespace(data=[SimpleNamespace(embedding=[0.25, 0.5])])
+
     client = SimpleNamespace(
         embeddings=SimpleNamespace(
-            create=lambda **kwargs: SimpleNamespace(data=[SimpleNamespace(embedding=[0.25, 0.5])])
+            create=create_embedding
         )
     )
     collection = _Collection({
@@ -57,6 +63,7 @@ def test_vector_retriever_embeds_and_maps_canonical_candidates():
     assert result[0].method_scores == {"vector": 0.75}
     assert result[0].retrieval_methods == ["vector"]
     assert result[0].rank_by_method == {"vector": 1}
+    assert embedding_calls == [{"model": "text-embedding-3-small", "input": ["find OPS-7"]}]
     assert collection.calls == [{
         "query_embeddings": [[0.25, 0.5]], "n_results": 4,
         "include": ["documents", "metadatas", "distances"], "where": {"status": "Open"},
@@ -76,3 +83,23 @@ def test_vector_retriever_returns_empty_results_and_propagates_upstream_errors()
 
     with pytest.raises(RuntimeError, match="chroma unavailable"):
         ChromaVectorRetriever(openai_client=client, chroma_client=_Chroma(_Collection(error=RuntimeError("chroma unavailable")))).search("q", 2, None, "alpha")
+
+
+def test_vector_retriever_preserves_falsey_injected_clients(monkeypatch):
+    class FalseyClient:
+        def __bool__(self):
+            return False
+
+        embeddings = SimpleNamespace(create=lambda **kwargs: SimpleNamespace(data=[SimpleNamespace(embedding=[1.0])]))
+
+    class FalseyChroma:
+        def __bool__(self):
+            return False
+
+        def get_or_create_collection(self, **kwargs):
+            return _Collection()
+
+    monkeypatch.setattr("app.retrieval.vector.OpenAI", lambda **kwargs: pytest.fail("created OpenAI client"))
+    monkeypatch.setattr("app.retrieval.vector.chromadb.PersistentClient", lambda **kwargs: pytest.fail("created Chroma client"))
+
+    assert ChromaVectorRetriever(openai_client=FalseyClient(), chroma_client=FalseyChroma()).search("q", 1, None, "alpha") == []

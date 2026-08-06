@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from app.retrieval.query_hints import extract_query_hints
@@ -20,3 +22,9 @@ def test_extract_query_hints_normalizes_jira_keys_in_encounter_order(query, expe
 
 def test_extract_query_hints_accepts_a_configurable_pattern():
     assert extract_query_hints("work item #42", pattern=r"#\d+").jira_keys == ["#42"]
+
+
+@pytest.mark.parametrize("pattern", ["", "["])
+def test_extract_query_hints_rejects_empty_or_invalid_explicit_patterns(pattern):
+    with pytest.raises((ValueError, re.error)):
+        extract_query_hints("PROJ-7", pattern=pattern)
