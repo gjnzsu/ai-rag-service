@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     lexical_issue_key_weight: float = 10.0
     lexical_title_weight: float = 5.0
     lexical_content_weight: float = 1.0
+    jira_key_pattern: str = r"\b[A-Z][A-Z0-9]+-\d+\b"
+    retrieval_mode: str = "hybrid"
+    retrieval_candidate_top_k: int = 30
+    retrieval_final_top_k: int = 20
+    retrieval_rrf_k: int = 60
+    retrieval_score_threshold: float | None = None
     chunk_size: int = 512
     chunk_overlap: int = 50
     top_k: int = 5

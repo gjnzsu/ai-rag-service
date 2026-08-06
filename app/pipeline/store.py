@@ -144,16 +144,20 @@ def query_lifecycle_collection(
 def get_jira_key_context(
     jira_key: str,
     collection_name: str = "default",
+    filters: dict | None = None,
 ) -> list[dict]:
     collection = _get_collection(collection_name)
     results = []
     seen_chunk_ids = set()
-    for where in (
+    filter_where = _to_chroma_where(filters)
+    for base_where in (
         {"document_id": f"jira:{jira_key}"},
         {"document_id": f"jira_issue:{jira_key}"},
+        {"issue_key": jira_key},
         {"key": jira_key},
         {"related_jira": jira_key},
     ):
+        where = base_where if not filter_where else {"$and": [base_where, filter_where]}
         result = collection.get(where=where, include=["documents", "metadatas"])
         for item in _format_get_results(result):
             chunk_id = item["chunk_id"]
@@ -231,5 +235,7 @@ def _format_result(
         "document_id": metadata.get("document_id", ""),
         "chunk_id": chunk_id,
         "metadata": metadata,
+        "source_type": metadata.get("source_type", metadata.get("type", "")),
         "source_url": metadata.get("source_url", ""),
+        "title": metadata.get("title", ""),
     }

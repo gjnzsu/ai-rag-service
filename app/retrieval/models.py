@@ -17,6 +17,8 @@ class RetrievalCandidate(BaseModel):
     title: str = ""
     metadata: dict[str, Any] = Field(default_factory=dict)
     score: float = 0.0
+    method_scores: dict[str, float] = Field(default_factory=dict)
+    rrf_score: float = 0.0
     retrieval_methods: list[str] = Field(default_factory=list)
     rank_by_method: dict[str, int] = Field(default_factory=dict)
     fused_rank: int | None = None
