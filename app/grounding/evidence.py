@@ -27,6 +27,7 @@ _NUMBER_WORDS = frozenset({
 })
 _SIMILARITY_TOKEN_LIMIT = 256
 _NEAR_DUPLICATE_RATIO = 0.92
+_HARMLESS_NEAR_DUPLICATE_TOKENS = frozenset({"a", "an", "the", "please"})
 
 
 class EvidenceSelector:
@@ -68,9 +69,16 @@ def _ranking_key(item: tuple[int, RetrievalCandidate]) -> tuple[float | int, ...
         0 if candidate.exact_match else 1,
         0 if has_rerank else 1,
         -(candidate.rerank_score or 0.0) if has_rerank else 0.0,
-        candidate.fused_rank if candidate.fused_rank is not None else position + 1,
+        _effective_rank(candidate, position),
         position,
     )
+
+
+def _effective_rank(candidate: RetrievalCandidate, position: int) -> int:
+    fused_rank = candidate.fused_rank
+    if isinstance(fused_rank, int) and not isinstance(fused_rank, bool) and fused_rank > 0:
+        return fused_rank
+    return position + 1
 
 
 @dataclass(frozen=True)
@@ -110,7 +118,11 @@ def _fingerprint(content: str) -> _ContentFingerprint:
         tokens=tokens,
         negations=tuple(token for token in tokens if token in _NEGATIONS),
         numbers=tuple(token for token in tokens if token.isdigit() or token in _NUMBER_WORDS),
-        entities=tuple(match.group(0).casefold() for match in _ENTITY_PATTERN.finditer(content)),
+        entities=(
+            tuple(match.group(0).casefold() for match in _ENTITY_PATTERN.finditer(content))
+            if bounded
+            else ()
+        ),
         bounded=bounded,
     )
 
@@ -139,8 +151,17 @@ def _near_duplicate(
     )
     if matcher.ratio() < _NEAR_DUPLICATE_RATIO:
         return False
-    changes = {tag for tag, *_ in matcher.get_opcodes() if tag != "equal"}
-    return "replace" not in changes and changes != {"insert", "delete"}
+    changed_tokens: list[str] = []
+    for tag, first_start, first_end, second_start, second_end in matcher.get_opcodes():
+        if tag == "replace":
+            return False
+        if tag == "delete":
+            changed_tokens.extend(fingerprint.tokens[first_start:first_end])
+        elif tag == "insert":
+            changed_tokens.extend(old.tokens[second_start:second_end])
+    return bool(changed_tokens) and all(
+        token in _HARMLESS_NEAR_DUPLICATE_TOKENS for token in changed_tokens
+    )
 
 
 def _cross_document_intent(query: str) -> bool:
@@ -161,16 +182,14 @@ def _should_diversify(query: str, candidates: list[RetrievalCandidate]) -> bool:
 def _diversify(candidates: list[RetrievalCandidate], top_k: int) -> list[RetrievalCandidate]:
     if not candidates:
         return []
-    first_rank = candidates[0].fused_rank if candidates[0].fused_rank is not None else 1
+    first_rank = _effective_rank(candidates[0], 0)
     rank_window = max(5, top_k)
     eligible: list[RetrievalCandidate] = []
     ineligible: list[RetrievalCandidate] = []
     for position, candidate in enumerate(candidates):
         within_position_window = position < top_k * 2
-        within_fused_window = (
-            candidate.fused_rank is None
-            or candidate.fused_rank - first_rank <= rank_window
-        )
+        effective_rank = _effective_rank(candidate, position)
+        within_fused_window = effective_rank - first_rank <= rank_window
         target = eligible if within_position_window and within_fused_window else ineligible
         target.append(candidate)
 

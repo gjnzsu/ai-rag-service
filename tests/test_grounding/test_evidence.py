@@ -72,8 +72,8 @@ def test_selector_deduplicates_genuine_order_preserving_near_copies():
             "near-copy",
             document_id="d2",
             content=(
-                "The deployment service retries failed requests three times before returning "
-                "a timeout response to external callers"
+                "The deployment service retries the failed requests three times before returning "
+                "a timeout response to callers"
             ),
             fused_rank=2,
         ),
@@ -82,6 +82,48 @@ def test_selector_deduplicates_genuine_order_preserving_near_copies():
     result = EvidenceSelector().select("deployment retries", candidates, top_k=5)
 
     assert [item.candidate.chunk_id for item in result] == ["original"]
+
+
+@pytest.mark.parametrize(
+    "changed",
+    [
+        "The policy grants access to registered users except contractors after approval during "
+        "scheduled production maintenance windows today",
+        "The policy grants access to registered users unless suspended after approval during "
+        "scheduled production maintenance windows today",
+        "The policy grants access only to registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy grants access without supervision to registered users after approval during "
+        "scheduled production maintenance windows today",
+        "The policy grants access with supervision to registered users after approval during "
+        "scheduled production maintenance windows today",
+        "The policy must grant access to registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy may grant access to registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy always grants access to registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy grants access to all registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy grants access to some registered users after approval during scheduled "
+        "production maintenance windows today",
+        "The policy grants access to none registered users after approval during scheduled "
+        "production maintenance windows today",
+    ],
+)
+def test_selector_keeps_semantic_exception_scope_modal_and_quantity_insertions(changed):
+    original = (
+        "The policy grants access to registered users after approval during scheduled production "
+        "maintenance windows today"
+    )
+    candidates = [
+        _candidate("original", document_id="d1", content=original, fused_rank=1),
+        _candidate("changed", document_id="d2", content=changed, fused_rank=2),
+    ]
+
+    result = EvidenceSelector().select("access policy", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["original", "changed"]
 
 
 @pytest.mark.parametrize(
@@ -218,6 +260,34 @@ def test_selector_rank_window_uses_stable_position_when_top_fused_rank_is_missin
     result = EvidenceSelector().select("Compare across documents", candidates, top_k=5)
 
     assert [item.candidate.chunk_id for item in result] == ["a1", "a2", "a3", "a4", "a5"]
+
+
+@pytest.mark.parametrize("missing_rank", [None, 0, -1])
+def test_selector_rank_window_uses_later_candidate_position_for_invalid_fused_rank(missing_rank):
+    candidates = [
+        *[
+            _candidate(f"a{rank}", document_id="a", fused_rank=rank)
+            for rank in range(1, 8)
+        ],
+        _candidate("later-unranked", document_id="b", fused_rank=missing_rank),
+    ]
+
+    result = EvidenceSelector().select("Compare across documents", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["a1", "a2", "a3", "a4", "a5"]
+
+
+@pytest.mark.parametrize("invalid_rank", [0, -1])
+def test_selector_ranking_uses_stable_position_for_nonpositive_fused_rank(invalid_rank):
+    candidates = [
+        _candidate("first", fused_rank=1),
+        _candidate("second", fused_rank=invalid_rank),
+        _candidate("third", fused_rank=3),
+    ]
+
+    result = EvidenceSelector().select("ordinary query", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["first", "second", "third"]
 
 
 def test_selector_uses_trusted_source_identity_when_legacy_document_id_is_empty():
