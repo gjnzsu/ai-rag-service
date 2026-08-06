@@ -1,0 +1,419 @@
+"""Injected evaluation runner and JSONL command-line boundary."""
+
+from __future__ import annotations
+
+import argparse
+from collections.abc import Callable, Sequence
+import json
+import os
+from pathlib import Path
+import tempfile
+import time
+from typing import Any
+
+from app.evaluation.metrics import (
+    abstention_accuracy,
+    citation_correctness,
+    citation_validity,
+    context_precision,
+    hit_at_k,
+    latency_percentiles,
+    mrr_at_k,
+    recall_at_k,
+)
+from app.evaluation.models import EvaluationCase, RankedEvaluationResult
+from app.retrieval.models import RetrievalCandidate
+
+CandidateRetriever = Callable[[EvaluationCase], Sequence[RetrievalCandidate]]
+CandidateReranker = Callable[[EvaluationCase, list[RetrievalCandidate]], Sequence[RetrievalCandidate]]
+GroundedAnswerEvaluator = Callable[
+    [EvaluationCase, Sequence[RetrievalCandidate]], RankedEvaluationResult
+]
+
+_CONFIGURATIONS = ("A", "B", "C1", "C2")
+_SAFE_ERROR_TYPES = frozenset({
+    "AttributeError",
+    "ImportError",
+    "IndexError",
+    "KeyError",
+    "RuntimeError",
+    "TimeoutError",
+    "TypeError",
+    "ValueError",
+})
+
+
+class EvaluationRunner:
+    """Evaluate exactly A/B/C1/C2 using injected retrieval and reranking boundaries."""
+
+    def __init__(
+        self,
+        vector_retrieval: CandidateRetriever,
+        hybrid_retrieval: CandidateRetriever,
+        gpt5_reranker: CandidateReranker,
+        qwen_reranker: CandidateReranker,
+        *,
+        grounded_answer_evaluator: GroundedAnswerEvaluator | None = None,
+    ) -> None:
+        self.vector_retrieval = vector_retrieval
+        self.hybrid_retrieval = hybrid_retrieval
+        self.gpt5_reranker = gpt5_reranker
+        self.qwen_reranker = qwen_reranker
+        self.grounded_answer_evaluator = grounded_answer_evaluator
+
+    def run(self, cases: Sequence[EvaluationCase]) -> dict[str, Any]:
+        """Run all four configurations without exposing experiment controls to API callers."""
+        records: dict[str, list[dict[str, Any]]] = {name: [] for name in _CONFIGURATIONS}
+        failures: list[dict[str, Any]] = []
+        for case_index, case in enumerate(cases):
+            self._run_retrieval(
+                "A", case_index, case, self.vector_retrieval, records, failures
+            )
+            hybrid_candidates = self._run_hybrid(
+                case_index, case, records, failures
+            )
+            if hybrid_candidates is None:
+                self._record_failure("C1", case_index, case, RuntimeError(), records, failures)
+                self._record_failure("C2", case_index, case, RuntimeError(), records, failures)
+                continue
+            self._run_reranker(
+                "C1", case_index, case, hybrid_candidates, self.gpt5_reranker, records, failures
+            )
+            self._run_reranker(
+                "C2", case_index, case, hybrid_candidates, self.qwen_reranker, records, failures
+            )
+
+        _attach_changes_from_baseline(records)
+        configurations = {
+            name: {
+                "questions": records[name],
+                "aggregate": _aggregate(records[name]),
+            }
+            for name in _CONFIGURATIONS
+        }
+        return {
+            "configurations": configurations,
+            "failures": failures,
+            "recommendation": _recommend(configurations),
+        }
+
+    def _run_retrieval(
+        self,
+        configuration: str,
+        case_index: int,
+        case: EvaluationCase,
+        retrieve: CandidateRetriever,
+        records: dict[str, list[dict[str, Any]]],
+        failures: list[dict[str, Any]],
+    ) -> None:
+        try:
+            candidates = list(retrieve(case))
+            records[configuration].append(self._record(case_index, case, candidates))
+        except Exception as error:
+            self._record_failure(configuration, case_index, case, error, records, failures)
+
+    def _run_hybrid(
+        self,
+        case_index: int,
+        case: EvaluationCase,
+        records: dict[str, list[dict[str, Any]]],
+        failures: list[dict[str, Any]],
+    ) -> list[RetrievalCandidate] | None:
+        try:
+            candidates = [candidate.model_copy(deep=True) for candidate in self.hybrid_retrieval(case)]
+            records["B"].append(self._record(
+                case_index,
+                case,
+                [candidate.model_copy(deep=True) for candidate in candidates],
+            ))
+            return candidates
+        except Exception as error:
+            self._record_failure("B", case_index, case, error, records, failures)
+            return None
+
+    def _run_reranker(
+        self,
+        configuration: str,
+        case_index: int,
+        case: EvaluationCase,
+        cached_hybrid_candidates: Sequence[RetrievalCandidate],
+        reranker: CandidateReranker,
+        records: dict[str, list[dict[str, Any]]],
+        failures: list[dict[str, Any]],
+    ) -> None:
+        try:
+            # Each reranker receives a fresh deep copy of the exact B candidate sequence.
+            candidates = list(reranker(
+                case,
+                [candidate.model_copy(deep=True) for candidate in cached_hybrid_candidates],
+            ))
+            records[configuration].append(self._record(case_index, case, candidates))
+        except Exception as error:
+            self._record_failure(configuration, case_index, case, error, records, failures)
+
+    def _record(
+        self,
+        case_index: int,
+        case: EvaluationCase,
+        candidates: Sequence[RetrievalCandidate],
+    ) -> dict[str, Any]:
+        started = time.perf_counter()
+        ranked_document_ids = tuple(candidate.document_id for candidate in candidates)
+        ranked_chunk_ids = tuple(candidate.chunk_id for candidate in candidates)
+        observed = (
+            self.grounded_answer_evaluator(case, candidates)
+            if self.grounded_answer_evaluator is not None
+            else RankedEvaluationResult()
+        )
+        elapsed_ms = (time.perf_counter() - started) * 1_000
+        result = observed.model_copy(update={
+            "ranked_document_ids": ranked_document_ids,
+            "ranked_chunk_ids": ranked_chunk_ids,
+            "latency_ms": max(observed.latency_ms, elapsed_ms),
+        })
+        return {
+            "case_index": case_index,
+            "query_type": case.query_type.value,
+            "metrics": _case_metrics(case, result),
+            "result": result.model_dump(mode="json"),
+            "error": None,
+        }
+
+    @staticmethod
+    def _record_failure(
+        configuration: str,
+        case_index: int,
+        case: EvaluationCase,
+        error: Exception,
+        records: dict[str, list[dict[str, Any]]],
+        failures: list[dict[str, Any]],
+    ) -> None:
+        error_type = _safe_error_type(error)
+        item = {
+            "case_index": case_index,
+            "query_type": case.query_type.value,
+            "metrics": None,
+            "result": None,
+            "error": error_type,
+        }
+        records[configuration].append(item)
+        failures.append({"configuration": configuration, "case_index": case_index, "error": error_type})
+
+
+def _case_metrics(case: EvaluationCase, result: RankedEvaluationResult) -> dict[str, float | None]:
+    correctness = citation_correctness(
+        None if result.human_citation_correctness is None else (result.human_citation_correctness,)
+    )
+    return {
+        "recall_at_20": recall_at_k(result.ranked_document_ids, case.relevant_document_ids, k=20),
+        "hit_at_5": hit_at_k(result.ranked_document_ids, case.relevant_document_ids, k=5),
+        "mrr_at_10": mrr_at_k(result.ranked_document_ids, case.relevant_document_ids, k=10),
+        "context_precision": context_precision(
+            result.ranked_document_ids, case.relevant_document_ids, k=20
+        ),
+        "citation_validity": citation_validity(result.cited_chunk_ids, result.selected_chunk_ids),
+        "citation_correctness": correctness,
+        "abstention_accuracy": abstention_accuracy(case.should_abstain, result.refused),
+    }
+
+
+def _aggregate(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    successful = [record for record in records if record["metrics"] is not None]
+    metric_names = (
+        "recall_at_20", "hit_at_5", "mrr_at_10", "context_precision",
+        "citation_validity", "citation_correctness", "abstention_accuracy",
+    )
+    aggregate: dict[str, Any] = {
+        name: _mean([record["metrics"][name] for record in successful])
+        for name in metric_names
+    }
+    results = [record["result"] for record in successful]
+    p50, p95 = latency_percentiles([result["latency_ms"] for result in results])
+    answer_p50, answer_p95 = latency_percentiles([
+        result["answer_latency_ms"] for result in results if result["answer_latency_ms"] is not None
+    ])
+    aggregate.update({
+        "latency_ms": {"p50": p50, "p95": p95},
+        "answer_latency_ms": {"p50": answer_p50, "p95": answer_p95},
+        "token_usage": {
+            "input": _sum_optional(results, "input_tokens"),
+            "output": _sum_optional(results, "output_tokens"),
+        },
+        "local_resources": {
+            "cpu_percent_mean": _mean([result["local_cpu_percent"] for result in results]),
+            "memory_mb_mean": _mean([result["local_memory_mb"] for result in results]),
+        },
+        "successful_case_count": len(successful),
+        "failed_case_count": len(records) - len(successful),
+    })
+    return aggregate
+
+
+def _attach_changes_from_baseline(records: dict[str, list[dict[str, Any]]]) -> None:
+    """Add per-question metric deltas for rerankers relative to cached hybrid B."""
+    baseline = {record["case_index"]: record for record in records["B"]}
+    for configuration in ("C1", "C2"):
+        for record in records[configuration]:
+            base = baseline.get(record["case_index"])
+            if record["metrics"] is None or base is None or base["metrics"] is None:
+                record["changes_from_b"] = None
+                continue
+            record["changes_from_b"] = {
+                name: _delta(record["metrics"][name], base["metrics"][name])
+                for name in record["metrics"]
+            }
+
+
+def _delta(value: float | None, baseline: float | None) -> float | None:
+    return value - baseline if value is not None and baseline is not None else None
+
+
+def _mean(values: Sequence[float | None]) -> float | None:
+    measured = [value for value in values if value is not None]
+    return sum(measured) / len(measured) if measured else None
+
+
+def _sum_optional(results: Sequence[dict[str, Any]], key: str) -> int | None:
+    values = [result[key] for result in results if result[key] is not None]
+    return sum(values) if values else None
+
+
+def _safe_error_type(error: Exception) -> str:
+    """Keep failure records actionable without serializing error content or secrets."""
+    name = type(error).__name__
+    return name if name in _SAFE_ERROR_TYPES else "Exception"
+
+
+def _recommend(configurations: dict[str, dict[str, Any]]) -> dict[str, str]:
+    baseline = configurations["B"]["aggregate"]
+    candidates: list[tuple[float, float, str]] = []
+    for name in ("C1", "C2"):
+        candidate = configurations[name]["aggregate"]
+        mrr = candidate["mrr_at_10"]
+        context = candidate["context_precision"]
+        recall = candidate["recall_at_20"]
+        latency = candidate["answer_latency_ms"]["p95"]
+        if (
+            mrr is not None
+            and context is not None
+            and recall is not None
+            and latency is not None
+            and baseline["mrr_at_10"] is not None
+            and baseline["context_precision"] is not None
+            and baseline["recall_at_20"] is not None
+            and recall >= baseline["recall_at_20"]
+            and latency <= 10_000
+            and (mrr > baseline["mrr_at_10"] or context > baseline["context_precision"])
+        ):
+            candidates.append((mrr - baseline["mrr_at_10"], context - baseline["context_precision"], name))
+    if not candidates:
+        return {
+            "configuration": "B",
+            "reason": "No reranker met the repeatable gain, no-recall-regression, and 5–10 second target.",
+        }
+    _, _, name = max(candidates)
+    return {
+        "configuration": name,
+        "reason": "Measured gain with no Recall@20 regression and P95 generated-answer latency at or below 10 seconds.",
+    }
+
+
+def load_cases(path: Path) -> list[EvaluationCase]:
+    """Load one validated evaluation case per non-empty JSONL line."""
+    cases: list[EvaluationCase] = []
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            cases.append(EvaluationCase.model_validate_json(line))
+        except ValueError as error:
+            raise ValueError(f"Invalid evaluation case at line {line_number}") from error
+    return cases
+
+
+def write_report(path: Path, report: dict[str, Any]) -> None:
+    """Atomically write a JSON report without leaving partial output files."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_name: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.", suffix=".tmp", delete=False
+        ) as temporary:
+            temporary_name = temporary.name
+            json.dump(report, temporary, indent=2, sort_keys=True)
+            temporary.write("\n")
+        os.replace(temporary_name, path)
+    except Exception:
+        if temporary_name is not None:
+            Path(temporary_name).unlink(missing_ok=True)
+        raise
+
+
+def main(argv: Sequence[str] | None = None, *, runner_factory: Callable[[], EvaluationRunner] | None = None) -> int:
+    """Run the evaluation harness through a small, testable CLI boundary."""
+    parser = argparse.ArgumentParser(description="Evaluate A/B/C1/C2 retrieval configurations.")
+    parser.add_argument("--cases", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    arguments = parser.parse_args(argv)
+    runner = (runner_factory or _default_runner)()
+    write_report(arguments.output, runner.run(load_cases(arguments.cases)))
+    return 0
+
+
+def _default_runner() -> EvaluationRunner:
+    """Construct live integrations only when the operator explicitly invokes the CLI."""
+    from app.config import settings
+    from app.grounding.citations import CitationValidator
+    from app.grounding.evidence import EvidenceSelector
+    from app.grounding.generator import GroundedAnswerGenerator
+    from app.grounding.models import GeneratedAnswer, REFUSAL_ANSWER
+    from app.reranking import build_reranker
+    from app.reranking.noop import NoOpReranker
+    from app.retrieval.pipeline import HybridRetrievalPipeline
+    from app.retrieval.vector import ChromaVectorRetriever
+
+    vector = ChromaVectorRetriever()
+    hybrid = HybridRetrievalPipeline(mode="hybrid", reranker=NoOpReranker())
+    gpt5 = build_reranker("openai")
+    qwen = build_reranker("qwen_local")
+    selector = EvidenceSelector()
+    generator = GroundedAnswerGenerator()
+    validator = CitationValidator()
+
+    def vector_retrieval(case: EvaluationCase) -> Sequence[RetrievalCandidate]:
+        return vector.search(case.question, settings.retrieval_candidate_top_k, None, "default")
+
+    def hybrid_retrieval(case: EvaluationCase) -> Sequence[RetrievalCandidate]:
+        return hybrid.retrieve(
+            case.question, collection_name="default", top_k=settings.retrieval_candidate_top_k
+        ).candidates
+
+    def evaluate(case: EvaluationCase, candidates: Sequence[RetrievalCandidate]) -> RankedEvaluationResult:
+        started = time.perf_counter()
+        evidence = selector.select(case.question, list(candidates), top_k=settings.grounding_evidence_top_k)
+        generated = generator.generate(case.question, evidence) if evidence else GeneratedAnswer(
+            answer=REFUSAL_ANSWER, citation_ids=[]
+        )
+        grounded = validator.validate(generated, evidence)
+        selected_chunks = tuple(item.candidate.chunk_id for item in evidence)
+        selected_documents = tuple(item.candidate.document_id for item in evidence)
+        return RankedEvaluationResult(
+            selected_document_ids=selected_documents,
+            selected_chunk_ids=selected_chunks,
+            cited_document_ids=tuple(item.document_id for item in grounded.citations),
+            cited_chunk_ids=tuple(item.chunk_id for item in grounded.citations),
+            refused=grounded.answer == REFUSAL_ANSWER,
+            answer_latency_ms=(time.perf_counter() - started) * 1_000,
+        )
+
+    return EvaluationRunner(
+        vector_retrieval,
+        hybrid_retrieval,
+        gpt5.rerank,
+        qwen.rerank,
+        grounded_answer_evaluator=evaluate,
+    )
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised through main(argv)
+    raise SystemExit(main())
