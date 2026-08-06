@@ -451,4 +451,3 @@ git commit -m "docs: add hybrid RAG evaluation report template"
 - [ ] **Step 5: Request final whole-branch review**
 
 Generate a review package from the branch merge-base through HEAD and verify complete design coverage, backward compatibility, security boundaries, test quality, and absence of unevaluated quality claims.
-
