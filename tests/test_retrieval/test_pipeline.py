@@ -126,6 +126,89 @@ def test_pipeline_appends_candidates_omitted_by_a_custom_reranker_in_rrf_order()
     assert result.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
 
 
+@pytest.mark.parametrize(
+    ("score", "expected"),
+    [(3, 3.0), (0.75, 0.75), (None, None)],
+)
+def test_pipeline_normalizes_trusted_custom_reranker_scores(score, expected):
+    source_candidates = [_candidate("a"), _candidate("b")]
+    returned = _candidate("b")
+    returned.rerank_score = score
+
+    result = HybridRetrievalPipeline(
+        _Retriever(source_candidates),
+        _Retriever([]),
+        reranker=_Reranker(result=[returned]),
+        final_top_k=2,
+    ).retrieve("query")
+
+    assert [item.chunk_id for item in result.candidates] == ["b", "a"]
+    assert result.candidates[0].rerank_score == expected
+    if expected is not None:
+        assert type(result.candidates[0].rerank_score) is float
+    assert returned.rerank_score is score
+    assert all(candidate.rerank_score is None for candidate in source_candidates)
+    assert result.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
+
+
+@pytest.mark.parametrize(
+    "score",
+    ["0.9", object(), True, float("nan"), float("inf"), float("-inf")],
+    ids=["string", "object", "boolean", "nan", "positive-infinity", "negative-infinity"],
+)
+def test_pipeline_rejects_unsafe_custom_scores_with_exact_rrf_fallback(score):
+    source_candidates = [_candidate("a"), _candidate("b")]
+    returned = _candidate("b")
+    returned.rerank_score = score
+
+    result = HybridRetrievalPipeline(
+        _Retriever(source_candidates),
+        _Retriever([]),
+        reranker=_Reranker(result=[returned]),
+        final_top_k=2,
+    ).retrieve("private query")
+
+    assert [item.chunk_id for item in result.candidates] == ["a", "b"]
+    assert all(candidate.rerank_score is None for candidate in result.candidates)
+    assert result.diagnostics["reranker"] == {
+        "provider": "custom", "status": "fallback", "error_type": "ValueError",
+    }
+    assert returned.rerank_score is score
+    assert all(candidate.rerank_score is None for candidate in source_candidates)
+
+
+def test_pipeline_safely_rejects_a_custom_score_that_fails_during_normalization(monkeypatch):
+    log_entries = []
+
+    class _Logger:
+        def warning(self, event, **kwargs):
+            log_entries.append((event, kwargs))
+
+    class _HazardousFloat(float):
+        def __float__(self):
+            raise RuntimeError("private normalization detail")
+
+    monkeypatch.setattr("app.retrieval.pipeline.logger", _Logger())
+    source_candidates = [_candidate("a"), _candidate("b")]
+    returned = _candidate("b")
+    returned.rerank_score = _HazardousFloat(0.9)
+
+    result = HybridRetrievalPipeline(
+        _Retriever(source_candidates),
+        _Retriever([]),
+        reranker=_Reranker(result=[returned]),
+        final_top_k=2,
+    ).retrieve("private query")
+
+    assert [item.chunk_id for item in result.candidates] == ["a", "b"]
+    assert result.diagnostics["reranker"] == {
+        "provider": "custom", "status": "fallback", "error_type": "ValueError",
+    }
+    assert "private normalization detail" not in repr((result.diagnostics, log_entries))
+    assert returned.rerank_score == 0.9
+    assert all(candidate.rerank_score is None for candidate in source_candidates)
+
+
 def test_pipeline_validates_the_entire_custom_reranker_response_before_ordering():
     reranker = _Reranker(
         result=[_candidate("b"), _candidate("a"), _candidate("unknown")],

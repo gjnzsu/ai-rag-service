@@ -1,5 +1,7 @@
 """Hybrid retrieval orchestration with safe, deterministic degradation."""
 
+import math
+from numbers import Real
 from typing import Any, Callable, Literal
 
 import structlog
@@ -269,9 +271,10 @@ def _trusted_reranker_order(
             raise TypeError("Reranker returned an invalid candidate")
         if output.chunk_id not in canonical or output.chunk_id in seen:
             raise ValueError("Reranker returned an invalid chunk ID")
+        rerank_score = _trusted_rerank_score(output.rerank_score)
         seen.add(output.chunk_id)
         candidate = canonical[output.chunk_id].model_copy(deep=True)
-        candidate.rerank_score = output.rerank_score
+        candidate.rerank_score = rerank_score
         trusted.append(candidate)
     trusted.extend(
         candidate.model_copy(deep=True)
@@ -279,6 +282,20 @@ def _trusted_reranker_order(
         if candidate.chunk_id not in seen
     )
     return trusted[:top_k]
+
+
+def _trusted_rerank_score(value: Any) -> float | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError("Reranker returned an invalid score")
+    try:
+        normalized = float(value)
+    except Exception:
+        raise ValueError("Reranker returned an invalid score") from None
+    if not math.isfinite(normalized):
+        raise ValueError("Reranker returned a non-finite score")
+    return normalized
 
 
 def _status(reranker: Reranker) -> str:
