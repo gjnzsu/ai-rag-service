@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 
 import pymupdf
@@ -9,6 +10,7 @@ class PDFConnector(BaseConnector):
     def fetch(self, file_path: str, original_filename: str | None = None, document_type: str | None = None, **kwargs) -> list[Document]:
         path = Path(file_path)
         display_name = original_filename or path.name
+        file_digest = hashlib.sha256(path.read_bytes()).hexdigest()
         doc = pymupdf.open(file_path)
         pages_text = [page.get_text() for page in doc]
         content = "\n\n".join(pages_text)
@@ -26,7 +28,7 @@ class PDFConnector(BaseConnector):
 
         return [
             Document(
-                id=self.make_id("pdf", display_name),
+                id=f"pdf:{file_digest}",
                 content=content,
                 source_type="pdf",
                 title=display_name,
@@ -35,6 +37,7 @@ class PDFConnector(BaseConnector):
                     "page_count": len(pages_text),
                     "file_size_bytes": path.stat().st_size,
                     "document_type": document_type,
+                    "source_url": path.resolve().as_uri(),
                 },
             )
         ]

@@ -1,6 +1,14 @@
 import chromadb
+import structlog
 
 from app.config import settings
+from app.retrieval.lexical import SQLiteFTSIndex
+
+logger = structlog.get_logger()
+
+
+def get_lexical_index() -> SQLiteFTSIndex:
+    return SQLiteFTSIndex()
 
 
 def _get_collection(collection_name: str):
@@ -72,12 +80,23 @@ def upsert_document(
 
 
 def delete_document(document_id: str, collection_name: str = "default") -> bool:
-    collection = _get_collection(collection_name)
-    existing = collection.get(where={"document_id": str(document_id)})
-    ids = existing.get("ids", [])
-    if ids:
-        collection.delete(ids=ids)
-    return bool(ids)
+    vector_deleted = False
+    try:
+        collection = _get_collection(collection_name)
+        existing = collection.get(where={"document_id": str(document_id)})
+        ids = existing.get("ids", [])
+        if ids:
+            collection.delete(ids=ids)
+            vector_deleted = True
+        lexical_deleted = get_lexical_index().delete_document(document_id, collection_name)
+    except Exception:
+        logger.error(
+            "dual_index_delete_failed",
+            collection_name=collection_name,
+            document_id=document_id,
+        )
+        raise
+    return vector_deleted or lexical_deleted
 
 
 def get_document_chunks(
@@ -130,6 +149,7 @@ def get_jira_key_context(
     results = []
     seen_chunk_ids = set()
     for where in (
+        {"document_id": f"jira:{jira_key}"},
         {"document_id": f"jira_issue:{jira_key}"},
         {"key": jira_key},
         {"related_jira": jira_key},
@@ -147,6 +167,7 @@ def refresh_jira_key(jira_key: str, collection_name: str = "default") -> int:
     collection = _get_collection(collection_name)
     ids = []
     for where in (
+        {"document_id": f"jira:{jira_key}"},
         {"document_id": f"jira_issue:{jira_key}"},
         {"key": jira_key},
         {"related_jira": jira_key},
@@ -201,5 +222,5 @@ def _format_result(
         "document_id": metadata.get("document_id", ""),
         "chunk_id": chunk_id,
         "metadata": metadata,
-        "source_url": metadata.get("url", ""),
+        "source_url": metadata.get("source_url") or metadata.get("url", ""),
     }

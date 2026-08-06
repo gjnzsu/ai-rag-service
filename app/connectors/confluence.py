@@ -29,12 +29,13 @@ class ConfluenceConnector(BaseConnector):
             by = version.get("by") or {}
             documents.append(
                 Document(
-                    id=self.make_id("confluence", page["id"]),
+                    id=f"confluence:{page['id']}",
                     content=plain,
                     source_type="confluence",
                     title=page.get("title", ""),
                     metadata={
                         "page_id": page["id"],
+                        "source_url": f"{settings.confluence_url.rstrip('/')}/pages/{page['id']}",
                         "space_key": space_key,
                         "author": by.get("displayName", ""),
                         "last_modified": version.get("when", ""),

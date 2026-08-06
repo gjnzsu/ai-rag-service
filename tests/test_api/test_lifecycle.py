@@ -3,9 +3,24 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.api.lifecycle import build_document_metadata, generate_document_id
+from app.config import settings
 
 
 client = TestClient(app)
+
+
+def test_lifecycle_generated_ids_and_urls_are_canonical_and_server_owned(monkeypatch):
+    monkeypatch.setattr(settings, "jira_url", "https://jira.example/")
+    monkeypatch.setattr(settings, "confluence_url", "https://wiki.example/")
+
+    jira_metadata = {"type": "jira_issue", "key": "PROJ-7", "url": "https://untrusted.example"}
+    confluence_metadata = {"type": "confluence_page", "page_id": "12345"}
+
+    assert generate_document_id(jira_metadata, "body") == "jira:PROJ-7"
+    assert generate_document_id(confluence_metadata, "body") == "confluence:12345"
+    built = build_document_metadata(document_id="jira:PROJ-7", content="body", metadata=jira_metadata)
+    assert built["source_url"] == "https://jira.example/browse/PROJ-7"
 
 
 def _fake_embeddings(count: int):

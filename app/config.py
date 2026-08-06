@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     jira_api_token: str = ""
     confluence_url: str = ""
     chroma_persist_dir: str = "./chroma_db"
+    lexical_db_path: str = "./lexical.db"
+    lexical_issue_key_weight: float = 10.0
+    lexical_title_weight: float = 5.0
+    lexical_content_weight: float = 1.0
     chunk_size: int = 512
     chunk_overlap: int = 50
     top_k: int = 5

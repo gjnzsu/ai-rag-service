@@ -35,6 +35,7 @@ def patch_openai():
 
 def test_rulebook_rag_flow(tmp_path, monkeypatch):
     monkeypatch.setattr("app.pipeline.store.settings.chroma_persist_dir", str(tmp_path))
+    monkeypatch.setattr("app.pipeline.store.settings.lexical_db_path", str(tmp_path / "lexical.db"))
     monkeypatch.setattr("app.rag.query_engine.settings.chroma_persist_dir", str(tmp_path))
 
     # 1. Ingest

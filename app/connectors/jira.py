@@ -31,12 +31,14 @@ class JiraConnector(BaseConnector):
                 content += "\n\nComments:\n" + "\n".join(comment_lines)
             documents.append(
                 Document(
-                    id=self.make_id("jira", issue["key"]),
+                    id=f"jira:{issue['key']}",
                     content=content,
                     source_type="jira",
                     title=f"[{issue['key']}] {summary}",
                     metadata={
                         "issue_key": issue["key"],
+                        "key": issue["key"],
+                        "source_url": f"{settings.jira_url.rstrip('/')}/browse/{issue['key']}",
                         "status": fields.get("status", {}).get("name", ""),
                         "priority": fields.get("priority", {}).get("name", "") if fields.get("priority") else "",
                         "reporter": fields.get("reporter", {}).get("displayName", "") if fields.get("reporter") else "",

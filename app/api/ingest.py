@@ -9,10 +9,7 @@ from app.connectors.confluence import ConfluenceConnector
 from app.connectors.fx import FXConnector
 from app.connectors.jira import JiraConnector
 from app.connectors.pdf import PDFConnector
-from app.pipeline.chunker import chunk_documents
-from app.pipeline.embedder import embed_chunks
 from app.pipeline.indexer import index_documents
-from app.pipeline.store import upsert_chunks
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -81,13 +78,9 @@ def ingest_jira(request: JiraIngestRequest):
         logger.info("jira_fetched", project=request.project_key, issues=len(documents))
         if not documents:
             return JiraIngestResponse(ingested_chunks=0, issues_fetched=0)
-        chunks = chunk_documents(documents)
-        if not chunks:
-            return JiraIngestResponse(ingested_chunks=0, issues_fetched=len(documents))
-        embeddings = embed_chunks(chunks)
-        upsert_chunks(chunks, embeddings, collection_name=request.collection)
+        result = index_documents(documents, collection_name=request.collection)
         logger.info("jira_ingested", project=request.project_key, issues=len(documents))
-        return JiraIngestResponse(ingested_chunks=len(chunks), issues_fetched=len(documents))
+        return JiraIngestResponse(ingested_chunks=result["chunk_count"], issues_fetched=len(documents))
     except Exception as e:
         logger.error("jira_ingest_error", error=str(e))
         raise HTTPException(status_code=502, detail=str(e))
@@ -114,11 +107,9 @@ def ingest_confluence(request: ConfluenceIngestRequest):
             space_key=request.space_key,
             max_pages=request.max_pages,
         )
-        chunks = chunk_documents(documents)
-        embeddings = embed_chunks(chunks)
-        upsert_chunks(chunks, embeddings, collection_name=request.collection)
+        result = index_documents(documents, collection_name=request.collection)
         logger.info("confluence_ingested", space=request.space_key, pages=len(documents))
-        return ConfluenceIngestResponse(ingested_chunks=len(chunks), pages_fetched=len(documents))
+        return ConfluenceIngestResponse(ingested_chunks=result["chunk_count"], pages_fetched=len(documents))
     except Exception as e:
         logger.error("confluence_ingest_error", error=str(e))
         raise HTTPException(status_code=502, detail=str(e))
@@ -145,12 +136,10 @@ def ingest_fx(request: FXIngestRequest):
             base_currency=request.base_currency,
             date_str=request.date_str,
         )
-        chunks = chunk_documents(documents)
-        embeddings = embed_chunks(chunks)
-        upsert_chunks(chunks, embeddings, collection_name=request.collection)
+        result = index_documents(documents, collection_name=request.collection)
         rates_count = int(documents[0].metadata.get("rates_count", 0))
-        logger.info("fx_ingested", currency=request.base_currency, chunks=len(chunks))
-        return FXIngestResponse(ingested_chunks=len(chunks), rates_count=rates_count)
+        logger.info("fx_ingested", currency=request.base_currency, chunks=result["chunk_count"])
+        return FXIngestResponse(ingested_chunks=result["chunk_count"], rates_count=rates_count)
     except Exception as e:
         logger.error("fx_ingest_error", error=str(e))
         raise HTTPException(status_code=502, detail=str(e))

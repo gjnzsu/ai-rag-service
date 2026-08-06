@@ -225,6 +225,8 @@ def build_document_metadata(
     now = datetime.now(timezone.utc).isoformat()
     return {
         **metadata,
+        "issue_key": metadata.get("issue_key") or metadata.get("key", ""),
+        "source_url": _trusted_source_url(metadata),
         "document_id": document_id,
         "content_hash": hashlib.sha256(content.encode("utf-8")).hexdigest(),
         "ingested_at": now,
@@ -237,15 +239,24 @@ def build_document_metadata(
 def generate_document_id(metadata: dict[str, Any], content: str) -> str:
     doc_type = str(metadata.get("type", "document"))
     if doc_type == "jira_issue" and metadata.get("key"):
-        return f"jira_issue:{metadata['key']}"
+        return f"jira:{metadata['key']}"
     if doc_type == "confluence_page":
         if metadata.get("page_id"):
-            return f"confluence_page:{metadata['page_id']}"
+            return f"confluence:{metadata['page_id']}"
         if metadata.get("url"):
-            return f"confluence_page:{_short_hash(str(metadata['url']))}"
+            return f"confluence:{_short_hash(str(metadata['url']))}"
     title = str(metadata.get("title", "untitled"))
     return f"{doc_type}:{_short_hash(f'{title}:{content}')}"
 
 
 def _short_hash(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
+
+
+def _trusted_source_url(metadata: dict[str, Any]) -> str:
+    doc_type = str(metadata.get("type", ""))
+    if doc_type == "jira_issue" and metadata.get("key"):
+        return f"{settings.jira_url.rstrip('/')}/browse/{metadata['key']}"
+    if doc_type == "confluence_page" and metadata.get("page_id"):
+        return f"{settings.confluence_url.rstrip('/')}/pages/{metadata['page_id']}"
+    return ""

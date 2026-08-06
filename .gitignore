@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 .env
 chroma_db/
+lexical.db
 .pytest_cache/
 *.egg-info/
 dist/

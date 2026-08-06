@@ -20,12 +20,17 @@ def chunk_documents(
         texts = splitter.split_text(doc.content)
         for i, text in enumerate(texts):
             flat_meta = {k: str(v) for k, v in doc.metadata.items()}
+            chunk_id = f"{doc.id}:chunk:{i}"
             chunks.append({
-                "id": f"{doc.id}_chunk_{i}",
+                "id": chunk_id,
+                "chunk_id": chunk_id,
+                "chunk_index": i,
                 "content": text,
                 "document_id": doc.id,
                 "source_type": doc.source_type,
+                "source_url": str(doc.metadata.get("source_url", "")),
                 "title": doc.title,
+                "metadata": dict(doc.metadata),
                 **flat_meta,
             })
     return chunks

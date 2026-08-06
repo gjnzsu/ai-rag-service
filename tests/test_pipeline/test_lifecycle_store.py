@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import MagicMock
 
 from app.pipeline.store import (
     delete_document,
@@ -13,6 +14,7 @@ from app.pipeline.store import (
 @pytest.fixture
 def tmp_chroma(tmp_path, monkeypatch):
     monkeypatch.setattr("app.pipeline.store.settings.chroma_persist_dir", str(tmp_path))
+    monkeypatch.setattr("app.pipeline.store.settings.lexical_db_path", str(tmp_path / "lexical.db"))
     return str(tmp_path)
 
 
@@ -145,3 +147,25 @@ def test_delete_and_refresh_remove_matching_chunks(tmp_chroma):
     assert get_document_chunks("confluence_page:abc", "lifecycle") == []
     assert refresh_jira_key("PROJ-123", "lifecycle") == 1
     assert get_jira_key_context("PROJ-123", "lifecycle") == []
+
+
+def test_delete_document_removes_vector_and_lexical_chunks(tmp_chroma, monkeypatch):
+    lexical = MagicMock()
+    lexical.delete_document.return_value = True
+    monkeypatch.setattr("app.pipeline.store.get_lexical_index", lambda: lexical)
+
+    upsert_document(
+        [{
+            "id": "jira:PROJ-7:chunk:0",
+            "content": "login audit",
+            "document_id": "jira:PROJ-7",
+            "chunk_id": "jira:PROJ-7:chunk:0",
+            "source_type": "jira",
+            "title": "Login",
+        }],
+        [[1.0] + [0.0] * 1535],
+        "alpha",
+    )
+
+    assert delete_document("jira:PROJ-7", "alpha") is True
+    lexical.delete_document.assert_called_once_with("jira:PROJ-7", "alpha")

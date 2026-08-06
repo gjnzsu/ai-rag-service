@@ -54,10 +54,9 @@ def test_health():
     assert response.json()["status"] == "ok"
 
 
+@patch("app.api.ingest.index_documents")
 @patch("app.api.ingest.JiraConnector")
-@patch("app.api.ingest.embed_chunks")
-@patch("app.api.ingest.upsert_chunks")
-def test_ingest_jira_success(mock_upsert, mock_embed, mock_jira_cls):
+def test_ingest_jira_success(mock_jira_cls, mock_index):
     from app.connectors.base import Document
     mock_instance = MagicMock()
     mock_jira_cls.return_value = mock_instance
@@ -65,20 +64,19 @@ def test_ingest_jira_success(mock_upsert, mock_embed, mock_jira_cls):
         Document(id="j1", content="Issue content", source_type="jira",
                  title="[PROJ-1] Bug", metadata={"issue_key": "PROJ-1"})
     ]
-    mock_embed.return_value = [[0.1] * 1536]
-    mock_upsert.return_value = None
+    mock_index.return_value = {"document_id": "jira:PROJ-1", "chunk_count": 1, "created": True}
 
     response = client.post("/ingest/jira", json={"project_key": "PROJ"})
     assert response.status_code == 200
     data = response.json()
     assert data["ingested_chunks"] >= 1
     assert data["issues_fetched"] == 1
+    assert mock_index.call_args.kwargs["collection_name"] == "default"
 
 
+@patch("app.api.ingest.index_documents")
 @patch("app.api.ingest.ConfluenceConnector")
-@patch("app.api.ingest.embed_chunks")
-@patch("app.api.ingest.upsert_chunks")
-def test_ingest_confluence_success(mock_upsert, mock_embed, mock_conf_cls):
+def test_ingest_confluence_success(mock_conf_cls, mock_index):
     from app.connectors.base import Document
     mock_instance = MagicMock()
     mock_conf_cls.return_value = mock_instance
@@ -86,24 +84,23 @@ def test_ingest_confluence_success(mock_upsert, mock_embed, mock_conf_cls):
         Document(id="c1", content="Page content", source_type="confluence",
                  title="My Page", metadata={"page_id": "123", "space_key": "TEAM"})
     ]
-    mock_embed.return_value = [[0.1] * 1536]
-    mock_upsert.return_value = None
+    mock_index.return_value = {"document_id": "confluence:123", "chunk_count": 1, "created": True}
 
     response = client.post("/ingest/confluence", json={"space_key": "TEAM"})
     assert response.status_code == 200
     data = response.json()
     assert data["ingested_chunks"] >= 1
     assert data["pages_fetched"] == 1
+    assert mock_index.call_args.kwargs["collection_name"] == "default"
 
 
-@patch("app.api.ingest.embed_chunks")
-@patch("app.api.ingest.upsert_chunks")
-def test_ingest_fx_success(mock_upsert, mock_embed):
-    mock_embed.return_value = [[0.1] * 1536]
-    mock_upsert.return_value = None
+@patch("app.api.ingest.index_documents")
+def test_ingest_fx_success(mock_index):
+    mock_index.return_value = {"document_id": "fx:today", "chunk_count": 1, "created": True}
 
     response = client.post("/ingest/fx", json={"base_currency": "USD"})
     assert response.status_code == 200
     data = response.json()
     assert data["ingested_chunks"] >= 1
     assert data["rates_count"] > 0
+    assert mock_index.call_args.kwargs["collection_name"] == "default"
