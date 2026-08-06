@@ -7,6 +7,7 @@ import pytest
 from app.evaluation.models import EvaluationCase, QueryType, RankedEvaluationResult
 from app.evaluation.runner import (
     EvaluationRunner,
+    _citation_label_level,
     _production_hybrid_adapter,
     _production_reranker_adapter,
     main,
@@ -179,6 +180,7 @@ def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation
     unmeasured = unmeasured_report["configurations"]["B"]
     assert unmeasured["questions"][0]["metrics"]["citation_validity"] is None
     assert unmeasured["questions"][0]["metrics"]["abstention_accuracy"] is None
+    assert unmeasured["questions"][0]["result"]["refused"] is None
     assert unmeasured["questions"][0]["result"]["answer_latency_ms"] is None
     assert unmeasured["aggregate"]["token_usage"]["input"] is None
 
@@ -227,14 +229,44 @@ def test_live_adapters_use_production_reranker_signature_and_reject_degradation(
     calls = []
 
     class ProductionReranker:
+        last_status = "ok"
+
         def rerank(self, query, candidates, top_k):
             calls.append((query, [candidate.chunk_id for candidate in candidates], top_k))
             return candidates
 
     case = EvaluationCase(question="production question", query_type="exact_fact")
-    adapter = _production_reranker_adapter(ProductionReranker(), top_k=7)
-    assert adapter(case, [_candidate("doc-1", "chunk-1")])[0].chunk_id == "chunk-1"
-    assert calls == [("production question", ["chunk-1"], 7)]
+    candidates = [_candidate(f"doc-{index}", f"chunk-{index}") for index in range(20)]
+    adapter = _production_reranker_adapter(ProductionReranker(), top_k=20)
+    assert [item.chunk_id for item in adapter(case, candidates)] == [item.chunk_id for item in candidates]
+    assert calls == [("production question", [item.chunk_id for item in candidates], 20)]
+
+    class FallbackReranker:
+        last_status = "fallback"
+
+        def rerank(self, query, candidates, top_k):
+            return candidates
+
+    with pytest.raises(RuntimeError):
+        _production_reranker_adapter(FallbackReranker(), top_k=20)(case, candidates)
+
+    healthy_calls = []
+
+    class HealthyHybrid:
+        def retrieve(self, *args, **kwargs):
+            healthy_calls.append((args, kwargs))
+            return SimpleNamespace(
+                candidates=candidates,
+                failures=[],
+                retrieval_mode="hybrid",
+                diagnostics={
+                    "configured_retrievers": ["vector", "lexical"],
+                    "successful_retrievers": ["vector", "lexical"],
+                },
+            )
+
+    assert len(_production_hybrid_adapter(HealthyHybrid(), top_k=20)(case)) == 20
+    assert healthy_calls == [(("production question",), {"collection_name": "default", "top_k": 20})]
 
     degraded = SimpleNamespace(
         retrieve=lambda *args, **kwargs: SimpleNamespace(
@@ -245,3 +277,10 @@ def test_live_adapters_use_production_reranker_signature_and_reject_degradation(
     )
     with pytest.raises(RuntimeError):
         _production_hybrid_adapter(degraded, top_k=7)(case)
+
+    citation_result = RankedEvaluationResult(
+        selected_document_ids=("doc-1",),
+        selected_chunk_ids=("chunk-1",),
+        cited_document_ids=("doc-1",),
+    )
+    assert _citation_label_level(citation_result) == (("doc-1",), ("doc-1",))

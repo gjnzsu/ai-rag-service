@@ -32,6 +32,7 @@ GroundedAnswerEvaluator = Callable[
 ]
 
 _CONFIGURATIONS = ("A", "B", "C1", "C2")
+_EVALUATION_TOP_K = 20
 _SAFE_ERROR_TYPES = frozenset({
     "AttributeError",
     "ImportError",
@@ -244,7 +245,11 @@ def _case_metrics(
             if result.human_citation_correctness is None
             else (result.human_citation_correctness,)
         ),
-        "abstention_accuracy": abstention_accuracy(case.should_abstain, result.refused),
+        "abstention_accuracy": (
+            abstention_accuracy(case.should_abstain, result.refused)
+            if result.refused is not None
+            else None
+        ),
     })
     return metrics
 
@@ -258,7 +263,13 @@ def _retrieval_label_level(
 
 
 def _citation_label_level(result: RankedEvaluationResult) -> tuple[Sequence[str], Sequence[str]]:
-    if result.cited_chunk_ids or result.selected_chunk_ids:
+    if result.cited_chunk_ids and result.selected_chunk_ids:
+        return result.cited_chunk_ids, result.selected_chunk_ids
+    if result.cited_document_ids:
+        return result.cited_document_ids, result.selected_document_ids
+    if result.cited_chunk_ids:
+        return result.cited_chunk_ids, result.selected_chunk_ids
+    if result.selected_chunk_ids:
         return result.cited_chunk_ids, result.selected_chunk_ids
     return result.cited_document_ids, result.selected_document_ids
 
@@ -453,7 +464,10 @@ def main(argv: Sequence[str] | None = None, *, runner_factory: Callable[[], Eval
 def _production_reranker_adapter(reranker: Any, *, top_k: int) -> CandidateReranker:
     """Adapt production rerankers to the injected evaluation callable contract."""
     def evaluate(case: EvaluationCase, candidates: list[RetrievalCandidate]) -> Sequence[RetrievalCandidate]:
-        return reranker.rerank(case.question, candidates, top_k)
+        ranked = reranker.rerank(case.question, candidates, top_k)
+        if getattr(reranker, "last_status", "ok") != "ok":
+            raise RuntimeError("Evaluation reranker fell back")
+        return ranked
 
     return evaluate
 
@@ -494,6 +508,7 @@ def _default_runner() -> EvaluationRunner:
         mode="hybrid",
         reranker=NoOpReranker(),
         exact_lookup=lambda _key, _collection, _filters: [],
+        final_top_k=_EVALUATION_TOP_K,
     )
     gpt5 = build_reranker("openai")
     qwen = build_reranker("qwen_local")
@@ -524,9 +539,9 @@ def _default_runner() -> EvaluationRunner:
 
     return EvaluationRunner(
         vector_retrieval,
-        _production_hybrid_adapter(hybrid, top_k=settings.retrieval_final_top_k),
-        _production_reranker_adapter(gpt5, top_k=settings.retrieval_final_top_k),
-        _production_reranker_adapter(qwen, top_k=settings.retrieval_final_top_k),
+        _production_hybrid_adapter(hybrid, top_k=_EVALUATION_TOP_K),
+        _production_reranker_adapter(gpt5, top_k=_EVALUATION_TOP_K),
+        _production_reranker_adapter(qwen, top_k=_EVALUATION_TOP_K),
         grounded_answer_evaluator=evaluate,
     )
 

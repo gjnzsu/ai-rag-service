@@ -55,7 +55,7 @@ class RankedEvaluationResult(BaseModel):
     selected_chunk_ids: tuple[str, ...] = Field(default_factory=tuple)
     cited_document_ids: tuple[str, ...] = Field(default_factory=tuple)
     cited_chunk_ids: tuple[str, ...] = Field(default_factory=tuple)
-    refused: bool = False
+    refused: bool | None = None
     latency_ms: float = 0.0
     answer_latency_ms: float | None = None
     input_tokens: int | None = None

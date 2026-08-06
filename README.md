@@ -77,7 +77,8 @@ For each question, C1 and C2 receive independent deep copies of the identical
 B ordering, so neither reranker can alter the other's input. Evaluation B
 disables supplementary exact Jira lookup and marks a case failed if either
 primary backend degrades, rather than misreporting a single-backend result as
-hybrid.
+hybrid. A, B, C1, and C2 retain/rank a comparable top-20 pool, so Recall@20 is
+evaluated at the same depth for every configuration.
 
 `evaluation/cases.example.jsonl` contains only synthetic placeholder cases
 (exact fact, cross-document, hard negative, and unanswerable). It is a schema
