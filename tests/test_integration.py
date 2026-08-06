@@ -5,10 +5,106 @@ from unittest.mock import MagicMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app
+from app.grounding.models import GeneratedAnswer
+from app.main import app, create_app
 from app.rag import query_engine
+from app.rag.query_engine import QueryPipeline
+from app.retrieval.models import RetrievalCandidate
+from app.retrieval.pipeline import RetrievalResult
 
 client = TestClient(app)
+
+
+class _InjectedRetrieval:
+    def __init__(self, candidate):
+        self.candidate = candidate
+        self.calls = []
+
+    def retrieve(self, query, collection_name="default", top_k=None, filters=None):
+        self.calls.append((query, collection_name, top_k, filters))
+        return RetrievalResult(
+            candidates=[self.candidate],
+            retrieval_mode="hybrid",
+            failures=["lexical"],
+            diagnostics={
+                "reranker": {"provider": "none", "status": "disabled"},
+                "private": {"question": query, "content": self.candidate.content},
+            },
+        )
+
+
+class _InjectedGenerator:
+    model = "injected-model"
+
+    def __init__(self):
+        self.calls = []
+
+    def generate(self, question, evidence):
+        self.calls.append((question, evidence))
+        return GeneratedAnswer(answer="Grounded answer [E1]", citation_ids=["E1"])
+
+
+def test_retrieve_and_query_share_injected_application_pipeline_but_only_query_generates(
+    monkeypatch,
+):
+    candidate = RetrievalCandidate(
+        content="Trusted integration passage",
+        document_id="document-1",
+        chunk_id="chunk-1",
+        source_type="pdf",
+        source_url="https://trusted.example/document-1",
+        title="Integration source",
+        metadata={"document_type": "guide"},
+        score=0.9,
+        retrieval_methods=["vector"],
+        method_scores={"vector": 0.9},
+        rank_by_method={"vector": 1},
+        fused_rank=1,
+    )
+    retrieval = _InjectedRetrieval(candidate)
+    generator = _InjectedGenerator()
+    shared = QueryPipeline(
+        retrieval_pipeline=retrieval,
+        generator=generator,
+        model=generator.model,
+        evidence_top_k=5,
+    )
+    constructions = []
+    query_engine.close_default_query_pipeline()
+
+    def build_pipeline():
+        constructions.append(True)
+        return shared
+
+    monkeypatch.setattr(query_engine, "QueryPipeline", build_pipeline)
+
+    with TestClient(create_app()) as routed_client:
+        retrieve_response = routed_client.post("/retrieve", json={
+            "query": "integration question",
+            "collection": "alpha",
+            "top_k": 3,
+            "filters": {"document_type": "guide"},
+        })
+        assert retrieve_response.status_code == 200
+        assert retrieve_response.json()["results"][0]["source_url"] == candidate.source_url
+        assert generator.calls == []
+
+        query_response = routed_client.post("/query", json={
+            "question": "integration question",
+            "collection": "alpha",
+            "top_k": 3,
+            "document_type": "guide",
+        })
+        assert query_response.status_code == 200
+        assert query_response.json()["citations"][0]["chunk_id"] == candidate.chunk_id
+
+    assert constructions == [True]
+    assert retrieval.calls == [
+        ("integration question", "alpha", 3, {"document_type": "guide"}),
+        ("integration question", "alpha", 3, {"document_type": "guide"}),
+    ]
+    assert len(generator.calls) == 1
+    assert shared._closed is True
 
 
 @pytest.fixture(autouse=True)

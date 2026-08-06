@@ -147,8 +147,7 @@ class HybridRetrievalPipeline:
                 logger.warning(
                     "retrieval_path_unavailable",
                     retrieval_method=name,
-                    collection_name=collection_name,
-                    error_type=type(error).__name__,
+                    error_type=_error_type(error),
                 )
                 continue
             successful.append(name)
@@ -241,8 +240,7 @@ class HybridRetrievalPipeline:
                 failure_count += 1
                 logger.warning(
                     "exact_jira_lookup_unavailable",
-                    collection_name=collection_name,
-                    error_type=type(error).__name__,
+                    error_type=_error_type(error),
                 )
                 continue
             for record in records:

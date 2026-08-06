@@ -1,15 +1,275 @@
+from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app, create_app
 from app.rag import query_engine
-from app.api.lifecycle import build_document_metadata, generate_document_id
+from app.api import lifecycle
+from app.api.lifecycle import (
+    RetrievalResult,
+    build_document_metadata,
+    generate_document_id,
+)
 from app.config import settings
 from app.pipeline.store import _format_result
+from app.retrieval.models import RetrievalCandidate
+from app.retrieval.pipeline import HybridRetrievalPipeline
 
 
 client = TestClient(app)
+
+
+def test_retrieval_result_preserves_legacy_dictionary_contract():
+    legacy = {
+        "content": "Legacy vector passage",
+        "score": 0.91,
+        "document_id": "legacy-document",
+        "chunk_id": "legacy-chunk",
+        "metadata": {"type": "pdf"},
+    }
+
+    serialized = RetrievalResult.model_validate(legacy).model_dump()
+
+    assert {key: serialized[key] for key in legacy} == legacy
+    assert serialized["retrieval_methods"] == []
+    assert serialized["fused_rank"] is None
+    assert serialized["rerank_score"] is None
+    assert serialized["source_url"] == ""
+
+
+def test_retrieval_result_exposes_additive_hybrid_fields():
+    result = RetrievalResult.model_validate({
+        "content": "Canonical passage",
+        "score": 0.82,
+        "document_id": "jira:PROJ-7",
+        "chunk_id": "jira:PROJ-7:chunk:1",
+        "metadata": {"type": "jira_issue"},
+        "retrieval_methods": ["vector", "bm25"],
+        "fused_rank": 1,
+        "rerank_score": 0.97,
+        "source_url": "https://jira.example/browse/PROJ-7",
+    })
+
+    assert result.retrieval_methods == ["vector", "bm25"]
+    assert result.fused_rank == 1
+    assert result.rerank_score == 0.97
+    assert result.source_url == "https://jira.example/browse/PROJ-7"
+
+
+def test_retrieval_result_mutable_defaults_are_fresh():
+    first = RetrievalResult(
+        content="first", score=1.0, document_id="d1", chunk_id="c1", metadata={}
+    )
+    second = RetrievalResult(
+        content="second", score=1.0, document_id="d2", chunk_id="c2", metadata={}
+    )
+
+    first.retrieval_methods.append("vector")
+
+    assert second.retrieval_methods == []
+
+
+class _Retriever:
+    def __init__(self, candidates=None, error=None):
+        self.candidates = candidates if candidates is not None else []
+        self.error = error
+        self.calls = []
+
+    def search(self, query, top_k, filters, collection_name):
+        self.calls.append((query, top_k, filters, collection_name))
+        if self.error is not None:
+            raise self.error
+        return self.candidates
+
+
+def _candidate(chunk_id, method):
+    return RetrievalCandidate(
+        content=f"Canonical {method} passage",
+        document_id=f"document-{chunk_id}",
+        chunk_id=chunk_id,
+        source_type="pdf",
+        source_url=f"https://trusted.example/{chunk_id}",
+        title=f"Title {chunk_id}",
+        metadata={"document_type": "guide"},
+        score=0.8,
+        retrieval_methods=[method],
+        method_scores={method: 0.8},
+        rank_by_method={method: 1},
+    )
+
+
+def _install_retrieval_pipeline(monkeypatch, vector, lexical):
+    retrieval_pipeline = HybridRetrievalPipeline(
+        vector,
+        lexical,
+        mode="hybrid",
+        exact_lookup=lambda *args: [],
+        final_top_k=20,
+    )
+    application_pipeline = SimpleNamespace(
+        retrieval_pipeline=retrieval_pipeline,
+        retrieve=retrieval_pipeline.retrieve,
+    )
+    monkeypatch.setattr(
+        query_engine,
+        "get_default_query_pipeline",
+        lambda: application_pipeline,
+    )
+    monkeypatch.setattr(
+        lifecycle,
+        "embed_text",
+        lambda _query: pytest.fail("/retrieve must not embed in the API layer"),
+    )
+    return application_pipeline
+
+
+@pytest.mark.parametrize(
+    ("vector", "lexical", "expected_method"),
+    [
+        (_Retriever([_candidate("vector", "vector")]), _Retriever(error=RuntimeError("down")), "vector"),
+        (_Retriever(error=RuntimeError("down")), _Retriever([_candidate("bm25", "bm25")]), "bm25"),
+        (_Retriever([]), _Retriever([_candidate("nonempty", "bm25")]), "bm25"),
+    ],
+)
+def test_retrieve_succeeds_with_degraded_or_empty_primary_path(
+    monkeypatch, vector, lexical, expected_method
+):
+    _install_retrieval_pipeline(monkeypatch, vector, lexical)
+
+    response = client.post("/retrieve", json={"query": "safe query"})
+
+    assert response.status_code == 200
+    assert response.json()["results"][0]["retrieval_methods"] == [expected_method]
+
+
+def test_retrieve_uses_application_pipeline_without_generation_and_propagates_inputs(monkeypatch):
+    calls = []
+
+    class ApplicationPipeline:
+        def retrieve(self, question, collection_name="default", top_k=None, filters=None):
+            calls.append((question, collection_name, top_k, filters))
+            return SimpleNamespace(candidates=[_candidate("shared", "vector")])
+
+        def query(self, *args, **kwargs):
+            pytest.fail("/retrieve must not generate or validate an answer")
+
+    shared = ApplicationPipeline()
+    monkeypatch.setattr(query_engine, "get_default_query_pipeline", lambda: shared)
+    monkeypatch.setattr(
+        lifecycle,
+        "embed_text",
+        lambda _query: pytest.fail("/retrieve must not embed in the API layer"),
+    )
+
+    response = client.post("/retrieve", json={
+        "query": "project status",
+        "collection": "alpha",
+        "top_k": 1,
+        "filters": {"document_type": "guide"},
+    })
+
+    assert response.status_code == 200
+    assert calls == [("project status", "alpha", 1, {"document_type": "guide"})]
+    assert response.json()["results"][0]["source_url"] == "https://trusted.example/shared"
+
+
+def test_retrieve_accepts_legacy_top_k_above_design_cap(monkeypatch):
+    calls = []
+
+    class ApplicationPipeline:
+        def retrieve(self, question, collection_name="default", top_k=None, filters=None):
+            calls.append(top_k)
+            return SimpleNamespace(candidates=[])
+
+    monkeypatch.setattr(
+        query_engine,
+        "get_default_query_pipeline",
+        lambda: ApplicationPipeline(),
+    )
+
+    response = client.post("/retrieve", json={"query": "legacy", "top_k": 50})
+
+    assert response.status_code == 200
+    assert response.json() == {"results": []}
+    assert calls == [20]
+
+
+def test_retrieve_returns_502_when_both_primary_retrievers_fail_without_leaking(monkeypatch):
+    secret = "private question and credential"
+    _install_retrieval_pipeline(
+        monkeypatch,
+        _Retriever(error=RuntimeError(secret)),
+        _Retriever(error=RuntimeError(secret)),
+    )
+    logged = []
+    monkeypatch.setattr(
+        lifecycle,
+        "logger",
+        SimpleNamespace(error=lambda event, **values: logged.append((event, values))),
+    )
+
+    response = client.post("/retrieve", json={"query": secret})
+
+    assert response.status_code == 502
+    assert secret not in response.text
+    assert secret not in repr(logged)
+    assert logged == [("retrieve_error", {"error_type": "RetrievalUnavailableError"})]
+
+
+def test_retrieve_error_log_rejects_hostile_exception_class_name(monkeypatch):
+    hostile_error = type("Credential_secret_token", (Exception,), {})
+    monkeypatch.setattr(
+        query_engine,
+        "retrieve",
+        lambda *args, **kwargs: (_ for _ in ()).throw(hostile_error("private")),
+    )
+    logged = []
+    monkeypatch.setattr(
+        lifecycle,
+        "logger",
+        SimpleNamespace(error=lambda event, **values: logged.append((event, values))),
+    )
+
+    response = client.post("/retrieve", json={"query": "safe"})
+
+    assert response.status_code == 502
+    assert logged == [("retrieve_error", {"error_type": "Exception"})]
+    assert "secret" not in repr(logged).lower()
+
+
+def test_retrieve_backend_logs_do_not_include_caller_controlled_collection(monkeypatch):
+    secret = "https://private.example/credential"
+    _install_retrieval_pipeline(
+        monkeypatch,
+        _Retriever(error=RuntimeError("private backend message")),
+        _Retriever([]),
+    )
+    logged = []
+    monkeypatch.setattr(
+        "app.retrieval.pipeline.logger",
+        SimpleNamespace(warning=lambda event, **values: logged.append((event, values))),
+    )
+
+    response = client.post("/retrieve", json={"query": "safe", "collection": secret})
+
+    assert response.status_code == 200
+    assert secret not in repr(logged)
+    assert "private backend message" not in repr(logged)
+    assert logged == [(
+        "retrieval_path_unavailable",
+        {"retrieval_method": "vector", "error_type": "RuntimeError"},
+    )]
+
+
+def test_retrieve_returns_empty_200_when_retrievers_have_no_results(monkeypatch):
+    _install_retrieval_pipeline(monkeypatch, _Retriever([]), _Retriever([]))
+
+    response = client.post("/retrieve", json={"query": "no match"})
+
+    assert response.status_code == 200
+    assert response.json() == {"results": []}
 
 
 def test_application_lifespan_closes_lazy_default_query_pipeline_once(monkeypatch):
@@ -147,24 +407,22 @@ def test_upsert_jira_document_preserves_business_metadata(mock_index):
     assert "schema_version" in documents[0].metadata
 
 
-@patch("app.api.lifecycle.query_lifecycle_collection")
-@patch("app.api.lifecycle.embed_text")
-def test_retrieve_applies_metadata_filters(mock_embed_text, mock_query):
-    mock_embed_text.return_value = [0.1] * 1536
-    mock_query.return_value = [
-        {
-            "content": "Login auditing requirement",
-            "score": 0.98,
-            "document_id": "jira_issue:PROJ-123",
-            "chunk_id": "jira_issue:PROJ-123_chunk_0",
-            "metadata": {
+@patch("app.api.lifecycle.query_engine.retrieve")
+def test_retrieve_applies_metadata_filters(mock_retrieve):
+    mock_retrieve.return_value = SimpleNamespace(candidates=[
+        RetrievalCandidate(
+            content="Login auditing requirement",
+            score=0.98,
+            document_id="jira_issue:PROJ-123",
+            chunk_id="jira_issue:PROJ-123_chunk_0",
+            metadata={
                 "type": "jira_issue",
                 "project_key": "PROJ",
-                "url": "https://jira.example/browse/PROJ-123",
             },
-            "source_url": "https://jira.example/browse/PROJ-123",
-        }
-    ]
+            source_url="https://jira.example/browse/PROJ-123",
+            retrieval_methods=["vector"],
+        )
+    ], retrieval_mode="vector")
 
     response = client.post(
         "/retrieve",
@@ -180,7 +438,7 @@ def test_retrieve_applies_metadata_filters(mock_embed_text, mock_query):
 
     assert response.status_code == 200
     assert response.json()["results"][0]["document_id"] == "jira_issue:PROJ-123"
-    assert mock_query.call_args.kwargs["filters"] == {
+    assert mock_retrieve.call_args.kwargs["filters"] == {
         "type": "jira_issue",
         "project_key": {"in": ["PROJ", "AUTH"]},
     }

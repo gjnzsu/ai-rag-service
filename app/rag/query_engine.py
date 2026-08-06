@@ -29,7 +29,7 @@ _EXACT_LOOKUP_STATUSES = frozenset({
     "ok",
     "no_match",
 })
-_SAFE_ERROR_TYPES = frozenset({
+SAFE_ERROR_TYPES = frozenset({
     "APIConnectionError",
     "APIError",
     "APITimeoutError",
@@ -47,6 +47,7 @@ _SAFE_ERROR_TYPES = frozenset({
     "NotFoundError",
     "PermissionDeniedError",
     "RateLimitError",
+    "RetrievalUnavailableError",
     "RuntimeError",
     "TimeoutError",
     "TypeError",
@@ -144,7 +145,7 @@ class QueryPipeline:
     ) -> dict[str, Any]:
         requested_top_k = settings.top_k if top_k is None else top_k
         filters = {"document_type": document_type} if document_type else None
-        retrieval = self.retrieval_pipeline.retrieve(
+        retrieval = self.retrieve(
             question,
             collection_name=collection_name,
             top_k=requested_top_k,
@@ -179,6 +180,21 @@ class QueryPipeline:
             "retrieval_metadata": _retrieval_metadata(retrieval),
         }
 
+    def retrieve(
+        self,
+        question: str,
+        collection_name: str = "default",
+        top_k: int | None = None,
+        filters: dict[str, Any] | None = None,
+    ) -> RetrievalResult:
+        """Run only the application-owned retrieval stage."""
+        return self.retrieval_pipeline.retrieve(
+            question,
+            collection_name=collection_name,
+            top_k=top_k,
+            filters=filters,
+        )
+
 
 def query(
     question: str,
@@ -191,6 +207,20 @@ def query(
         collection_name=collection_name,
         top_k=top_k,
         document_type=document_type,
+    )
+
+
+def retrieve(
+    question: str,
+    collection_name: str = "default",
+    top_k: int | None = None,
+    filters: dict[str, Any] | None = None,
+) -> RetrievalResult:
+    return get_default_query_pipeline().retrieve(
+        question,
+        collection_name=collection_name,
+        top_k=top_k,
+        filters=filters,
     )
 
 
@@ -273,10 +303,16 @@ def _safe_reranker_metadata(value: Any) -> dict[str, str]:
     if (
         status == "fallback"
         and isinstance(error_type, str)
-        and error_type in _SAFE_ERROR_TYPES
+        and error_type in SAFE_ERROR_TYPES
     ):
         result["error_type"] = error_type
     return result
+
+
+def safe_error_type(error: BaseException) -> str:
+    """Return an allowlisted exception type token for API and log boundaries."""
+    error_type = type(error).__name__
+    return error_type if error_type in SAFE_ERROR_TYPES else "Exception"
 
 
 def _safe_exact_lookup_metadata(value: Any) -> dict[str, str | int] | None:

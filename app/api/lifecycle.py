@@ -10,12 +10,13 @@ from pydantic import BaseModel, Field, model_validator
 from app.config import settings
 from app.connectors.base import Document
 from app.pipeline.indexer import index_documents
+from app.rag import query_engine
+from app.retrieval.fusion import MAX_FUSED_CANDIDATES
 from app.retrieval.models import canonical_jira_key
 from app.pipeline.store import (
     delete_document,
     get_document_chunks,
     get_jira_key_context,
-    query_lifecycle_collection,
     refresh_jira_key,
 )
 
@@ -87,6 +88,9 @@ class RetrievalResult(BaseModel):
     chunk_id: str
     metadata: dict[str, Any]
     source_url: str = ""
+    retrieval_methods: list[str] = Field(default_factory=list)
+    fused_rank: int | None = None
+    rerank_score: float | None = None
 
 
 class RetrieveResponse(BaseModel):
@@ -165,19 +169,24 @@ def upsert_lifecycle_document(request: UpsertDocumentRequest):
 @router.post("/retrieve", response_model=RetrieveResponse)
 def retrieve(request: RetrieveRequest):
     try:
-        query_embedding = embed_text(request.query)
-        results = query_lifecycle_collection(
-            query_embedding=query_embedding,
+        retrieval = query_engine.retrieve(
+            request.query,
             collection_name=request.collection,
-            top_k=request.top_k,
+            top_k=min(request.top_k, MAX_FUSED_CANDIDATES),
             filters=request.filters,
         )
+        results = [_retrieval_result(candidate) for candidate in retrieval.candidates]
+        logger.info(
+            "retrieve_served",
+            retrieval_mode=getattr(retrieval, "retrieval_mode", "unknown"),
+            result_count=len(results),
+        )
         return RetrieveResponse(results=results)
-    except ValueError as error:
-        raise HTTPException(status_code=422, detail=str(error))
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Invalid retrieval request")
     except Exception as error:
-        logger.error("retrieve_error", error=str(error))
-        raise HTTPException(status_code=502, detail=str(error))
+        logger.error("retrieve_error", error_type=query_engine.safe_error_type(error))
+        raise HTTPException(status_code=502, detail="Retrieval service unavailable")
 
 
 @router.get("/documents/{document_id}", response_model=DocumentLookupResponse)
@@ -282,3 +291,22 @@ def canonical_document_id(
     if metadata.get("type") in {"jira_issue", "confluence_page"}:
         return generate_document_id(metadata, content)
     return supplied_document_id or generate_document_id(metadata, content)
+
+
+def _retrieval_result(candidate: Any) -> RetrievalResult:
+    methods = [
+        method
+        for method in candidate.retrieval_methods
+        if method in {"exact", "vector", "bm25"}
+    ]
+    return RetrievalResult(
+        content=candidate.content,
+        score=candidate.score,
+        document_id=candidate.document_id,
+        chunk_id=candidate.chunk_id,
+        metadata=dict(candidate.metadata),
+        source_url=candidate.source_url,
+        retrieval_methods=methods,
+        fused_rank=candidate.fused_rank,
+        rerank_score=candidate.rerank_score,
+    )
