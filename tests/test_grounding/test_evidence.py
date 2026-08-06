@@ -57,6 +57,81 @@ def test_selector_deduplicates_canonical_ids_and_normalized_near_duplicates():
     assert [item.candidate.chunk_id for item in result] == ["c1", "c3"]
 
 
+def test_selector_deduplicates_genuine_order_preserving_near_copies():
+    candidates = [
+        _candidate(
+            "original",
+            document_id="d1",
+            content=(
+                "The deployment service retries failed requests three times before returning "
+                "a timeout response to callers"
+            ),
+            fused_rank=1,
+        ),
+        _candidate(
+            "near-copy",
+            document_id="d2",
+            content=(
+                "The deployment service retries failed requests three times before returning "
+                "a timeout response to external callers"
+            ),
+            fused_rank=2,
+        ),
+    ]
+
+    result = EvidenceSelector().select("deployment retries", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["original"]
+
+
+@pytest.mark.parametrize(
+    ("original", "changed"),
+    [
+        (
+            "Alice approved Bob access to the production deployment environment yesterday",
+            "Bob approved Alice access to the production deployment environment yesterday",
+        ),
+        (
+            "Acme pays Beta fifty credits after Beta ships the completed order",
+            "Beta pays Acme fifty credits after Acme ships the completed order",
+        ),
+        (
+            "The deployment service retries failed requests three times before returning a timeout",
+            "The deployment service retries failed requests five times before returning a timeout",
+        ),
+        (
+            "Alice approved the production deployment after reviewing every required safety check",
+            "Carol approved the production deployment after reviewing every required safety check",
+        ),
+        (
+            "The deployment service does retry failed requests before returning a timeout response",
+            "The deployment service does not retry failed requests before returning a timeout response",
+        ),
+        (
+            "the platform routes tenant alpha requests through the stable production service while "
+            "retaining audit records for every completed access decision and deployment operation",
+            "the platform routes tenant beta requests through the stable production service while "
+            "retaining audit records for every completed access decision and deployment operation",
+        ),
+        (
+            "the platform records alice as approver and bob as requester while retaining audit "
+            "records for every completed production access decision and deployment operation today",
+            "the platform records bob as approver and alice as requester while retaining audit "
+            "records for every completed production access decision and deployment operation today",
+        ),
+    ],
+)
+def test_selector_keeps_role_reversals_changed_entities_numbers_and_negations(original, changed):
+    candidates = [
+        _candidate("original", document_id="d1", content=original, fused_rank=1),
+        _candidate("changed", document_id="d2", content=changed, fused_rank=2),
+    ]
+
+    result = EvidenceSelector().select("deployment facts", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["original", "changed"]
+
+
 def test_selector_prefers_exact_then_reranked_then_fused_rank_without_score_arithmetic():
     candidates = [
         _candidate("fused-first", fused_rank=1),
@@ -86,6 +161,63 @@ def test_selector_promotes_document_diversity_then_fills_in_stable_rank_order():
     result = EvidenceSelector().select("compare sources", candidates, top_k=5)
 
     assert [item.candidate.chunk_id for item in result] == ["a1", "b1", "c1", "a2", "a3"]
+
+
+def test_selector_preserves_strongest_rank_order_for_ordinary_and_exact_queries():
+    candidates = [
+        _candidate("a1", document_id="a", fused_rank=1, exact_match=True),
+        _candidate("a2", document_id="a", fused_rank=2),
+        _candidate("b1", document_id="b", fused_rank=3),
+    ]
+
+    ordinary = EvidenceSelector().select("What happened in PROJ-7?", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in ordinary] == ["a1", "a2", "b1"]
+
+
+def test_selector_exact_single_document_question_preserves_rank_even_with_compare_word():
+    candidates = [
+        _candidate("a1", document_id="a", fused_rank=1, exact_match=True),
+        _candidate("a2", document_id="a", fused_rank=2),
+        _candidate("b1", document_id="b", fused_rank=3),
+    ]
+
+    result = EvidenceSelector().select(
+        "Compare the status and priority in PROJ-7",
+        candidates,
+        top_k=5,
+    )
+
+    assert [item.candidate.chunk_id for item in result] == ["a1", "a2", "b1"]
+
+
+def test_selector_cross_document_diversity_cannot_promote_rank_100_over_ranks_two_to_five():
+    candidates = [
+        *[
+            _candidate(f"a{rank}", document_id="a", fused_rank=rank)
+            for rank in range(1, 6)
+        ],
+        _candidate("unrelated", document_id="b", fused_rank=100),
+    ]
+
+    result = EvidenceSelector().select("Compare across multiple sources", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["a1", "a2", "a3", "a4", "a5"]
+
+
+def test_selector_rank_window_uses_stable_position_when_top_fused_rank_is_missing():
+    candidates = [
+        _candidate("a1", document_id="a", fused_rank=None),
+        *[
+            _candidate(f"a{rank}", document_id="a", fused_rank=rank)
+            for rank in range(2, 6)
+        ],
+        _candidate("unrelated", document_id="b", fused_rank=100),
+    ]
+
+    result = EvidenceSelector().select("Compare across documents", candidates, top_k=5)
+
+    assert [item.candidate.chunk_id for item in result] == ["a1", "a2", "a3", "a4", "a5"]
 
 
 def test_selector_uses_trusted_source_identity_when_legacy_document_id_is_empty():

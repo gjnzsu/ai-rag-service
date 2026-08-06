@@ -1,5 +1,6 @@
 import pytest
 
+from app.config import settings
 from app.retrieval.models import RetrievalCandidate
 from app.retrieval.pipeline import HybridRetrievalPipeline, RetrievalUnavailableError
 
@@ -105,6 +106,40 @@ def test_pipeline_passes_fused_top_twenty_to_successful_reranker_and_returns_con
     assert reranker.calls[0][2] == 7
     assert [item.chunk_id for item in result.candidates] == [f"v-{index}" for index in range(19, 12, -1)]
     assert result.diagnostics["reranker"] == {"provider": "custom", "status": "ok"}
+
+
+def test_pipeline_preserves_explicit_provider_for_an_injected_owned_reranker():
+    result = HybridRetrievalPipeline(
+        _Retriever([_candidate("v")]),
+        _Retriever([]),
+        reranker=_Reranker(),
+        reranker_provider="openai",
+    ).retrieve("query")
+
+    assert result.diagnostics["reranker"] == {"provider": "openai", "status": "ok"}
+
+
+def test_pipeline_passes_owned_client_dependency_through_reranker_fail_open_factory(monkeypatch):
+    client = object()
+    calls = []
+    reranker = _Reranker()
+
+    def build(provider, *, settings, client):
+        calls.append((provider, settings, client))
+        return reranker
+
+    monkeypatch.setattr("app.retrieval.pipeline.build_reranker", build)
+    pipeline = HybridRetrievalPipeline(
+        _Retriever([_candidate("v")]),
+        _Retriever([]),
+        reranker_provider="openai",
+        reranker_dependencies={"client": client},
+    )
+
+    result = pipeline.retrieve("query")
+
+    assert calls == [("openai", settings, client)]
+    assert result.diagnostics["reranker"] == {"provider": "openai", "status": "ok"}
 
 
 def test_pipeline_appends_candidates_omitted_by_a_custom_reranker_in_rrf_order():

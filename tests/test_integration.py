@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.rag import query_engine
 
 client = TestClient(app)
 
@@ -13,6 +14,7 @@ client = TestClient(app)
 @pytest.fixture(autouse=True)
 def patch_openai():
     """Replace all OpenAI calls with deterministic mocks."""
+    query_engine.close_default_query_pipeline()
     fake_embedding = [0.1] * 1536
 
     def fake_embed(**kwargs):
@@ -40,6 +42,7 @@ def patch_openai():
         mock_q.chat.completions.create.side_effect = fake_chat
         mock_q_cls.return_value = mock_q
         yield
+        query_engine.close_default_query_pipeline()
 
 
 def test_ingest_pdf_then_query(sample_pdf_path, tmp_path, monkeypatch):

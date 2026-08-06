@@ -74,6 +74,7 @@ class HybridRetrievalPipeline:
         rrf_k: int | None = None,
         reranker: Reranker | None = None,
         reranker_provider: str | None = None,
+        reranker_dependencies: dict[str, Any] | None = None,
     ) -> None:
         self.mode = settings.retrieval_mode if mode is None else mode
         if self.mode not in {"vector", "lexical", "hybrid"}:
@@ -99,11 +100,15 @@ class HybridRetrievalPipeline:
         self._reranker_construction_error_type: str | None = None
         if reranker is not None:
             self.reranker = reranker
-            self.reranker_provider = "custom"
+            self.reranker_provider = "custom" if reranker_provider is None else reranker_provider
         else:
             selected_provider = settings.reranker_provider if reranker_provider is None else reranker_provider
             try:
-                self.reranker = build_reranker(selected_provider, settings=settings)
+                self.reranker = build_reranker(
+                    selected_provider,
+                    settings=settings,
+                    **(reranker_dependencies or {}),
+                )
             except Exception as error:
                 if selected_provider not in {"none", "openai", "qwen_local"}:
                     raise

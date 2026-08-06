@@ -10,6 +10,7 @@ from app.grounding.models import (
     REFUSAL_ANSWER,
     TrustedCitation,
 )
+from app.rag import query_engine
 from app.rag.query_engine import QueryPipeline, query
 from app.retrieval.models import RetrievalCandidate
 from app.retrieval.pipeline import RetrievalResult, RetrievalUnavailableError
@@ -244,6 +245,119 @@ def test_pipeline_invalid_model_citation_cannot_create_mapping():
     assert "evil.example" not in repr(result)
 
 
+def test_retrieval_metadata_whitelists_nested_diagnostics_and_safe_tokens_only():
+    candidate = _candidate("known")
+    evidence = [_evidence(candidate)]
+    retrieval = RetrievalResult(
+        candidates=[candidate],
+        retrieval_mode="hybrid",
+        failures=["lexical", "https://private.example/query"],
+        diagnostics={
+            "reranker": {
+                "provider": "openai",
+                "status": "fallback",
+                "error_type": "TimeoutError",
+                "query": "private customer question",
+                "content": "private passage",
+                "source_url": "https://private.example/source",
+                "error_message": "secret API failure detail",
+                "private": {"nested": "must not escape"},
+            },
+            "query": "top-level private question",
+            "private": {"nested": "must not escape"},
+        },
+    )
+    pipeline = QueryPipeline(
+        retrieval_pipeline=_RetrievalPipeline(retrieval),
+        evidence_selector=_Selector(evidence),
+        generator=_Generator(GeneratedAnswer(answer="answer [E1]", citation_ids=["E1"])),
+        validator=CitationValidator(),
+    )
+
+    result = pipeline.query("private customer question")
+
+    assert result["retrieval_metadata"] == {
+        "mode": "hybrid",
+        "failures": ["lexical"],
+        "reranker": {
+            "provider": "openai",
+            "status": "fallback",
+            "error_type": "TimeoutError",
+        },
+    }
+    rendered = repr(result["retrieval_metadata"])
+    assert "private" not in rendered
+    assert "source" not in rendered
+    assert "secret" not in rendered
+
+
+def test_retrieval_metadata_drops_invalid_reranker_types_and_tokens():
+    retrieval = RetrievalResult(
+        candidates=[],
+        retrieval_mode="vector",
+        diagnostics={
+            "reranker": {
+                "provider": ["openai"],
+                "status": "fallback\nprivate",
+                "error_type": "PrivateCustomerError",
+            },
+        },
+    )
+    pipeline = QueryPipeline(
+        retrieval_pipeline=_RetrievalPipeline(retrieval),
+        evidence_selector=_Selector([]),
+        generator=_Generator(GeneratedAnswer(answer="must not run", citation_ids=[])),
+        validator=CitationValidator(),
+    )
+
+    result = pipeline.query("question")
+
+    assert result["retrieval_metadata"] == {
+        "mode": "vector",
+        "failures": [],
+        "reranker": {},
+    }
+
+
+def test_retrieval_metadata_whitelists_exact_lookup_status_and_nonnegative_counts():
+    retrieval = RetrievalResult(
+        candidates=[],
+        retrieval_mode="lexical",
+        diagnostics={
+            "exact_lookup": {
+                "status": "partial_failure",
+                "attempted_count": 3,
+                "failure_count": 1,
+                "match_count": 2,
+                "query": "private question",
+                "source_url": "https://private.example",
+                "error_message": "secret failure",
+                "nested": {"private": True},
+            },
+        },
+    )
+    pipeline = QueryPipeline(
+        retrieval_pipeline=_RetrievalPipeline(retrieval),
+        evidence_selector=_Selector([]),
+        generator=_Generator(GeneratedAnswer(answer="must not run", citation_ids=[])),
+        validator=CitationValidator(),
+    )
+
+    result = pipeline.query("question")
+
+    assert result["retrieval_metadata"] == {
+        "mode": "lexical",
+        "failures": [],
+        "reranker": {},
+        "exact_lookup": {
+            "status": "partial_failure",
+            "attempted_count": 3,
+            "failure_count": 1,
+            "match_count": 2,
+        },
+    }
+
+
 def test_default_pipeline_reuses_one_openai_client_for_vector_retrieval_and_generation(monkeypatch):
     shared_client = SimpleNamespace()
     openai_calls = []
@@ -270,6 +384,192 @@ def test_default_pipeline_reuses_one_openai_client_for_vector_retrieval_and_gene
     assert pipeline.generator._client is shared_client
 
 
+def test_public_query_lazily_reuses_one_application_owned_pipeline(monkeypatch):
+    constructions = []
+    calls = []
+
+    class Pipeline:
+        def __init__(self):
+            constructions.append(True)
+
+        def query(self, question, collection_name="default", top_k=None, document_type=None):
+            calls.append((question, collection_name, top_k, document_type))
+            return {"answer": question, "sources": [], "model": "model"}
+
+    monkeypatch.setattr(query_engine, "QueryPipeline", Pipeline)
+    monkeypatch.setattr(query_engine, "_default_query_pipeline", None, raising=False)
+
+    first = query("first")
+    second = query("second")
+
+    assert first["answer"] == "first"
+    assert second["answer"] == "second"
+    assert constructions == [True]
+    assert len(calls) == 2
+
+
+def test_owned_client_is_shared_with_vector_generation_and_openai_reranker_then_closed_once(
+    monkeypatch,
+):
+    class HttpClient:
+        def __init__(self):
+            self.close_count = 0
+
+        def close(self):
+            self.close_count += 1
+
+    class OpenAIClient:
+        def __init__(self, *, api_key, http_client):
+            self.api_key = api_key
+            self.http_client = http_client
+            self.close_count = 0
+
+        def close(self):
+            self.close_count += 1
+            self.http_client.close()
+
+    http_client = HttpClient()
+    openai_clients = []
+    vector_clients = []
+    hybrid_calls = []
+
+    def openai(**kwargs):
+        client = OpenAIClient(**kwargs)
+        openai_clients.append(client)
+        return client
+
+    class Vector:
+        def __init__(self, openai_client):
+            vector_clients.append(openai_client)
+
+    class Hybrid:
+        def __init__(self, **kwargs):
+            hybrid_calls.append(kwargs)
+
+    monkeypatch.setattr(query_engine.settings, "retrieval_mode", "hybrid")
+    monkeypatch.setattr(query_engine.settings, "reranker_provider", "openai")
+    monkeypatch.setattr(query_engine, "OpenAI", openai)
+    monkeypatch.setattr(query_engine.httpx, "Client", lambda: http_client)
+    monkeypatch.setattr(query_engine, "ChromaVectorRetriever", Vector)
+    monkeypatch.setattr(query_engine, "HybridRetrievalPipeline", Hybrid)
+
+    pipeline = QueryPipeline()
+    pipeline.close()
+    pipeline.close()
+
+    assert len(openai_clients) == 1
+    shared_client = openai_clients[0]
+    assert vector_clients == [shared_client]
+    assert pipeline.generator._client is shared_client
+    assert hybrid_calls == [{
+        "vector_retriever": hybrid_calls[0]["vector_retriever"],
+        "reranker_provider": "openai",
+        "reranker_dependencies": {"client": shared_client},
+    }]
+    assert shared_client.close_count == 1
+    assert http_client.close_count == 1
+
+
+def test_lexical_only_pipeline_owns_shared_generation_client_without_vector_construction(monkeypatch):
+    clients = []
+
+    class Client:
+        def __init__(self, **kwargs):
+            clients.append(self)
+            self.close_count = 0
+
+        def close(self):
+            self.close_count += 1
+
+    monkeypatch.setattr(query_engine.settings, "retrieval_mode", "lexical")
+    monkeypatch.setattr(query_engine.settings, "reranker_provider", "none")
+    monkeypatch.setattr(query_engine, "OpenAI", Client)
+    monkeypatch.setattr(query_engine.httpx, "Client", lambda: SimpleNamespace())
+    monkeypatch.setattr(
+        query_engine,
+        "ChromaVectorRetriever",
+        lambda **kwargs: pytest.fail("constructed vector retriever"),
+    )
+    monkeypatch.setattr(query_engine, "HybridRetrievalPipeline", lambda **kwargs: SimpleNamespace())
+
+    pipeline = QueryPipeline()
+    pipeline.close()
+    pipeline.close()
+
+    assert len(clients) == 1
+    assert pipeline.generator._client is clients[0]
+    assert clients[0].close_count == 1
+
+
+def test_pipeline_closes_newly_owned_client_when_downstream_construction_fails(monkeypatch):
+    class HttpClient:
+        def __init__(self):
+            self.close_count = 0
+
+        def close(self):
+            self.close_count += 1
+
+    class Client:
+        def __init__(self, *, api_key, http_client):
+            self.http_client = http_client
+            self.close_count = 0
+
+        def close(self):
+            self.close_count += 1
+            self.http_client.close()
+
+    http_client = HttpClient()
+    clients = []
+
+    def openai(**kwargs):
+        client = Client(**kwargs)
+        clients.append(client)
+        return client
+
+    monkeypatch.setattr(query_engine.settings, "retrieval_mode", "lexical")
+    monkeypatch.setattr(query_engine.settings, "reranker_provider", "none")
+    monkeypatch.setattr(query_engine, "OpenAI", openai)
+    monkeypatch.setattr(query_engine.httpx, "Client", lambda: http_client)
+    monkeypatch.setattr(
+        query_engine,
+        "HybridRetrievalPipeline",
+        lambda **kwargs: (_ for _ in ()).throw(RuntimeError("construction failed")),
+    )
+
+    with pytest.raises(RuntimeError, match="construction failed"):
+        QueryPipeline()
+
+    assert clients[0].close_count == 1
+    assert http_client.close_count == 1
+
+
+def test_default_pipeline_close_hook_is_idempotent_and_allows_lazy_recreation(monkeypatch):
+    instances = []
+
+    class Pipeline:
+        def __init__(self):
+            self.close_count = 0
+            instances.append(self)
+
+        def query(self, *args, **kwargs):
+            return {"answer": "ok", "sources": [], "model": "model"}
+
+        def close(self):
+            self.close_count += 1
+
+    monkeypatch.setattr(query_engine, "QueryPipeline", Pipeline)
+    monkeypatch.setattr(query_engine, "_default_query_pipeline", None, raising=False)
+
+    query("first")
+    query_engine.close_default_query_pipeline()
+    query_engine.close_default_query_pipeline()
+    query("second")
+
+    assert len(instances) == 2
+    assert instances[0].close_count == 1
+    assert instances[1].close_count == 0
+
+
 def test_public_query_parameters_are_unchanged_and_delegate_to_default_pipeline(monkeypatch):
     calls = []
 
@@ -279,6 +579,7 @@ def test_public_query_parameters_are_unchanged_and_delegate_to_default_pipeline(
             return {"answer": "ok", "sources": [], "model": "model"}
 
     monkeypatch.setattr("app.rag.query_engine.QueryPipeline", Pipeline)
+    monkeypatch.setattr(query_engine, "_default_query_pipeline", None, raising=False)
 
     result = query("question", "alpha", 6, "guide")
 

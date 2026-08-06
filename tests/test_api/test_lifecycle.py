@@ -2,13 +2,30 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from app.main import app
+from app.main import app, create_app
+from app.rag import query_engine
 from app.api.lifecycle import build_document_metadata, generate_document_id
 from app.config import settings
 from app.pipeline.store import _format_result
 
 
 client = TestClient(app)
+
+
+def test_application_lifespan_closes_lazy_default_query_pipeline_once(monkeypatch):
+    closes = []
+    monkeypatch.setattr(
+        query_engine,
+        "close_default_query_pipeline",
+        lambda: closes.append(True),
+        raising=False,
+    )
+
+    with TestClient(create_app()) as lifespan_client:
+        assert lifespan_client.get("/health").status_code == 200
+        assert closes == []
+
+    assert closes == [True]
 
 
 def test_lifecycle_generated_ids_and_urls_are_canonical_and_server_owned(monkeypatch):

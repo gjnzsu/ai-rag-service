@@ -4,12 +4,14 @@ from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from pathlib import Path
 from app.main import app
+from app.rag import query_engine
 
 client = TestClient(app)
 RULEBOOK_PATH = Path("AI Engieering Rulebook.pdf")
 
 @pytest.fixture(autouse=True)
 def patch_openai():
+    query_engine.close_default_query_pipeline()
     fake_embedding = [0.1] * 1536
     def fake_embed(**kwargs):
         n = len(kwargs["input"])
@@ -38,6 +40,7 @@ def patch_openai():
         mock_q.chat.completions.create.side_effect = fake_chat
         mock_q_cls.return_value = mock_q
         yield
+        query_engine.close_default_query_pipeline()
 
 def test_rulebook_rag_flow(tmp_path, monkeypatch):
     monkeypatch.setattr("app.pipeline.store.settings.chroma_persist_dir", str(tmp_path))
