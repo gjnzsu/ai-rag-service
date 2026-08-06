@@ -1,9 +1,16 @@
 import json
+import math
+from types import SimpleNamespace
 
 import pytest
 
 from app.evaluation.models import EvaluationCase, QueryType, RankedEvaluationResult
-from app.evaluation.runner import EvaluationRunner, main
+from app.evaluation.runner import (
+    EvaluationRunner,
+    _production_hybrid_adapter,
+    _production_reranker_adapter,
+    main,
+)
 from app.retrieval.models import RetrievalCandidate
 
 
@@ -61,6 +68,19 @@ def test_ranked_result_never_fabricates_citation_correctness():
     assert result.human_citation_correctness is None
 
 
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("latency_ms", math.nan),
+        ("answer_latency_ms", math.inf),
+        ("local_memory_mb", -math.inf),
+    ],
+)
+def test_ranked_result_rejects_nonfinite_observations(field, value):
+    with pytest.raises(ValueError):
+        RankedEvaluationResult(**{field: value})
+
+
 def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation():
     calls = {"vector": 0, "hybrid": 0}
     c1_inputs: list[list[RetrievalCandidate]] = []
@@ -98,7 +118,12 @@ def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation
     runner = EvaluationRunner(vector, hybrid, c1, c2, grounded_answer_evaluator=evaluate)
     report = runner.run(
         [
-            EvaluationCase(question="works", query_type="exact_fact", relevant_document_ids=("doc-1",)),
+            EvaluationCase(
+                question="works",
+                query_type="exact_fact",
+                relevant_document_ids=("doc-1",),
+                relevant_chunk_ids=("h2",),
+            ),
             EvaluationCase(question="fails safely", query_type="hard_negative", should_abstain=True),
         ]
     )
@@ -110,6 +135,7 @@ def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation
     assert report["configurations"]["A"]["questions"]
     assert report["configurations"]["C1"]["aggregate"]["mrr_at_10"] > report["configurations"]["B"]["aggregate"]["mrr_at_10"]
     assert report["configurations"]["C1"]["questions"][0]["changes_from_b"]["mrr_at_10"] > 0
+    assert report["configurations"]["C1"]["questions"][0]["result"]["latency_ms"] >= 6_000.0
     assert report["failures"]
     assert report["recommendation"]["configuration"] == "C1"
 
@@ -144,6 +170,40 @@ def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation
     ])
     assert no_regression_report["recommendation"]["configuration"] == "B"
 
+    unmeasured_report = EvaluationRunner(
+        lambda case: [_candidate("doc-v", "v1")],
+        lambda case: [_candidate("doc-1", "h1")],
+        lambda case, candidates: candidates,
+        lambda case, candidates: candidates,
+    ).run([EvaluationCase(question="q", query_type="unanswerable", should_abstain=True)])
+    unmeasured = unmeasured_report["configurations"]["B"]
+    assert unmeasured["questions"][0]["metrics"]["citation_validity"] is None
+    assert unmeasured["questions"][0]["metrics"]["abstention_accuracy"] is None
+    assert unmeasured["questions"][0]["result"]["answer_latency_ms"] is None
+    assert unmeasured["aggregate"]["token_usage"]["input"] is None
+
+    incomplete_c1 = EvaluationRunner(
+        lambda case: [_candidate("doc-v", "v1")],
+        lambda case: [_candidate("doc-2", "h1"), _candidate("doc-1", "h2")],
+        lambda case, candidates: (_ for _ in ()).throw(RuntimeError()) if case.question == "two" else list(reversed(candidates)),
+        lambda case, candidates: candidates,
+        grounded_answer_evaluator=evaluate,
+    ).run([
+        EvaluationCase(question="one", query_type="exact_fact", relevant_document_ids=("doc-1",)),
+        EvaluationCase(question="two", query_type="exact_fact", relevant_document_ids=("doc-1",)),
+    ])
+    assert incomplete_c1["recommendation"]["configuration"] == "B"
+
+    bad = _candidate("doc-1", "bad")
+    bad.score = math.nan
+    bad_score_report = EvaluationRunner(
+        lambda case: [_candidate("doc-v", "v1")],
+        lambda case: [bad],
+        lambda case, candidates: candidates,
+        lambda case, candidates: candidates,
+    ).run([EvaluationCase(question="q", query_type="exact_fact", relevant_document_ids=("doc-1",))])
+    assert bad_score_report["configurations"]["B"]["questions"][0]["error"] == "ValueError"
+
 
 def test_cli_reads_jsonl_and_writes_json_without_subprocess(tmp_path):
     cases_path = tmp_path / "cases.jsonl"
@@ -161,3 +221,27 @@ def test_cli_reads_jsonl_and_writes_json_without_subprocess(tmp_path):
     main(["--cases", str(cases_path), "--output", str(output_path)], runner_factory=lambda: FakeRunner())
 
     assert json.loads(output_path.read_text(encoding="utf-8"))["recommendation"]["configuration"] == "B"
+
+
+def test_live_adapters_use_production_reranker_signature_and_reject_degradation():
+    calls = []
+
+    class ProductionReranker:
+        def rerank(self, query, candidates, top_k):
+            calls.append((query, [candidate.chunk_id for candidate in candidates], top_k))
+            return candidates
+
+    case = EvaluationCase(question="production question", query_type="exact_fact")
+    adapter = _production_reranker_adapter(ProductionReranker(), top_k=7)
+    assert adapter(case, [_candidate("doc-1", "chunk-1")])[0].chunk_id == "chunk-1"
+    assert calls == [("production question", ["chunk-1"], 7)]
+
+    degraded = SimpleNamespace(
+        retrieve=lambda *args, **kwargs: SimpleNamespace(
+            candidates=[_candidate("doc-1", "chunk-1")],
+            failures=["vector"],
+            diagnostics={"configured_retrievers": ["vector", "lexical"], "successful_retrievers": ["lexical"]},
+        )
+    )
+    with pytest.raises(RuntimeError):
+        _production_hybrid_adapter(degraded, top_k=7)(case)

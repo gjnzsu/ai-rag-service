@@ -14,7 +14,7 @@ The service is deployed to Google Kubernetes Engine (GKE).
 ## 🛠 Tech Stack
 
 - **Framework:** FastAPI
-- **LLM:** OpenAI GPT-4o
+- **LLM:** OpenAI GPT-5 pinned snapshot (`gpt-5-2025-08-07`)
 - **Embedding Model:** OpenAI text-embedding-3-small
 - **Vector DB:** ChromaDB (Persistent storage on GKE PVC)
 - **Cloud:** Google Cloud Platform (GKE, Artifact Registry, Cloud Build)
@@ -25,17 +25,17 @@ The service is deployed to Google Kubernetes Engine (GKE).
 - `text-embedding-3-small` converts document chunks and user queries into
   vectors for similarity search in ChromaDB. It does not generate answers.
 - `POST /query` provides an end-to-end RAG flow: this service retrieves the
-  relevant context and uses its configured GPT-4o model to generate the final
+  relevant context and uses its configured pinned GPT-5 model to generate the final
   answer.
 - `POST /retrieve` provides retrieval only: it returns the relevant chunks and
-  metadata without calling GPT-4o to generate an answer. AI applications that
+  metadata without calling the answer model. AI applications that
   already have their own configured LLM should normally use this endpoint and
   pass the retrieved context to their own LLM.
 
 For example, if `ai-market-studio` already defines its own LLM, the recommended
 integration is to call `/retrieve` and let that LLM generate the final answer.
 Use `/query` when the caller wants this RAG service to own both retrieval and
-answer generation with GPT-4o.
+answer generation with its pinned GPT-5 model.
 
 ## Hybrid retrieval, reranking, and grounding
 
@@ -43,7 +43,9 @@ The default `RETRIEVAL_MODE=hybrid` combines SQLite FTS/BM25-style lexical
 retrieval with Chroma vector retrieval using reciprocal-rank fusion (RRF). The
 candidate and final limits default to 30 and 10 respectively, with
 `RETRIEVAL_RRF_K=60`; lexical field weights default to 10 (Jira key), 5
-(title), and 1 (content). `vector` and `lexical` remain supported safe
+(title), and 1 (content). `JIRA_KEY_PATTERN` defaults to
+`\b[A-Z][A-Z0-9]+-\d+\b`; `RETRIEVAL_SCORE_THRESHOLD` is empty/disabled by
+default. `vector` and `lexical` remain supported safe
 retrieval modes; if one hybrid backend is unavailable, the pipeline uses the
 available backend and records a bounded diagnostic. If all configured primary
 retrieval backends fail, retrieval fails rather than inventing an answer.
@@ -54,7 +56,8 @@ for the corpus after enabling lexical retrieval; do not treat the pre-existing
 Chroma collection as a lexical index.
 
 `RERANKER_PROVIDER=none` is the safe default. `openai` selects the pinned
-`RERANKER_OPENAI_MODEL=gpt-5-2025-08-07`; `qwen_local` selects the pinned
+`RERANKER_OPENAI_MODEL=gpt-5-2025-08-07` with a five-second timeout;
+`qwen_local` selects the pinned
 `Qwen/Qwen3-Reranker-0.6B` revision. Both rerankers are bounded to a small
 candidate list (Qwen: 20 candidates, 512 tokens, batch size 4, five-second
 timeout, 30-second circuit-breaker) and safely fall back to the RRF order on
@@ -62,7 +65,8 @@ failure. The local Qwen path is optional: install `requirements-qwen.txt` only
 on the operator host that will run it. Grounded answers select 5–10 evidence
 items (default 5), cap prompt content at 4,000 characters and excerpts at 200,
 and will refuse when evidence is insufficient; retrieval alone cannot guarantee
-that a generated answer is correct.
+that a generated answer is correct. Answer generation uses the pinned
+`ANSWER_OPENAI_MODEL=gpt-5-2025-08-07` with a 15-second timeout.
 
 ## Repeatable evaluation
 
@@ -70,7 +74,10 @@ The evaluation harness compares exactly these configurations: A vector only;
 B BM25 + vector + RRF; C1 B's cached candidates with the pinned GPT-5
 reranker; and C2 those same cached B candidates with the pinned Qwen reranker.
 For each question, C1 and C2 receive independent deep copies of the identical
-B ordering, so neither reranker can alter the other's input.
+B ordering, so neither reranker can alter the other's input. Evaluation B
+disables supplementary exact Jira lookup and marks a case failed if either
+primary backend degrades, rather than misreporting a single-backend result as
+hybrid.
 
 `evaluation/cases.example.jsonl` contains only synthetic placeholder cases
 (exact fact, cross-document, hard negative, and unanswerable). It is a schema

@@ -1,6 +1,7 @@
 """Typed, offline-only data contracts for evaluation cases and observations."""
 
 from enum import Enum
+import math
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -66,13 +67,13 @@ class RankedEvaluationResult(BaseModel):
     @field_validator("latency_ms", "answer_latency_ms", "local_cpu_percent", "local_memory_mb")
     @classmethod
     def validate_nonnegative_numbers(cls, value: float | None) -> float | None:
-        if value is not None and value < 0:
-            raise ValueError("timing and local resource observations must be non-negative")
+        if value is not None and (not math.isfinite(value) or value < 0):
+            raise ValueError("timing and local resource observations must be finite and non-negative")
         return value
 
     @field_validator("input_tokens", "output_tokens")
     @classmethod
     def validate_nonnegative_tokens(cls, value: int | None) -> int | None:
-        if value is not None and value < 0:
+        if value is not None and (isinstance(value, bool) or value < 0):
             raise ValueError("token usage must be non-negative")
         return value
