@@ -1,3 +1,4 @@
+import json
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
@@ -17,7 +18,12 @@ def patch_openai():
     def fake_chat(**kwargs):
         return MagicMock(
             choices=[MagicMock(message=MagicMock(
-                content="The authors of the 2025 Edition are Akshay Pachaar and Avi Chawla."
+                content=json.dumps({
+                    "answer": (
+                        "The authors of the 2025 Edition are Akshay Pachaar and Avi Chawla [E1]."
+                    ),
+                    "citation_ids": ["E1"],
+                })
             ))]
         )
 

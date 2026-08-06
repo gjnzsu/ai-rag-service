@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     reranker_qwen_batch_size: int = 4
     reranker_qwen_timeout_seconds: float = 5.0
     reranker_qwen_circuit_breaker_seconds: float = 30.0
+    grounding_evidence_top_k: int = 5
+    grounding_prompt_max_chars: int = 4000
+    grounding_excerpt_max_chars: int = 200
+    answer_openai_model: str = "gpt-5-2025-08-07"
+    answer_openai_timeout_seconds: float = 15.0
     chunk_size: int = 512
     chunk_overlap: int = 50
     top_k: int = 5
@@ -47,6 +52,20 @@ class Settings(BaseSettings):
     def validate_openai_reranker_snapshot(cls, value: str) -> str:
         if not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
             raise ValueError("OpenAI reranker model must be a pinned GPT-5 snapshot")
+        return value
+
+    @field_validator("answer_openai_model")
+    @classmethod
+    def validate_openai_answer_snapshot(cls, value: str) -> str:
+        if not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
+            raise ValueError("OpenAI answer model must be a pinned GPT-5 snapshot")
+        return value
+
+    @field_validator("grounding_evidence_top_k")
+    @classmethod
+    def validate_grounding_evidence_top_k(cls, value: int) -> int:
+        if not 5 <= value <= 10:
+            raise ValueError("Grounding evidence top-k must be between 5 and 10")
         return value
 
     @field_validator("reranker_qwen_model")

@@ -1,4 +1,5 @@
 """Integration test: PDF ingest -> ChromaDB -> query pipeline (mocks OpenAI only)."""
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -21,7 +22,10 @@ def patch_openai():
     def fake_chat(**kwargs):
         return MagicMock(
             choices=[MagicMock(message=MagicMock(
-                content="The USD to CNY rate is 7.25 according to the document."
+                content=json.dumps({
+                    "answer": "The USD to CNY rate is 7.25 according to the document [E1].",
+                    "citation_ids": ["E1"],
+                })
             ))]
         )
 
