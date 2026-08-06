@@ -37,7 +37,7 @@ class PDFConnector(BaseConnector):
                     "page_count": len(pages_text),
                     "file_size_bytes": path.stat().st_size,
                     "document_type": document_type,
-                    "source_url": path.resolve().as_uri(),
+                    "source_url": "",
                 },
             )
         ]

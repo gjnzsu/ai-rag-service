@@ -89,3 +89,17 @@ def test_fts_delete_handles_empty_and_unsafe_queries_and_maps_trusted_fields(tmp
     assert index.search("!!! \" OR *", 10, None, "alpha") == []
     assert index.delete_document("jira:PROJ-7", "alpha") is True
     assert index.search("login", 10, None, "alpha") == []
+
+
+def test_fts_weights_rank_identifier_then_title_then_body(tmp_path, monkeypatch):
+    monkeypatch.setattr("app.retrieval.lexical.settings.lexical_issue_key_weight", 100.0)
+    monkeypatch.setattr("app.retrieval.lexical.settings.lexical_title_weight", 10.0)
+    monkeypatch.setattr("app.retrieval.lexical.settings.lexical_content_weight", 1.0)
+    index = SQLiteFTSIndex(tmp_path / "lexical.db")
+    index.upsert_document([_chunk("jira:ID-3:chunk:0", "RANKTOKEN " * 20, document_id="jira:ID-3", issue_key="ID-3", title="ordinary")], "alpha")
+    index.upsert_document([_chunk("jira:ID-2:chunk:0", "ordinary", document_id="jira:ID-2", issue_key="ID-2", title="RANKTOKEN")], "alpha")
+    index.upsert_document([_chunk("jira:ID-1:chunk:0", "ordinary", document_id="jira:ID-1", issue_key="RANKTOKEN", title="ordinary")], "alpha")
+
+    assert [item.document_id for item in index.search("RANKTOKEN", 10, None, "alpha")] == [
+        "jira:ID-1", "jira:ID-2", "jira:ID-3",
+    ]

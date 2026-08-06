@@ -3,6 +3,11 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 
+def canonical_jira_key(metadata: dict[str, Any]) -> str:
+    """Return the one canonical Jira-key accessor while preserving legacy names."""
+    return str(metadata.get("issue_key") or metadata.get("key") or "")
+
+
 class RetrievalCandidate(BaseModel):
     content: str
     document_id: str

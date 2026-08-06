@@ -35,7 +35,7 @@ class ConfluenceConnector(BaseConnector):
                     title=page.get("title", ""),
                     metadata={
                         "page_id": page["id"],
-                        "source_url": f"{settings.confluence_url.rstrip('/')}/pages/{page['id']}",
+                        "source_url": _confluence_source_url(page["id"]),
                         "space_key": space_key,
                         "author": by.get("displayName", ""),
                         "last_modified": version.get("when", ""),
@@ -43,3 +43,9 @@ class ConfluenceConnector(BaseConnector):
                 )
             )
         return documents
+
+
+def _confluence_source_url(page_id: str) -> str:
+    if not settings.confluence_url:
+        return ""
+    return f"{settings.confluence_url.rstrip('/')}/pages/{page_id}"

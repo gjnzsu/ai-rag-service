@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from app.config import settings
-from app.retrieval.models import RetrievalCandidate
+from app.retrieval.models import RetrievalCandidate, canonical_jira_key
 
 
 class SQLiteFTSIndex:
@@ -82,6 +82,20 @@ class SQLiteFTSIndex:
             )
             return True
 
+    def delete_jira_key(self, jira_key: str, collection_name: str) -> int:
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT document_id FROM lexical_chunks WHERE collection_name = ? AND ("
+                "document_id = ? OR CAST(json_extract(metadata_json, '$.issue_key') AS TEXT) = ? "
+                "OR CAST(json_extract(metadata_json, '$.key') AS TEXT) = ? "
+                "OR CAST(json_extract(metadata_json, '$.related_jira') AS TEXT) = ?)",
+                (collection_name, f"jira:{jira_key}", jira_key, jira_key, jira_key),
+            ).fetchall()
+        document_ids = sorted({row["document_id"] for row in rows})
+        for document_id in document_ids:
+            self.delete_document(document_id, collection_name)
+        return len(document_ids)
+
     def search(
         self,
         query: str,
@@ -98,7 +112,7 @@ class SQLiteFTSIndex:
             rows = connection.execute(
                 "SELECT chunks.chunk_id, chunks.document_id, chunks.source_type, chunks.source_url, "
                 "chunks.title, chunks.metadata_json, fts.content, "
-                "bm25(lexical_fts, ?, ?, ?) AS bm25_score "
+                "bm25(lexical_fts, 0.0, 0.0, ?, ?, ?) AS bm25_score "
                 "FROM lexical_fts AS fts "
                 "JOIN lexical_chunks AS chunks "
                 "ON chunks.collection_name = fts.collection_name AND chunks.chunk_id = fts.chunk_id "
@@ -168,7 +182,7 @@ def _chunk_metadata(chunk: dict) -> dict[str, Any]:
 
 
 def _jira_key(chunk: dict, metadata: dict[str, Any]) -> str:
-    return str(chunk.get("issue_key") or metadata.get("issue_key") or chunk.get("key") or metadata.get("key") or "")
+    return canonical_jira_key({**metadata, **{key: chunk[key] for key in ("issue_key", "key") if key in chunk}})
 
 
 def _safe_match_query(query: str) -> str:

@@ -9,6 +9,7 @@ from app.pipeline.store import (
     refresh_jira_key,
     upsert_document,
 )
+from app.retrieval.lexical import SQLiteFTSIndex
 
 
 @pytest.fixture
@@ -169,3 +170,17 @@ def test_delete_document_removes_vector_and_lexical_chunks(tmp_chroma, monkeypat
 
     assert delete_document("jira:PROJ-7", "alpha") is True
     lexical.delete_document.assert_called_once_with("jira:PROJ-7", "alpha")
+
+
+def test_refresh_jira_key_removes_matching_lexical_rows(tmp_chroma):
+    chunk = {
+        "id": "jira:PROJ-7:chunk:0", "chunk_id": "jira:PROJ-7:chunk:0", "content": "login",
+        "document_id": "jira:PROJ-7", "source_type": "jira", "title": "Login", "key": "PROJ-7",
+        "metadata": {"key": "PROJ-7", "issue_key": "PROJ-7"},
+    }
+    upsert_document([chunk], [[1.0] + [0.0] * 1535], "alpha")
+    lexical = SQLiteFTSIndex("".join([tmp_chroma, "\\lexical.db"]))
+    lexical.upsert_document([chunk], "alpha")
+
+    assert refresh_jira_key("PROJ-7", "alpha") == 1
+    assert lexical.search("login", 10, None, "alpha") == []

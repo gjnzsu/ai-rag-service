@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.api.lifecycle import build_document_metadata, generate_document_id
 from app.config import settings
+from app.pipeline.store import _format_result
 
 
 client = TestClient(app)
@@ -23,6 +24,39 @@ def test_lifecycle_generated_ids_and_urls_are_canonical_and_server_owned(monkeyp
     assert built["source_url"] == "https://jira.example/browse/PROJ-7"
 
 
+@patch("app.api.lifecycle.index_documents")
+def test_lifecycle_normalizes_caller_supplied_legacy_document_ids(mock_index):
+    mock_index.return_value = {"document_id": "jira:PROJ-7", "chunk_count": 1, "created": True}
+
+    response = client.post("/documents/upsert", json={
+        "document_id": "jira_issue:PROJ-7",
+        "content": "body",
+        "metadata": {
+            "type": "jira_issue", "key": "PROJ-7", "project_key": "PROJ", "title": "Title",
+            "url": "https://untrusted.example", "status": "Open", "priority": "High",
+        },
+    })
+
+    assert response.status_code == 200
+    assert mock_index.call_args.args[0][0].id == "jira:PROJ-7"
+
+
+def test_lifecycle_confluence_requires_page_id_for_canonical_identity():
+    response = client.post("/documents/upsert", json={
+        "document_id": "confluence_page:legacy", "content": "body",
+        "metadata": {"type": "confluence_page", "title": "Title", "url": "https://untrusted.example", "space_key": "TEAM", "related_jira": "PROJ-7"},
+    })
+
+    assert response.status_code == 422
+    assert "page_id" in response.text
+
+
+def test_returned_source_url_never_falls_back_to_generic_url():
+    result = _format_result(content="body", metadata={"url": "https://untrusted.example"}, distance=0.0)
+
+    assert result["source_url"] == ""
+
+
 def _fake_embeddings(count: int):
     return [[0.1] * 1536 for _ in range(count)]
 
@@ -30,7 +64,7 @@ def _fake_embeddings(count: int):
 @patch("app.api.lifecycle.index_documents")
 def test_upsert_jira_document_preserves_business_metadata(mock_index):
     mock_index.return_value = {
-        "document_id": "jira_issue:PROJ-123",
+        "document_id": "jira:PROJ-123",
         "chunk_count": 1,
         "created": True,
     }
@@ -53,10 +87,10 @@ def test_upsert_jira_document_preserves_business_metadata(mock_index):
     )
 
     assert response.status_code == 200
-    assert response.json()["document_id"] == "jira_issue:PROJ-123"
+    assert response.json()["document_id"] == "jira:PROJ-123"
     documents = mock_index.call_args.args[0]
-    assert documents[0].id == "jira_issue:PROJ-123"
-    assert documents[0].metadata["document_id"] == "jira_issue:PROJ-123"
+    assert documents[0].id == "jira:PROJ-123"
+    assert documents[0].metadata["document_id"] == "jira:PROJ-123"
     assert documents[0].metadata["type"] == "jira_issue"
     assert documents[0].metadata["key"] == "PROJ-123"
     assert documents[0].metadata["project_key"] == "PROJ"

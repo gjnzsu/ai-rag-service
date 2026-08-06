@@ -4,6 +4,7 @@ import pymupdf
 
 from app.config import settings
 from app.connectors.confluence import ConfluenceConnector
+from app.connectors.base import Document
 from app.connectors.jira import JiraConnector
 from app.connectors.pdf import PDFConnector
 from app.pipeline.chunker import chunk_documents
@@ -76,4 +77,33 @@ def test_chunk_documents_uses_canonical_identity_and_resets_index_per_document()
     assert chunks[0]["id"] == chunks[0]["chunk_id"] == "jira:PROJ-7:chunk:0"
     assert chunks[0]["chunk_index"] == 0
     assert chunks[1]["id"] == chunks[1]["chunk_id"] == "jira:PROJ-8:chunk:0"
-    assert chunks[1]["source_url"].endswith("/browse/PROJ-7")
+    assert chunks[1]["source_url"] == ""
+
+
+def test_chunk_documents_protects_canonical_fields_from_hostile_metadata():
+    chunk = chunk_documents([Document(
+        id="jira:PROJ-7", content="trusted body", source_type="jira", title="Trusted title",
+        metadata={
+            "id": "evil", "chunk_id": "evil", "chunk_index": 999, "content": "evil",
+            "document_id": "evil", "source_type": "evil", "title": "evil",
+            "source_url": "https://evil.example",
+        },
+    )])[0]
+
+    assert chunk["id"] == chunk["chunk_id"] == "jira:PROJ-7:chunk:0"
+    assert chunk["chunk_index"] == 0
+    assert chunk["content"] == "trusted body"
+    assert chunk["document_id"] == "jira:PROJ-7"
+    assert chunk["source_type"] == "jira"
+    assert chunk["title"] == "Trusted title"
+    assert chunk["source_url"] == ""
+
+
+def test_pdf_connector_does_not_expose_local_temporary_path(tmp_path: Path):
+    pdf_path = tmp_path / "upload.pdf"
+    document = pymupdf.open()
+    document.new_page().insert_text((50, 50), "PDF")
+    document.save(pdf_path)
+    document.close()
+
+    assert PDFConnector().fetch(str(pdf_path))[0].metadata["source_url"] == ""

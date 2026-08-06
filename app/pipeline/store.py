@@ -177,6 +177,15 @@ def refresh_jira_key(jira_key: str, collection_name: str = "default") -> int:
     unique_ids = sorted(set(ids))
     if unique_ids:
         collection.delete(ids=unique_ids)
+    try:
+        get_lexical_index().delete_jira_key(jira_key, collection_name)
+    except Exception:
+        logger.error(
+            "dual_index_refresh_failed",
+            collection_name=collection_name,
+            document_id=f"jira:{jira_key}",
+        )
+        raise
     return len(unique_ids)
 
 
@@ -222,5 +231,5 @@ def _format_result(
         "document_id": metadata.get("document_id", ""),
         "chunk_id": chunk_id,
         "metadata": metadata,
-        "source_url": metadata.get("source_url") or metadata.get("url", ""),
+        "source_url": metadata.get("source_url", ""),
     }

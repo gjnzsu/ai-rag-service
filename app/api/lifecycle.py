@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.config import settings
 from app.connectors.base import Document
 from app.pipeline.indexer import index_documents
+from app.retrieval.models import canonical_jira_key
 from app.pipeline.store import (
     delete_document,
     get_document_chunks,
@@ -26,7 +27,7 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 SUPPORTED_FILTER_OPERATORS = {"in"}
 REQUIRED_METADATA = {
     "jira_issue": {"type", "key", "project_key", "title", "url", "status", "priority"},
-    "confluence_page": {"type", "title", "url", "space_key", "related_jira"},
+    "confluence_page": {"type", "title", "url", "page_id", "space_key", "related_jira"},
 }
 
 
@@ -123,7 +124,8 @@ def embed_text(text: str) -> list[float]:
 @router.post("/documents/upsert", response_model=UpsertDocumentResponse)
 def upsert_lifecycle_document(request: UpsertDocumentRequest):
     try:
-        document_id = request.document_id or generate_document_id(
+        document_id = canonical_document_id(
+            request.document_id,
             request.metadata,
             request.content,
         )
@@ -238,13 +240,13 @@ def build_document_metadata(
 
 def generate_document_id(metadata: dict[str, Any], content: str) -> str:
     doc_type = str(metadata.get("type", "document"))
-    if doc_type == "jira_issue" and metadata.get("key"):
-        return f"jira:{metadata['key']}"
+    jira_key = canonical_jira_key(metadata)
+    if doc_type == "jira_issue" and jira_key:
+        return f"jira:{jira_key}"
     if doc_type == "confluence_page":
         if metadata.get("page_id"):
             return f"confluence:{metadata['page_id']}"
-        if metadata.get("url"):
-            return f"confluence:{_short_hash(str(metadata['url']))}"
+        raise ValueError("Confluence documents require page_id for canonical identity")
     title = str(metadata.get("title", "untitled"))
     return f"{doc_type}:{_short_hash(f'{title}:{content}')}"
 
@@ -255,8 +257,19 @@ def _short_hash(value: str) -> str:
 
 def _trusted_source_url(metadata: dict[str, Any]) -> str:
     doc_type = str(metadata.get("type", ""))
-    if doc_type == "jira_issue" and metadata.get("key"):
-        return f"{settings.jira_url.rstrip('/')}/browse/{metadata['key']}"
-    if doc_type == "confluence_page" and metadata.get("page_id"):
+    jira_key = canonical_jira_key(metadata)
+    if doc_type == "jira_issue" and jira_key and settings.jira_url:
+        return f"{settings.jira_url.rstrip('/')}/browse/{jira_key}"
+    if doc_type == "confluence_page" and metadata.get("page_id") and settings.confluence_url:
         return f"{settings.confluence_url.rstrip('/')}/pages/{metadata['page_id']}"
     return ""
+
+
+def canonical_document_id(
+    supplied_document_id: str | None,
+    metadata: dict[str, Any],
+    content: str,
+) -> str:
+    if metadata.get("type") in {"jira_issue", "confluence_page"}:
+        return generate_document_id(metadata, content)
+    return supplied_document_id or generate_document_id(metadata, content)

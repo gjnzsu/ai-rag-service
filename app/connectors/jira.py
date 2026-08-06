@@ -38,7 +38,7 @@ class JiraConnector(BaseConnector):
                     metadata={
                         "issue_key": issue["key"],
                         "key": issue["key"],
-                        "source_url": f"{settings.jira_url.rstrip('/')}/browse/{issue['key']}",
+                        "source_url": _jira_source_url(issue["key"]),
                         "status": fields.get("status", {}).get("name", ""),
                         "priority": fields.get("priority", {}).get("name", "") if fields.get("priority") else "",
                         "reporter": fields.get("reporter", {}).get("displayName", "") if fields.get("reporter") else "",
@@ -47,3 +47,9 @@ class JiraConnector(BaseConnector):
                 )
             )
         return documents
+
+
+def _jira_source_url(issue_key: str) -> str:
+    if not settings.jira_url:
+        return ""
+    return f"{settings.jira_url.rstrip('/')}/browse/{issue_key}"
