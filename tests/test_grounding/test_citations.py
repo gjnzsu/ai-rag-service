@@ -37,15 +37,16 @@ def test_validator_maps_known_ids_only_from_trusted_evidence():
     }]
 
 
-def test_validator_deduplicates_repeated_known_ids_stably():
+def test_validator_rejects_repeated_citation_ids():
     evidence = [_evidence("E1"), _evidence("E2")]
     result = CitationValidator().validate(
-        GeneratedAnswer(answer="answer", citation_ids=["E2", "E1", "E2", "E1"]),
+        GeneratedAnswer(answer="answer [E2] [E1].", citation_ids=["E2", "E1", "E2", "E1"]),
         evidence,
     )
 
-    assert [citation.citation_id for citation in result.citations] == ["E2", "E1"]
-    assert result.status == "supported"
+    assert result.answer == REFUSAL_ANSWER
+    assert result.citations == []
+    assert result.status == "validation_failed"
 
 
 @pytest.mark.parametrize(
@@ -58,18 +59,17 @@ def test_validator_deduplicates_repeated_known_ids_stably():
 )
 def test_validator_removes_invented_ids_and_marks_validation_failed(citation_ids):
     result = CitationValidator().validate(
-        GeneratedAnswer(answer="answer", citation_ids=citation_ids),
+        GeneratedAnswer(answer="answer [E1].", citation_ids=citation_ids),
         [_evidence("E1")],
     )
 
-    assert [citation.citation_id for citation in result.citations] == (
-        ["E1"] if "E1" in citation_ids else []
-    )
+    assert result.answer == REFUSAL_ANSWER
+    assert result.citations == []
     assert result.status == "validation_failed"
     assert all(citation.source_url.startswith("https://trusted.example/") for citation in result.citations)
 
 
-def test_validator_never_turns_url_like_answer_text_into_a_citation_mapping():
+def test_validator_rejects_url_like_answer_text_and_fails_closed():
     result = CitationValidator().validate(
         GeneratedAnswer(
             answer="Read https://model-invented.example for details.",
@@ -78,8 +78,27 @@ def test_validator_never_turns_url_like_answer_text_into_a_citation_mapping():
         [_evidence("E1")],
     )
 
+    assert result.answer == REFUSAL_ANSWER
     assert result.citations == []
-    assert result.status == "partially_supported"
+    assert result.status == "validation_failed"
+
+
+def test_validator_rejects_detached_or_partially_cited_claims_and_fails_closed():
+    evidence = [_evidence("E1")]
+
+    detached = CitationValidator().validate(
+        GeneratedAnswer(answer="Supported answer.", citation_ids=["E1"]),
+        evidence,
+    )
+    partial = CitationValidator().validate(
+        GeneratedAnswer(answer="First claim [E1]. Second claim.", citation_ids=["E1"]),
+        evidence,
+    )
+
+    assert detached.answer == REFUSAL_ANSWER
+    assert detached.status == "validation_failed"
+    assert partial.answer == REFUSAL_ANSWER
+    assert partial.status == "validation_failed"
 
 
 @pytest.mark.parametrize(
@@ -93,7 +112,7 @@ def test_validator_never_turns_url_like_answer_text_into_a_citation_mapping():
 )
 def test_validator_bounds_excerpt_by_configured_character_count(content, limit, expected):
     result = CitationValidator(excerpt_max_chars=limit).validate(
-        GeneratedAnswer(answer="answer", citation_ids=["E1"]),
+            GeneratedAnswer(answer="answer [E1].", citation_ids=["E1"]),
         [_evidence("E1", content=content)],
     )
 
@@ -111,13 +130,14 @@ def test_validator_exact_refusal_with_zero_citations_is_insufficient_evidence():
     assert result.status == "insufficient_evidence"
 
 
-def test_validator_non_refusal_without_citations_is_partially_supported():
+def test_validator_non_refusal_without_citations_fails_closed():
     result = CitationValidator().validate(
         GeneratedAnswer(answer="An uncited answer.", citation_ids=[]),
         [_evidence("E1")],
     )
 
-    assert result.status == "partially_supported"
+    assert result.answer == REFUSAL_ANSWER
+    assert result.status == "validation_failed"
     assert result.citations == []
 
 
@@ -161,7 +181,7 @@ def test_validator_refusal_with_citations_is_structurally_invalid():
 
 
 def test_validator_rejects_duplicate_or_malformed_supplied_evidence_ids():
-    generated = GeneratedAnswer(answer="answer", citation_ids=["E1"])
+    generated = GeneratedAnswer(answer="answer [E1].", citation_ids=["E1"])
 
     duplicate = CitationValidator().validate(generated, [_evidence("E1"), _evidence("E1")])
     malformed = CitationValidator().validate(generated, [_evidence("https://evil.example")])
@@ -173,7 +193,7 @@ def test_validator_rejects_duplicate_or_malformed_supplied_evidence_ids():
 
 
 def test_validator_does_not_mutate_generation_or_evidence():
-    generated = GeneratedAnswer(answer="answer", citation_ids=["E1"])
+    generated = GeneratedAnswer(answer="answer [E1].", citation_ids=["E1"])
     evidence = [_evidence("E1")]
     generated_before = generated.model_copy(deep=True)
     evidence_before = [item.model_copy(deep=True) for item in evidence]

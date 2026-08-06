@@ -89,14 +89,16 @@ are sufficient initially; add chunk IDs only when refinement is useful.
 Run an evaluation from an environment configured for the service:
 
 ```powershell
-python -m app.evaluation.runner --cases evaluation/cases.example.jsonl --output evaluation/report.json
+python -m app.evaluation.runner --cases evaluation/cases.example.jsonl --output evaluation/report.json --corpus-revision synthetic-example-v1 --index-revision local-index-v1
 ```
 
 The JSON report keeps per-question (case-indexed, never question-text) results
 and aggregates: Recall@20, Hit@5, MRR@10, Context Precision, citation validity
 and human-labelled correctness when available, abstention accuracy, P50/P95
 latency, token usage when available, and optional local CPU/memory observations.
-Unmeasured fields remain `null`; the harness never invents results. A reranker
+Unmeasured fields remain `null`; the harness never invents results. Each run
+also records the service commit, normalized case checksum, effective retrieval
+settings, pinned model revisions, corpus revision, and index revision. A reranker
 is recommended only when it has a measured MRR@10 or Context Precision gain,
 does not regress Recall@20, and keeps P95 generated-answer latency at or below
 the 5–10 second operational target. Otherwise the recommendation remains B

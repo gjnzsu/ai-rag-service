@@ -18,7 +18,7 @@
 | Exact-Jira-key case count | `NOT YET MEASURED` |
 | Lexical/identifier-heavy group definition and case IDs | `NOT YET RECORDED` |
 | Environment, region, hardware, and load conditions | `NOT YET RECORDED` |
-| Evaluation command | `python -m app.evaluation.runner --cases <live-labelled-cases.jsonl> --output <report.json>` |
+| Evaluation command | `python -m app.evaluation.runner --cases <live-labelled-cases.jsonl> --output <report.json> --corpus-revision <corpus-version> --index-revision <index-version>` |
 | Raw JSON report location and checksum | `NOT YET RECORDED` |
 
 The repository example, [cases.example.jsonl](../../evaluation/cases.example.jsonl),
@@ -28,7 +28,7 @@ is synthetic placeholder data. It demonstrates the JSONL schema only; it is
 ## Effective configuration recorded for this run
 
 Record the exact effective values below (including environment overrides), not
-only the defaults. The values in the right column are repository defaults as of
+only the defaults. The values in the middle column are repository defaults as of
 the template revision and must be replaced only when the live run used a
 different recorded value.
 

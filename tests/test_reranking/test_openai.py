@@ -65,7 +65,7 @@ def test_openai_sends_one_bounded_strict_listwise_request_without_tools_or_urls(
     request = completions.calls[0]
     assert request["model"] == "gpt-5-2025-08-07"
     assert request["timeout"] == 3.25
-    assert request["temperature"] == 0
+    assert "temperature" not in request
     assert "tools" not in request
     assert request["response_format"]["type"] == "json_schema"
     schema_wrapper = request["response_format"]["json_schema"]

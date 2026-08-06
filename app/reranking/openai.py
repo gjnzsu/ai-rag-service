@@ -83,7 +83,6 @@ class GPT5Reranker:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=_messages(query, bounded),
-                temperature=0,
                 response_format={
                     "type": "json_schema",
                     "json_schema": {

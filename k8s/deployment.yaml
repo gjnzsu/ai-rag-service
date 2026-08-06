@@ -21,6 +21,8 @@ spec:
         env:
         - name: CHROMA_PERSIST_DIR
           value: "/data/chroma_db"
+        - name: LEXICAL_DB_PATH
+          value: "/data/lexical.db"
         envFrom:
         - secretRef:
             name: rag-secrets

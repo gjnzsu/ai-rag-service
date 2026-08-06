@@ -1,5 +1,7 @@
 """Server-side citation validation boundary."""
 
+import re
+
 from app.config import settings
 from app.grounding.models import (
     Evidence,
@@ -42,37 +44,24 @@ class CitationValidator:
             return _validation_failure()
 
         known = {item.citation_id: item for item in evidence}
-        seen: set[str] = set()
-        selected: list[Evidence] = []
-        invalid_reference = False
-        for citation_id in generated.citation_ids:
-            if not isinstance(citation_id, str) or citation_id not in known:
-                invalid_reference = True
-                continue
-            if citation_id not in seen:
-                seen.add(citation_id)
-                selected.append(known[citation_id])
-
         if generated.answer == REFUSAL_ANSWER:
             if generated.citation_ids:
-                return _validation_failure(answer=REFUSAL_ANSWER)
+                return _validation_failure()
             return GroundedAnswerResult(
                 answer=REFUSAL_ANSWER,
                 citations=[],
                 status="insufficient_evidence",
             )
 
+        if not _valid_citation_binding(generated.answer, generated.citation_ids, set(known)):
+            return _validation_failure()
+
+        selected = [known[citation_id] for citation_id in generated.citation_ids]
         citations = [self._trusted_citation(item) for item in selected]
-        if invalid_reference:
-            status = "validation_failed"
-        elif citations:
-            status = "supported"
-        else:
-            status = "partially_supported"
         return GroundedAnswerResult(
             answer=generated.answer,
             citations=citations,
-            status=status,
+            status="supported",
         )
 
     def _trusted_citation(self, evidence: Evidence) -> TrustedCitation:
@@ -92,9 +81,29 @@ def _valid_evidence_ids(evidence: list[Evidence]) -> bool:
     ]
 
 
-def _validation_failure(answer: str = REFUSAL_ANSWER) -> GroundedAnswerResult:
+_URL_PATTERN = re.compile(r"(?i)(?:https?://|www\.)")
+_CITATION_PATTERN = re.compile(r"\[(E\d+)\]")
+_CLAIM_BOUNDARY_PATTERN = re.compile(r"(?<=[.!?])\s+|(?<=[。！？])|\n+")
+
+
+def _valid_citation_binding(answer: str, citation_ids: list[str], known_ids: set[str]) -> bool:
+    if _URL_PATTERN.search(answer):
+        return False
+    if len(citation_ids) != len(set(citation_ids)):
+        return False
+    if any(citation_id not in known_ids for citation_id in citation_ids):
+        return False
+
+    inline_ids = _CITATION_PATTERN.findall(answer)
+    if set(inline_ids) != set(citation_ids) or not inline_ids:
+        return False
+    claims = [claim.strip() for claim in _CLAIM_BOUNDARY_PATTERN.split(answer) if claim.strip()]
+    return bool(claims) and all(_CITATION_PATTERN.search(claim) for claim in claims)
+
+
+def _validation_failure() -> GroundedAnswerResult:
     return GroundedAnswerResult(
-        answer=answer,
+        answer=REFUSAL_ANSWER,
         citations=[],
         status="validation_failed",
     )

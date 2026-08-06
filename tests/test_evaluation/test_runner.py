@@ -57,6 +57,14 @@ def test_evaluation_case_accepts_document_only_and_optional_chunk_labels(payload
         {"question": "q", "query_type": "unknown"},
         {"question": "q", "query_type": "exact_fact", "relevant_document_ids": [""]},
         {"question": "q", "query_type": "exact_fact", "relevant_chunk_ids": [" "]},
+        {"question": "q", "query_type": "exact_fact"},
+        {"question": "q", "query_type": "unanswerable", "should_abstain": False},
+        {
+            "question": "q",
+            "query_type": "unanswerable",
+            "should_abstain": True,
+            "relevant_document_ids": ["doc-1"],
+        },
     ],
 )
 def test_evaluation_case_rejects_invalid_questions_types_and_ids(payload):
@@ -139,6 +147,8 @@ def test_runner_caches_hybrid_candidates_and_records_failures_and_recommendation
     assert report["configurations"]["C1"]["questions"][0]["result"]["latency_ms"] >= 6_000.0
     assert report["failures"]
     assert report["recommendation"]["configuration"] == "C1"
+    assert report["run_metadata"]["schema_version"] == 1
+    assert len(report["run_metadata"]["cases_sha256"]) == 64
 
     def slow_evaluate(case, candidates):
         return RankedEvaluationResult(answer_latency_ms=11_000.0)
@@ -220,9 +230,21 @@ def test_cli_reads_jsonl_and_writes_json_without_subprocess(tmp_path):
             assert len(cases) == 1
             return {"configurations": {}, "failures": [], "recommendation": {"configuration": "B"}}
 
-    main(["--cases", str(cases_path), "--output", str(output_path)], runner_factory=lambda: FakeRunner())
+    main(
+        [
+            "--cases", str(cases_path),
+            "--output", str(output_path),
+            "--corpus-revision", "synthetic-v1",
+            "--index-revision", "index-v1",
+        ],
+        runner_factory=lambda: FakeRunner(),
+    )
 
-    assert json.loads(output_path.read_text(encoding="utf-8"))["recommendation"]["configuration"] == "B"
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert report["recommendation"]["configuration"] == "B"
+    assert report["run_metadata"]["corpus_revision"] == "synthetic-v1"
+    assert report["run_metadata"]["index_revision"] == "index-v1"
+    assert len(report["run_metadata"]["cases_sha256"]) == 64
 
 
 def test_live_adapters_use_production_reranker_signature_and_reject_degradation():
@@ -235,7 +257,11 @@ def test_live_adapters_use_production_reranker_signature_and_reject_degradation(
             calls.append((query, [candidate.chunk_id for candidate in candidates], top_k))
             return candidates
 
-    case = EvaluationCase(question="production question", query_type="exact_fact")
+    case = EvaluationCase(
+        question="production question",
+        query_type="exact_fact",
+        relevant_document_ids=("doc-1",),
+    )
     candidates = [_candidate(f"doc-{index}", f"chunk-{index}") for index in range(20)]
     adapter = _production_reranker_adapter(ProductionReranker(), top_k=20)
     assert [item.chunk_id for item in adapter(case, candidates)] == [item.chunk_id for item in candidates]

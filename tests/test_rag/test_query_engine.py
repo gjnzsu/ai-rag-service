@@ -239,7 +239,7 @@ def test_pipeline_invalid_model_citation_cannot_create_mapping():
 
     result = pipeline.query("question")
 
-    assert result["answer"] == "answer from invented source"
+    assert result["answer"] == REFUSAL_ANSWER
     assert result["citations"] == []
     assert result["grounding"] == {"status": "validation_failed"}
     assert "evil.example" not in repr(result)

@@ -3,7 +3,7 @@
 from enum import Enum
 import math
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class QueryType(str, Enum):
@@ -42,6 +42,16 @@ class EvaluationCase(BaseModel):
         if len(set(value)) != len(value):
             raise ValueError("labels and expected facts must not contain duplicates")
         return value
+
+    @model_validator(mode="after")
+    def validate_label_contract(self) -> "EvaluationCase":
+        has_labels = bool(self.relevant_document_ids or self.relevant_chunk_ids)
+        if self.query_type is QueryType.UNANSWERABLE:
+            if not self.should_abstain or has_labels:
+                raise ValueError("unanswerable cases must abstain and must not have relevant labels")
+        elif not self.should_abstain and not has_labels:
+            raise ValueError("answerable cases require relevant document or chunk labels")
+        return self
 
 
 class RankedEvaluationResult(BaseModel):

@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Callable, Sequence
+import hashlib
 import json
 import math
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import time
 from typing import Any
@@ -90,6 +92,7 @@ class EvaluationRunner:
             for name in _CONFIGURATIONS
         }
         return {
+            "run_metadata": _build_run_metadata(cases),
             "configurations": configurations,
             "failures": failures,
             "recommendation": _recommend(configurations, frozenset(range(len(cases)))),
@@ -450,14 +453,95 @@ def write_report(path: Path, report: dict[str, Any]) -> None:
         raise
 
 
+def _build_run_metadata(
+    cases: Sequence[EvaluationCase],
+    *,
+    corpus_revision: str = "not_provided",
+    index_revision: str = "not_provided",
+    collection_name: str = "default",
+) -> dict[str, Any]:
+    """Record the minimum inputs needed to identify and reproduce an evaluation run."""
+    from app.config import settings
+
+    normalized_cases = "\n".join(
+        case.model_dump_json(exclude_none=False) for case in cases
+    ).encode("utf-8")
+    return {
+        "schema_version": 1,
+        "service_commit": _service_commit(),
+        "cases_sha256": hashlib.sha256(normalized_cases).hexdigest(),
+        "case_count": len(cases),
+        "corpus_revision": corpus_revision,
+        "index_revision": index_revision,
+        "collection_name": collection_name,
+        "effective_settings": {
+            "retrieval_mode": settings.retrieval_mode,
+            "retrieval_candidate_top_k": settings.retrieval_candidate_top_k,
+            "retrieval_final_top_k": settings.retrieval_final_top_k,
+            "retrieval_rrf_k": settings.retrieval_rrf_k,
+            "retrieval_score_threshold": settings.retrieval_score_threshold,
+            "jira_key_pattern": settings.jira_key_pattern,
+            "lexical_weights": {
+                "issue_key": settings.lexical_issue_key_weight,
+                "title": settings.lexical_title_weight,
+                "content": settings.lexical_content_weight,
+            },
+            "reranker_provider": settings.reranker_provider,
+            "reranker_openai_timeout_seconds": settings.reranker_openai_timeout_seconds,
+            "reranker_qwen_max_candidates": settings.reranker_qwen_max_candidates,
+            "reranker_qwen_max_length": settings.reranker_qwen_max_length,
+            "reranker_qwen_batch_size": settings.reranker_qwen_batch_size,
+            "reranker_qwen_timeout_seconds": settings.reranker_qwen_timeout_seconds,
+            "grounding_evidence_top_k": settings.grounding_evidence_top_k,
+            "grounding_prompt_max_chars": settings.grounding_prompt_max_chars,
+            "grounding_excerpt_max_chars": settings.grounding_excerpt_max_chars,
+            "answer_openai_timeout_seconds": settings.answer_openai_timeout_seconds,
+        },
+        "models": {
+            "answer": settings.answer_openai_model,
+            "openai_reranker": settings.reranker_openai_model,
+            "qwen_reranker": settings.reranker_qwen_model,
+            "qwen_revision": settings.reranker_qwen_revision,
+        },
+    }
+
+
+def _service_commit() -> str:
+    configured = os.environ.get("GIT_COMMIT_SHA", "").strip()
+    if configured:
+        return configured
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return "unavailable"
+    return result.stdout.strip() or "unavailable"
+
+
 def main(argv: Sequence[str] | None = None, *, runner_factory: Callable[[], EvaluationRunner] | None = None) -> int:
     """Run the evaluation harness through a small, testable CLI boundary."""
     parser = argparse.ArgumentParser(description="Evaluate A/B/C1/C2 retrieval configurations.")
     parser.add_argument("--cases", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--corpus-revision", required=True)
+    parser.add_argument("--index-revision", required=True)
+    parser.add_argument("--collection", default="default")
     arguments = parser.parse_args(argv)
+    cases = load_cases(arguments.cases)
     runner = (runner_factory or _default_runner)()
-    write_report(arguments.output, runner.run(load_cases(arguments.cases)))
+    report = runner.run(cases)
+    report["run_metadata"] = _build_run_metadata(
+        cases,
+        corpus_revision=arguments.corpus_revision,
+        index_revision=arguments.index_revision,
+        collection_name=arguments.collection,
+    )
+    write_report(arguments.output, report)
     return 0
 
 

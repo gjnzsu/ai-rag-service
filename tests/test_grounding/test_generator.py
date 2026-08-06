@@ -74,7 +74,7 @@ def test_generator_sends_one_strict_request_with_only_untrusted_evidence_contrac
     request = completions.calls[0]
     assert request["model"] == "gpt-5-2025-08-07"
     assert request["timeout"] == 7.5
-    assert request["temperature"] == 0
+    assert "temperature" not in request
     assert "tools" not in request
     schema_wrapper = request["response_format"]["json_schema"]
     assert request["response_format"]["type"] == "json_schema"
