@@ -48,6 +48,7 @@ def test_hybrid_retrieves_primary_candidates_and_prioritizes_exact_jira_matches(
         "configured_retrievers": ["vector", "lexical"], "successful_retrievers": ["vector", "lexical"],
         "empty_retrievers": [], "failed_retrievers": [],
         "exact_lookup": {"status": "ok", "attempted_count": 1, "failure_count": 0, "match_count": 1},
+        "reranker": {"provider": "none", "status": "disabled"},
     }
 
 
@@ -60,8 +61,99 @@ def test_pipeline_applies_default_and_caller_result_limits():
 
     assert vector.calls[0][1] == 30
     assert lexical.calls[0][1] == 30
-    assert len(default.candidates) == 20
+    assert len(default.candidates) == 10
     assert len(requested.candidates) == 2
+
+
+class _Reranker:
+    def __init__(self, result=None, error=None, provider="test"):
+        self.result = result
+        self.error = error
+        self.provider = provider
+        self.calls = []
+
+    def rerank(self, query, candidates, top_k):
+        self.calls.append((query, candidates, top_k))
+        if self.error:
+            raise self.error
+        if self.result is not None:
+            return self.result
+        return list(reversed(candidates))[:top_k]
+
+
+def test_pipeline_configured_noop_preserves_rrf_order_with_safe_diagnostics():
+    candidates = [_candidate(f"v-{index}") for index in range(15)]
+
+    result = HybridRetrievalPipeline(
+        _Retriever(candidates), _Retriever([]), final_top_k=7,
+    ).retrieve("private query with customer content")
+
+    assert [item.chunk_id for item in result.candidates] == [f"v-{index}" for index in range(7)]
+    assert result.diagnostics["reranker"] == {"provider": "none", "status": "disabled"}
+
+
+def test_pipeline_passes_fused_top_twenty_to_successful_reranker_and_returns_configured_count():
+    candidates = [_candidate(f"v-{index}") for index in range(30)]
+    reranker = _Reranker()
+
+    result = HybridRetrievalPipeline(
+        _Retriever(candidates), _Retriever([]), reranker=reranker, final_top_k=7,
+    ).retrieve("query")
+
+    assert len(reranker.calls) == 1
+    assert len(reranker.calls[0][1]) == 20
+    assert reranker.calls[0][2] == 7
+    assert [item.chunk_id for item in result.candidates] == [f"v-{index}" for index in range(19, 12, -1)]
+    assert result.diagnostics["reranker"] == {"provider": "test", "status": "ok"}
+
+
+@pytest.mark.parametrize("error", [TimeoutError("private timeout detail"), RuntimeError("password=secret")])
+def test_pipeline_reranker_error_preserves_exact_rrf_order_and_redacts_diagnostics(error):
+    query = "private query customer content"
+    candidates = [_candidate(f"v-{index}") for index in range(15)]
+    baseline = HybridRetrievalPipeline(
+        _Retriever(candidates), _Retriever([]), final_top_k=7,
+    ).retrieve(query)
+    reranker = _Reranker(error=error, provider="custom-provider")
+
+    result = HybridRetrievalPipeline(
+        _Retriever(candidates), _Retriever([]), reranker=reranker, final_top_k=7,
+    ).retrieve(query)
+
+    assert result.candidates == baseline.candidates
+    assert result.diagnostics["reranker"] == {
+        "provider": "custom-provider", "status": "fallback", "error_type": type(error).__name__,
+    }
+    rendered = repr(result.diagnostics["reranker"])
+    assert query not in rendered
+    assert "customer content" not in rendered
+    assert str(error) not in rendered
+
+
+@pytest.mark.parametrize("final_top_k", [5, 10, 20])
+def test_pipeline_final_count_respects_configuration_with_a_hard_twenty_cap(final_top_k):
+    candidates = [_candidate(f"v-{index}") for index in range(30)]
+    result = HybridRetrievalPipeline(
+        _Retriever(candidates), _Retriever([]), final_top_k=final_top_k,
+    ).retrieve("query", top_k=25)
+
+    assert len(result.candidates) == final_top_k
+
+
+@pytest.mark.parametrize(
+    ("vector", "lexical", "expected"),
+    [
+        (_Retriever(error=RuntimeError("vector")), _Retriever([_candidate("l", "bm25")]), ["l"]),
+        (_Retriever([_candidate("v")]), _Retriever(error=RuntimeError("lexical")), ["v"]),
+    ],
+)
+def test_pipeline_primary_fallbacks_still_reach_reranking(vector, lexical, expected):
+    reranker = _Reranker()
+
+    result = HybridRetrievalPipeline(vector, lexical, reranker=reranker).retrieve("query")
+
+    assert [item.chunk_id for item in result.candidates] == expected
+    assert len(reranker.calls) == 1
 
 
 def test_pipeline_rejects_a_configured_final_limit_above_twenty():

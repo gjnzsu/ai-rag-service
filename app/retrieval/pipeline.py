@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field
 
 from app.config import settings
 from app.pipeline.store import get_jira_key_context
+from app.reranking import build_reranker
+from app.reranking.base import Reranker
 from app.retrieval.fusion import MAX_FUSED_CANDIDATES, ReciprocalRankFusion
 from app.retrieval.interfaces import LexicalRetriever, VectorRetriever
 from app.retrieval.lexical import SQLiteFTSIndex
@@ -44,6 +46,8 @@ class HybridRetrievalPipeline:
         candidate_top_k: int | None = None,
         final_top_k: int | None = None,
         rrf_k: int | None = None,
+        reranker: Reranker | None = None,
+        reranker_provider: str | None = None,
     ) -> None:
         self.mode = settings.retrieval_mode if mode is None else mode
         if self.mode not in {"vector", "lexical", "hybrid"}:
@@ -66,6 +70,10 @@ class HybridRetrievalPipeline:
             else SQLiteFTSIndex() if self.mode in {"lexical", "hybrid"} else None
         )
         self.exact_lookup = exact_lookup if exact_lookup is not None else _exact_jira_lookup
+        self.reranker = (
+            reranker if reranker is not None
+            else build_reranker(reranker_provider, settings=settings)
+        )
 
     def retrieve(
         self,
@@ -111,20 +119,56 @@ class HybridRetrievalPipeline:
         if len(failures) == len(primary_names):
             raise RetrievalUnavailableError("All configured retrieval backends are unavailable")
 
-        fused = ReciprocalRankFusion(k=self.rrf_k).fuse(result_sets, requested_top_k)
+        fused = ReciprocalRankFusion(k=self.rrf_k).fuse(result_sets, MAX_FUSED_CANDIDATES)
+        reranked, reranker_diagnostics = self._rerank(query, fused, requested_top_k)
         diagnostics: dict[str, Any] = {
             "configured_retrievers": primary_names,
             "successful_retrievers": successful,
             "empty_retrievers": empty,
             "failed_retrievers": failures,
             "exact_lookup": _exact_diagnostics(exact_keys, exact_candidates, exact_failure_count),
+            "reranker": reranker_diagnostics,
         }
         return RetrievalResult(
-            candidates=fused,
+            candidates=reranked,
             retrieval_mode=self.mode,
             failures=failures,
             diagnostics=diagnostics,
         )
+
+    def _rerank(
+        self,
+        query: str,
+        fused: list[RetrievalCandidate],
+        top_k: int,
+    ) -> tuple[list[RetrievalCandidate], dict[str, str]]:
+        provider = str(getattr(self.reranker, "provider", "custom"))
+        fallback = [candidate.model_copy(deep=True) for candidate in fused[:top_k]]
+        try:
+            reranked = self.reranker.rerank(
+                query,
+                [candidate.model_copy(deep=True) for candidate in fused],
+                top_k,
+            )
+            result = _trusted_reranker_order(fused, reranked, top_k)
+        except Exception as error:
+            logger.warning(
+                "reranker_fallback",
+                provider=provider,
+                error_type=type(error).__name__,
+            )
+            return fallback, {
+                "provider": provider,
+                "status": "fallback",
+                "error_type": type(error).__name__,
+            }
+
+        status = "disabled" if provider == "none" else str(getattr(self.reranker, "last_status", "ok"))
+        diagnostics = {"provider": provider, "status": status}
+        error_type = getattr(self.reranker, "last_error_type", None)
+        if status == "fallback" and isinstance(error_type, str):
+            diagnostics["error_type"] = error_type
+        return result, diagnostics
 
     def _exact_candidates(
         self,
@@ -160,6 +204,28 @@ def _primary_names(mode: RetrievalMode) -> list[str]:
     if mode == "hybrid":
         return ["vector", "lexical"]
     return [mode]
+
+
+def _trusted_reranker_order(
+    fused: list[RetrievalCandidate],
+    reranked: list[RetrievalCandidate],
+    top_k: int,
+) -> list[RetrievalCandidate]:
+    if not isinstance(reranked, list):
+        raise TypeError("Reranker must return a list")
+    canonical = {candidate.chunk_id: candidate for candidate in fused}
+    seen: set[str] = set()
+    trusted: list[RetrievalCandidate] = []
+    for output in reranked[:top_k]:
+        if not isinstance(output, RetrievalCandidate):
+            raise TypeError("Reranker returned an invalid candidate")
+        if output.chunk_id not in canonical or output.chunk_id in seen:
+            raise ValueError("Reranker returned an invalid chunk ID")
+        seen.add(output.chunk_id)
+        candidate = canonical[output.chunk_id].model_copy(deep=True)
+        candidate.rerank_score = output.rerank_score
+        trusted.append(candidate)
+    return trusted
 
 
 def _exact_diagnostics(
