@@ -510,3 +510,15 @@ Defaults preserve current requests and make failures fall back to the least expe
 - Calibrate refusal thresholds from the evaluation set.
 - Preserve existing API fields and add new fields only.
 - Defer PostgreSQL and pgvector to a future production design.
+
+## 19. Deferred Production Follow-ups
+
+Exact Jira-key lookup does not short-circuit the PoC retrieval pipeline. Keyword
+and embedding retrieval still run, exact candidates join them in RRF, and exact
+matches are prioritized before the default no-op reranker. This preserves useful
+related context while keeping the PoC behavior simple.
+
+If production evaluation shows unnecessary latency or an enabled reranker can
+demote an exact result, consider either short-circuiting simple exact-key queries
+or pinning exact matches ahead of reranking the remaining candidates. These are
+production optimizations and are intentionally outside the PoC scope.
