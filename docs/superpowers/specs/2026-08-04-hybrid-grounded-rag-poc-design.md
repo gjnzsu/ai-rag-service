@@ -100,7 +100,10 @@ Ground-truth chunk IDs will be assigned after the canonical chunk identity schem
 
 ![Hybrid Retrieval and Grounded Answers PoC Architecture](assets/hybrid-grounded-rag-poc-architecture.drawio.png)
 
-The diagram is exported with its draw.io XML embedded, so it can be opened directly in draw.io for future edits.
+The editable source is stored in
+`assets/hybrid-grounded-rag-poc-architecture.drawio`. The PNG export also keeps
+its draw.io XML embedded, so either file can be opened directly in draw.io for
+future edits.
 
 ### 6.1 Indexing Flow
 

@@ -39,6 +39,11 @@ answer generation with its pinned GPT-5 model.
 
 ## Hybrid retrieval, reranking, and grounding
 
+New to RAG? Start with the beginner-friendly
+[RAG Pipeline Fundamentals](docs/guides/rag-pipeline-fundamentals.md) guide for
+the concepts behind chunking, tokenization, FTS5/BM25, embeddings, dual
+indexing, RRF, and query decomposition.
+
 The default `RETRIEVAL_MODE=hybrid` combines SQLite FTS/BM25-style lexical
 retrieval with Chroma vector retrieval using reciprocal-rank fusion (RRF). The
 candidate and final limits default to 30 and 10 respectively, with

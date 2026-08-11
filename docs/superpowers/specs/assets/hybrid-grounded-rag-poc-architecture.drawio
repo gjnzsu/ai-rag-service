@@ -1,0 +1,181 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram id="hybrid-grounded-rag-poc" name="Architecture">
+    <mxGraphModel dx="1303" dy="793" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="980" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1F2937;" value="Hybrid Retrieval and Grounded Answers PoC Architecture" vertex="1">
+          <mxGeometry height="40" width="1160" x="520" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="index_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F3F7FC;strokeColor=#6C8EBF;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="INDEXING PATH" vertex="1">
+          <mxGeometry height="320" width="2160" x="20" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jira" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;Jira&lt;/b&gt;&lt;br&gt;SCRUM Issues" vertex="1">
+          <mxGeometry height="60" width="150" x="30" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="confluence" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;Confluence&lt;/b&gt;&lt;br&gt;AITest Space" vertex="1">
+          <mxGeometry height="60" width="150" x="30" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="pdf" parent="index_lane" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;PDF Files&lt;/b&gt;&lt;br&gt;Test Documents" vertex="1">
+          <mxGeometry height="70" width="150" x="30" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="connectors" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Connector Adapters&lt;/b&gt;&lt;br&gt;Fetch and parse source data" vertex="1">
+          <mxGeometry height="70" width="180" x="250" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="canonical" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Canonical Document&lt;/b&gt;&lt;br&gt;Stable IDs, metadata, source URL" vertex="1">
+          <mxGeometry height="70" width="190" x="490" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="chunker" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Shared Chunker&lt;/b&gt;&lt;br&gt;Deterministic chunk IDs" vertex="1">
+          <mxGeometry height="70" width="180" x="730" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="embedder" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;OpenAI Embedder&lt;/b&gt;&lt;br&gt;text-embedding-3-small" vertex="1">
+          <mxGeometry height="70" width="190" x="980" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="fts_writer" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;FTS5 Index Writer&lt;/b&gt;&lt;br&gt;Key + title + content" vertex="1">
+          <mxGeometry height="70" width="190" x="980" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="chroma" parent="index_lane" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;ChromaDB&lt;/b&gt;&lt;br&gt;Vectors + metadata" vertex="1">
+          <mxGeometry height="70" width="150" x="1240" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sqlite" parent="index_lane" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;SQLite FTS5&lt;/b&gt;&lt;br&gt;Text + inverted index" vertex="1">
+          <mxGeometry height="70" width="150" x="1240" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="index_note" parent="index_lane" style="shape=note;whiteSpace=wrap;html=1;size=20;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Indexing invariant&lt;/b&gt;&lt;br&gt;Both stores use the same document_id and chunk_id.&lt;br&gt;Ingest builds the FTS5 inverted index.&lt;br&gt;BM25 scoring runs only when queried." vertex="1">
+          <mxGeometry height="140" width="350" x="1490" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;Blue: service component&lt;br&gt;Purple: model / scoring&lt;br&gt;Green: persistent index&lt;br&gt;Dashed border: optional stage" vertex="1">
+          <mxGeometry height="160" width="220" x="1900" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i1" edge="1" parent="index_lane" source="jira" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i2" edge="1" parent="index_lane" source="confluence" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i3" edge="1" parent="index_lane" source="pdf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i4" edge="1" parent="index_lane" source="connectors" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="canonical">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i5" edge="1" parent="index_lane" source="canonical" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="chunker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i6" edge="1" parent="index_lane" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="embedder">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i7" edge="1" parent="index_lane" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="fts_writer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i8" edge="1" parent="index_lane" source="embedder" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="chroma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_i9" edge="1" parent="index_lane" source="fts_writer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="query_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F8F4FB;strokeColor=#9673A6;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="QUERY AND GROUNDED ANSWER PATH" vertex="1">
+          <mxGeometry height="420" width="2160" x="20" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="client" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;AI Application&lt;/b&gt;&lt;br&gt;Question + filters" vertex="1">
+          <mxGeometry height="70" width="150" x="30" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;FastAPI&lt;/b&gt;&lt;br&gt;/retrieve or /query" vertex="1">
+          <mxGeometry height="70" width="160" x="220" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="query_hints" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Query Hints&lt;/b&gt;&lt;br&gt;Jira key + metadata filters" vertex="1">
+          <mxGeometry height="70" width="180" x="420" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="coordinator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Retrieval Coordinator&lt;/b&gt;&lt;br&gt;Runs independent candidate searches" vertex="1">
+          <mxGeometry height="70" width="190" x="640" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="exact" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Exact Match&lt;/b&gt;&lt;br&gt;Jira key / filters" vertex="1">
+          <mxGeometry height="60" width="160" x="880" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="vector_retriever" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Vector Retriever&lt;/b&gt;&lt;br&gt;ChromaDB semantic Top 30" vertex="1">
+          <mxGeometry height="60" width="160" x="880" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="lexical_retriever" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Lexical Retriever&lt;/b&gt;&lt;br&gt;Keyword match + BM25 rank&lt;br&gt;Top 30" vertex="1">
+          <mxGeometry height="60" width="160" x="880" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="rrf" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;RRF Fusion&lt;/b&gt;&lt;br&gt;Merge, rank, dedupe&lt;br&gt;Top 20" vertex="1">
+          <mxGeometry height="80" width="165" x="1090" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="reranker" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;dashed=1;strokeWidth=2;" value="&lt;b&gt;Optional Reranker&lt;/b&gt;&lt;br&gt;NoOp / GPT-5 / Qwen3 0.6B" vertex="1">
+          <mxGeometry height="80" width="190" x="1300" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="selector" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Evidence Selector&lt;/b&gt;&lt;br&gt;Thresholds, diversity, sufficiency&lt;br&gt;Top 5-10" vertex="1">
+          <mxGeometry height="80" width="190" x="1535" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve_output" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;/retrieve&lt;/b&gt;&lt;br&gt;Evidence + scores&lt;br&gt;chunk IDs + source URLs" vertex="1">
+          <mxGeometry height="85" width="175" x="1780" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="generator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Answer Generator&lt;/b&gt;&lt;br&gt;Evidence IDs + grounded prompt" vertex="1">
+          <mxGeometry height="75" width="175" x="1780" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="validator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Citation Validator&lt;/b&gt;&lt;br&gt;Known IDs + server-owned URLs" vertex="1">
+          <mxGeometry height="75" width="165" x="1980" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="query_output" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;/query&lt;/b&gt;&lt;br&gt;Answer + citations&lt;br&gt;grounding status" vertex="1">
+          <mxGeometry height="70" width="165" x="1980" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="fallback_note" parent="query_lane" style="shape=note;whiteSpace=wrap;html=1;size=20;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Safe degradation&lt;/b&gt;&lt;br&gt;One retriever fails: use the other path. Reranker fails: keep RRF order. Insufficient evidence: refuse without fabricated citations." vertex="1">
+          <mxGeometry height="105" width="635" x="1090" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q1" edge="1" parent="query_lane" source="client" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q2" edge="1" parent="query_lane" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="query_hints">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q3" edge="1" parent="query_lane" source="query_hints" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="coordinator">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q4" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="exact">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q5" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="vector_retriever">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q6" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="lexical_retriever">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q7" edge="1" parent="query_lane" source="exact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q8" edge="1" parent="query_lane" source="vector_retriever" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q9" edge="1" parent="query_lane" source="lexical_retriever" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q10" edge="1" parent="query_lane" source="rrf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="reranker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q11" edge="1" parent="query_lane" source="reranker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="selector">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q12" edge="1" parent="query_lane" source="selector" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;fontColor=#4D7A38;" target="retrieve_output" value="evidence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q13" edge="1" parent="query_lane" source="selector" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;fontColor=#6A4D79;" target="generator" value="selected">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q14" edge="1" parent="query_lane" source="generator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="validator">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_q15" edge="1" parent="query_lane" source="validator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="query_output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eval_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F5F5F5;strokeColor=#666666;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="EVALUATION HARNESS" vertex="1">
+          <mxGeometry height="120" width="2160" x="20" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="eval_configs" parent="eval_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Comparable Configurations&lt;/b&gt;&lt;br&gt;A Vector-only | B Hybrid + RRF | C1 + GPT-5 | C2 + Qwen3" vertex="1">
+          <mxGeometry height="55" width="700" x="140" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="eval_metrics" parent="eval_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Quality and Cost Metrics&lt;/b&gt;&lt;br&gt;Recall@20 | Hit@5 | MRR@10 | Context Precision | Citation Correctness | Abstention | P50/P95 | Tokens | CPU/RAM" vertex="1">
+          <mxGeometry height="55" width="1080" x="930" y="45" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
