@@ -124,6 +124,13 @@ ChromaDB     SQLite FTS5
 
 The shared indexer will produce chunks once and send the same stable chunk identities to both indexes. Index writes must be idempotent at the document level.
 
+The lexical branch does not calculate BM25 relevance during ingestion. It writes
+the searchable `issue_key`, `title`, and chunk `content` fields into SQLite FTS5,
+where FTS5 tokenizes them and builds the inverted index. At query time, SQLite
+performs keyword matching and calculates BM25 ranking using the configured field
+weights (defaults: issue key `10`, title `5`, content `1`). Chroma-only data must
+therefore be reingested before lexical or hybrid retrieval can find it.
+
 ### 6.2 Query Flow
 
 ```text

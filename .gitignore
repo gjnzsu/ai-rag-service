@@ -10,4 +10,5 @@ lexical.db
 dist/
 build/
 .venv/
+.venv-*/
 venv/
