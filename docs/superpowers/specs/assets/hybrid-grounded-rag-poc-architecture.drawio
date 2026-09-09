@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6" pages="2">
   <diagram id="hybrid-grounded-rag-poc" name="Architecture">
     <mxGraphModel dx="1303" dy="793" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="980" math="0" shadow="0" adaptiveColors="auto">
       <root>
@@ -174,6 +174,167 @@
         </mxCell>
         <mxCell id="eval_metrics" parent="eval_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Quality and Cost Metrics&lt;/b&gt;&lt;br&gt;Recall@20 | Hit@5 | MRR@10 | Context Precision | Citation Correctness | Abstention | P50/P95 | Tokens | CPU/RAM" vertex="1">
           <mxGeometry height="55" width="1080" x="930" y="45" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="jira-graph-rag-poc" name="Graph RAG Component Flow">
+    <mxGraphModel dx="1971" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1160" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;fillColor=none;strokeColor=none;fontSize=25;" value="&lt;b&gt;Jira Graph RAG PoC — Platform Component Flow&lt;/b&gt;" vertex="1">
+          <mxGeometry height="45" width="1320" x="240" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="build" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="1  READ-ONLY SNAPSHOT BUILD / PUBLISH" vertex="1">
+          <mxGeometry height="310" width="1760" x="20" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="jira" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Jira AIPLAT&lt;/b&gt;&lt;br&gt;Epics / Stories / Bugs&lt;br&gt;Parent + issue links" vertex="1">
+          <mxGeometry height="75" width="220" x="25" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="collect" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Jira collector + normalizer&lt;/b&gt;&lt;br&gt;Pagination / stable IDs&lt;br&gt;CHILD_OF / directed BLOCKS" vertex="1">
+          <mxGeometry height="75" width="250" x="290" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="buildsvc" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Snapshot builder&lt;/b&gt;&lt;br&gt;Canonical records + chunks&lt;br&gt;OpenAI embedding adapter" vertex="1">
+          <mxGeometry height="75" width="240" x="590" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="neo" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Neo4j&lt;/b&gt;&lt;br&gt;Issue nodes + typed edges" vertex="1">
+          <mxGeometry height="65" width="260" x="910" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="chr" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Chroma&lt;/b&gt;&lt;br&gt;text-embedding-3-small vectors" vertex="1">
+          <mxGeometry height="65" width="260" x="910" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="fts" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;SQLite FTS5&lt;/b&gt;&lt;br&gt;Same-snapshot text + keywords" vertex="1">
+          <mxGeometry height="65" width="260" x="910" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="manifest" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Active manifest&lt;/b&gt;&lt;br&gt;Publish only when all stores ready&lt;br&gt;Failure keeps previous snapshot" vertex="1">
+          <mxGeometry height="85" width="360" x="1320" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" edge="1" parent="build" source="jira" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="collect" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" edge="1" parent="build" source="collect" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="buildsvc" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="neo" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="chr" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" target="fts" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="171" />
+              <mxPoint x="870" y="262" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b6" edge="1" parent="build" source="neo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" edge="1" parent="build" source="chr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" edge="1" parent="build" source="fts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="2  STATELESS GRAPH API / RETRIEVAL — ONE SNAPSHOT PER REQUEST" vertex="1">
+          <mxGeometry height="385" width="1760" x="20" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="entry" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Platform consumers / BA-PM demo&lt;/b&gt;&lt;br&gt;/graph/demo: Grouped + Network&lt;br&gt;Overview / Epic / dependencies" vertex="1">
+          <mxGeometry height="90" width="250" x="25" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph API&lt;/b&gt;&lt;br&gt;GET structure endpoints&lt;br&gt;POST /graph/retrieve or /graph/query" vertex="1">
+          <mxGeometry height="90" width="260" x="325" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="seed" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Seed resolution&lt;/b&gt;&lt;br&gt;Explicit key OR hybrid search&lt;br&gt;Vector + FTS / RRF + exact key" vertex="1">
+          <mxGeometry height="90" width="260" x="650" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="expand" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph retrieval service&lt;/b&gt;&lt;br&gt;Overview / Epic structure&lt;br&gt;Directed dependency traversal" vertex="1">
+          <mxGeometry height="90" width="260" x="980" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="evidence" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph + text evidence&lt;/b&gt;&lt;br&gt;Nodes / paths / source URLs&lt;br&gt;Coverage + diagnostics" vertex="1">
+          <mxGeometry height="90" width="330" x="1310" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="pin" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Manifest resolver&lt;/b&gt;&lt;br&gt;Pin project + snapshot" vertex="1">
+          <mxGeometry height="70" width="260" x="325" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="textread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;SnapshotSearch&lt;/b&gt;&lt;br&gt;Chroma + SQLite FTS5" vertex="1">
+          <mxGeometry height="70" width="260" x="650" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="graphread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Neo4j GraphStore&lt;/b&gt;&lt;br&gt;Scoped nodes + edges" vertex="1">
+          <mxGeometry height="70" width="260" x="980" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="bodyread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Same-snapshot text&lt;/b&gt;&lt;br&gt;Linked issue passages" vertex="1">
+          <mxGeometry height="70" width="330" x="1310" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" edge="1" parent="retrieve" source="entry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="api" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" edge="1" parent="retrieve" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="seed" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" edge="1" parent="retrieve" source="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="expand" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" edge="1" parent="retrieve" source="expand" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="evidence" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" edge="1" parent="retrieve" source="pin" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="api" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" edge="1" parent="retrieve" source="textread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="seed" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" edge="1" parent="retrieve" source="graphread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="expand" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" edge="1" parent="retrieve" source="bodyread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="evidence" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rnote" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="GET endpoints return structure without an LLM. /graph/retrieve returns evidence directly. /graph/query adds the answer path below.&lt;br&gt;Dependency traversal: at most 2 hops / 100 nodes; preserve recorded Done → Done links; no automatic Epic-membership enrichment." vertex="1">
+          <mxGeometry height="65" width="1550" x="90" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="answer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="3  OPTIONAL GROUNDED ANSWER — REUSES EXISTING GENERATOR / CITATION VALIDATOR" vertex="1">
+          <mxGeometry height="265" width="1760" x="20" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="adapt" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;GraphAnswerer&lt;/b&gt;&lt;br&gt;Graph facts + text → evidence IDs&lt;br&gt;Coverage-aware grounded prompt" vertex="1">
+          <mxGeometry height="85" width="300" x="70" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="gen" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;GroundedAnswerGenerator&lt;/b&gt;&lt;br&gt;OpenAI gpt-5.5-2026-04-23&lt;br&gt;Chat Completions / strict JSON" vertex="1">
+          <mxGeometry height="85" width="310" x="460" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="validate" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;CitationValidator&lt;/b&gt;&lt;br&gt;Known evidence IDs&lt;br&gt;Server-owned source URLs" vertex="1">
+          <mxGeometry height="85" width="280" x="860" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="out" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;/graph/query response&lt;/b&gt;&lt;br&gt;Answer + citations + status&lt;br&gt;Retain retrieval evidence" vertex="1">
+          <mxGeometry height="85" width="370" x="1250" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="answer" source="adapt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="gen" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="answer" source="gen" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="validate" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="answer" source="validate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="out" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="anote" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="Input: the evidence envelope from step 2. Missing evidence → insufficient_evidence; model failure → answer_unavailable with evidence retained.&lt;br&gt;Public service component: no Jira write-back, multi-turn business workflow, or production deployment in this PoC." vertex="1">
+          <mxGeometry height="60" width="1530" x="100" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Legend&lt;/b&gt;  Blue: service / data flow arrows    Green: storage or read access to the same stores    Purple: model boundary    Yellow: source / constraint&lt;br&gt;SnapshotSearch reuses hybrid primitives; it does not call the legacy /retrieve endpoint or its optional reranker. Original architecture remains on page 1." vertex="1">
+          <mxGeometry height="65" width="1550" x="120" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="answer_input" edge="1" parent="1" source="evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="adapt">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1760" y="620" />
+              <mxPoint x="1760" y="790" />
+              <mxPoint x="55" y="790" />
+              <mxPoint x="55" y="907" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
