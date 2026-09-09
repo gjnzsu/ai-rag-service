@@ -1,0 +1,75 @@
+{
+  "snapshot_id": "7b9d816aa2c445c9919635aff149f705",
+  "counts": {
+    "Epic": 8,
+    "Story": 26,
+    "Bug": 1
+  },
+  "parents": {
+    "AIPLAT-37": [
+      "AIPLAT-36"
+    ],
+    "AIPLAT-23": [
+      "AIPLAT-17"
+    ]
+  },
+  "paths": [
+    {
+      "issue_ids": [
+        "12065",
+        "12051"
+      ],
+      "edges": [
+        {
+          "scope": {
+            "site_id": "https://30156758.atlassian.net",
+            "project_key": "AIPLAT",
+            "snapshot_id": "7b9d816aa2c445c9919635aff149f705"
+          },
+          "source_issue_id": "12065",
+          "target_issue_id": "12051",
+          "relation_type": "BLOCKS",
+          "origin_issue_id": "12051",
+          "source_field": "issuelinks",
+          "source_type": "Blocks",
+          "source_direction": "inward",
+          "link_id": "10249"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "scope": {
+        "site_id": "https://30156758.atlassian.net",
+        "project_key": "AIPLAT",
+        "snapshot_id": "7b9d816aa2c445c9919635aff149f705"
+      },
+      "issue_id": "12051",
+      "key": "AIPLAT-23",
+      "issue_type": "Story",
+      "title": "Publish approved model to platform catalog",
+      "status": "To Do",
+      "status_category": "new",
+      "source_url": "https://30156758.atlassian.net/browse/AIPLAT-23",
+      "updated_at": "2026-09-09T09:22:54.292000+08:00",
+      "document_id": "jira:2aa9f369c18c921b6cf3de78d05fd0a67b3567e92d56183d3ec48c1747f4077a"
+    },
+    {
+      "scope": {
+        "site_id": "https://30156758.atlassian.net",
+        "project_key": "AIPLAT",
+        "snapshot_id": "7b9d816aa2c445c9919635aff149f705"
+      },
+      "issue_id": "12065",
+      "key": "AIPLAT-37",
+      "issue_type": "Story",
+      "title": "Tech debt: ai-gateway route rules require redeploy for provider changes",
+      "status": "To Do",
+      "status_category": "new",
+      "source_url": "https://30156758.atlassian.net/browse/AIPLAT-37",
+      "updated_at": "2026-09-09T09:22:54.196000+08:00",
+      "document_id": "jira:ac3ea7bf8154efda289d2c2b7f77974d47558dcc489d908cf72cb361c196ed4f"
+    }
+  ]
+}

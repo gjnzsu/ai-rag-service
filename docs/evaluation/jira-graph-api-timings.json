@@ -1,0 +1,21 @@
+{
+  "sample_count_per_endpoint": 10,
+  "concurrency": 1,
+  "warmup_per_endpoint": 1,
+  "platform": "Windows-10-10.0.19045-SP0",
+  "timings_ms": {
+    "overview": {
+      "p50": 40.12,
+      "p95_nearest_rank": 65.42
+    },
+    "epic_detail": {
+      "p50": 33.31,
+      "p95_nearest_rank": 54.29
+    },
+    "dependencies": {
+      "p50": 60.84,
+      "p95_nearest_rank": 99.49
+    }
+  },
+  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+}

@@ -1,0 +1,94 @@
+{
+  "scope": {
+    "project_key": "AIPLAT",
+    "site_id": "https://30156758.atlassian.net",
+    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+  },
+  "checks": {
+    "all_nodes_exact": true,
+    "all_edges_exact": true,
+    "full_type_counts": true,
+    "AIPLAT-1_children_exact": true,
+    "AIPLAT-1_status_exact": true,
+    "AIPLAT-5_children_exact": true,
+    "AIPLAT-5_status_exact": true,
+    "AIPLAT-9_children_exact": true,
+    "AIPLAT-9_status_exact": true,
+    "AIPLAT-13_children_exact": true,
+    "AIPLAT-13_status_exact": true,
+    "AIPLAT-17_children_exact": true,
+    "AIPLAT-17_status_exact": true,
+    "AIPLAT-25_children_exact": true,
+    "AIPLAT-25_status_exact": true,
+    "AIPLAT-36_children_exact": true,
+    "AIPLAT-36_status_exact": true,
+    "AIPLAT-41_children_exact": true,
+    "AIPLAT-41_status_exact": true,
+    "canonical_blocks": true,
+    "done_pair_excluded": true,
+    "query_preserves_evidence": true
+  },
+  "all_passed": true,
+  "timings": {
+    "overview": {
+      "samples_ms": [
+        31.294,
+        30.261,
+        27.478,
+        26.263,
+        25.352,
+        37.459,
+        25.218,
+        26.249,
+        27.989,
+        28.742
+      ],
+      "p50_ms": 27.7335,
+      "p95_nearest_rank_ms": 37.459
+    },
+    "detail": {
+      "samples_ms": [
+        24.969,
+        25.961,
+        21.987,
+        38.254,
+        22.113,
+        22.521,
+        23.984,
+        25.251,
+        27.032,
+        27.786
+      ],
+      "p50_ms": 25.11,
+      "p95_nearest_rank_ms": 38.254
+    },
+    "dependencies": {
+      "samples_ms": [
+        37.718,
+        38.383,
+        44.271,
+        32.685,
+        33.049,
+        32.414,
+        32.896,
+        50.198,
+        32.094,
+        51.018
+      ],
+      "p50_ms": 35.3835,
+      "p95_nearest_rank_ms": 51.018
+    }
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "logical_cpus": 16,
+    "concurrency": 1,
+    "warmup_per_endpoint": 1,
+    "samples_per_endpoint": 10
+  },
+  "live_query_answer_status": "answer_unavailable",
+  "live_query_diagnostics": [
+    "generation_unavailable"
+  ]
+}

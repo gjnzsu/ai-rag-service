@@ -1,0 +1,5055 @@
+{
+  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+  "scope": {
+    "site_id": "https://30156758.atlassian.net",
+    "project_key": "AIPLAT",
+    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+  },
+  "budgets": {
+    "top_k": 5,
+    "limit": 100,
+    "text_budget": 16000
+  },
+  "cases": [
+    {
+      "id": "R01",
+      "question": "List all Epics in the AIPLAT backlog and report the total numbers of Epics, Stories and Bugs.",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-42",
+            "AIPLAT-43"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-42",
+            "AIPLAT-43"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2008,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.125,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 10.625,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-21",
+            "AIPLAT-23",
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-3",
+            "AIPLAT-31",
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-4",
+            "AIPLAT-40",
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45",
+            "AIPLAT-46",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-3",
+            "AIPLAT-4",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-10",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-11",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-12",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-19",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-2",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-21",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-23",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-27",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-29",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-3",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-31",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-37",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-38",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-39",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-4",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-40",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-42",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-43",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-44",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-45",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "text_budget_exceeded"
+          ],
+          "text_characters": 16000,
+          "truncated": true,
+          "structure": {
+            "counts": {
+              "total": 35,
+              "by_type": {
+                "Epic": 8,
+                "Story": 26,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 18,
+                "To Do": 10,
+                "In Progress": 7
+              },
+              "by_status_category": {
+                "done": 18,
+                "new": 10,
+                "indeterminate": 7
+              }
+            },
+            "epics": [
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12029",
+                  "key": "AIPLAT-1",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model routing setup",
+                  "status": "Done",
+                  "status_category": "done",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-1",
+                  "updated_at": "2026-07-14T15:41:15.013000+08:00",
+                  "document_id": "jira:06144e01e4d91a355985cfde5c3627f14a7975f0fd25dbe03801e4bed83899e0"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12033",
+                  "key": "AIPLAT-5",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model fallback capability",
+                  "status": "To Do",
+                  "status_category": "new",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+                  "updated_at": "2026-07-02T17:36:25.326000+08:00",
+                  "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 1,
+                    "To Do": 2
+                  },
+                  "by_status_category": {
+                    "done": 1,
+                    "new": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12037",
+                  "key": "AIPLAT-9",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for security guardrails setup on PII data and prompt ingestion",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-9",
+                  "updated_at": "2026-07-02T17:38:39.541000+08:00",
+                  "document_id": "jira:66274e591c533954cef9a045301c9478a34800e9ade85930fc42c644d09482f5"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12041",
+                  "key": "AIPLAT-13",
+                  "issue_type": "Epic",
+                  "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+                  "updated_at": "2026-07-02T17:38:54.274000+08:00",
+                  "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 3,
+                    "Bug": 1
+                  },
+                  "by_status": {
+                    "Done": 3,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 3,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12045",
+                  "key": "AIPLAT-17",
+                  "issue_type": "Epic",
+                  "title": "ai-model-service 1.0 MVP for ai model onboarding",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-17",
+                  "updated_at": "2026-07-02T17:39:08.019000+08:00",
+                  "document_id": "jira:c152c7292b2a5f2a1dc2b6be0484ec27eaee77dae9f9a2380abb49d27c162f31"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12053",
+                  "key": "AIPLAT-25",
+                  "issue_type": "Epic",
+                  "title": "ai platform compliance review process",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+                  "updated_at": "2026-07-14T15:42:02.402000+08:00",
+                  "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "In Progress": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "indeterminate": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12064",
+                  "key": "AIPLAT-36",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous improvement",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+                  "updated_at": "2026-07-02T17:39:23.859000+08:00",
+                  "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 2,
+                    "Done": 2
+                  },
+                  "by_status_category": {
+                    "new": 2,
+                    "done": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12069",
+                  "key": "AIPLAT-41",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous learning",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+                  "updated_at": "2026-07-02T17:39:32.111000+08:00",
+                  "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 3,
+                    "Done": 1
+                  },
+                  "by_status_category": {
+                    "new": 3,
+                    "done": 1
+                  }
+                }
+              }
+            ],
+            "unassigned": [],
+            "other": []
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 2.568,
+          "negative_check": null
+        },
+        "G": {
+          "status": "partial",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-21",
+            "AIPLAT-23",
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-3",
+            "AIPLAT-31",
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-4",
+            "AIPLAT-40",
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45",
+            "AIPLAT-46",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-3",
+            "AIPLAT-4",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "returned_edges": [],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot",
+            "text_budget_exceeded"
+          ],
+          "text_characters": 16000,
+          "truncated": true,
+          "structure": {
+            "counts": {
+              "total": 35,
+              "by_type": {
+                "Epic": 8,
+                "Story": 26,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 18,
+                "To Do": 10,
+                "In Progress": 7
+              },
+              "by_status_category": {
+                "done": 18,
+                "new": 10,
+                "indeterminate": 7
+              }
+            },
+            "epics": [
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12029",
+                  "key": "AIPLAT-1",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model routing setup",
+                  "status": "Done",
+                  "status_category": "done",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-1",
+                  "updated_at": "2026-07-14T15:41:15.013000+08:00",
+                  "document_id": "jira:06144e01e4d91a355985cfde5c3627f14a7975f0fd25dbe03801e4bed83899e0"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12033",
+                  "key": "AIPLAT-5",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model fallback capability",
+                  "status": "To Do",
+                  "status_category": "new",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+                  "updated_at": "2026-07-02T17:36:25.326000+08:00",
+                  "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 1,
+                    "To Do": 2
+                  },
+                  "by_status_category": {
+                    "done": 1,
+                    "new": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12037",
+                  "key": "AIPLAT-9",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for security guardrails setup on PII data and prompt ingestion",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-9",
+                  "updated_at": "2026-07-02T17:38:39.541000+08:00",
+                  "document_id": "jira:66274e591c533954cef9a045301c9478a34800e9ade85930fc42c644d09482f5"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12041",
+                  "key": "AIPLAT-13",
+                  "issue_type": "Epic",
+                  "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+                  "updated_at": "2026-07-02T17:38:54.274000+08:00",
+                  "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 3,
+                    "Bug": 1
+                  },
+                  "by_status": {
+                    "Done": 3,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 3,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12045",
+                  "key": "AIPLAT-17",
+                  "issue_type": "Epic",
+                  "title": "ai-model-service 1.0 MVP for ai model onboarding",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-17",
+                  "updated_at": "2026-07-02T17:39:08.019000+08:00",
+                  "document_id": "jira:c152c7292b2a5f2a1dc2b6be0484ec27eaee77dae9f9a2380abb49d27c162f31"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12053",
+                  "key": "AIPLAT-25",
+                  "issue_type": "Epic",
+                  "title": "ai platform compliance review process",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+                  "updated_at": "2026-07-14T15:42:02.402000+08:00",
+                  "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "In Progress": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "indeterminate": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12064",
+                  "key": "AIPLAT-36",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous improvement",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+                  "updated_at": "2026-07-02T17:39:23.859000+08:00",
+                  "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 2,
+                    "Done": 2
+                  },
+                  "by_status_category": {
+                    "new": 2,
+                    "done": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12069",
+                  "key": "AIPLAT-41",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous learning",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+                  "updated_at": "2026-07-02T17:39:32.111000+08:00",
+                  "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 3,
+                    "Done": 1
+                  },
+                  "by_status_category": {
+                    "new": 3,
+                    "done": 1
+                  }
+                }
+              }
+            ],
+            "unassigned": [],
+            "other": []
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 18.863,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R02",
+      "question": "Give a complete product backlog panorama, with all Epic names and overall status counts, rather than only similar tickets.",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2247,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.0,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 10.436,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-21",
+            "AIPLAT-23",
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-3",
+            "AIPLAT-31",
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-4",
+            "AIPLAT-40",
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45",
+            "AIPLAT-46",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-3",
+            "AIPLAT-4",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-10",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-11",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-12",
+              "target_key": "AIPLAT-9",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-19",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-2",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-21",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-23",
+              "target_key": "AIPLAT-17",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-27",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-29",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-3",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-31",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-37",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-38",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-39",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-4",
+              "target_key": "AIPLAT-1",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-40",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-42",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-43",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-44",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-45",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "text_budget_exceeded"
+          ],
+          "text_characters": 16000,
+          "truncated": true,
+          "structure": {
+            "counts": {
+              "total": 35,
+              "by_type": {
+                "Epic": 8,
+                "Story": 26,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 18,
+                "To Do": 10,
+                "In Progress": 7
+              },
+              "by_status_category": {
+                "done": 18,
+                "new": 10,
+                "indeterminate": 7
+              }
+            },
+            "epics": [
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12029",
+                  "key": "AIPLAT-1",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model routing setup",
+                  "status": "Done",
+                  "status_category": "done",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-1",
+                  "updated_at": "2026-07-14T15:41:15.013000+08:00",
+                  "document_id": "jira:06144e01e4d91a355985cfde5c3627f14a7975f0fd25dbe03801e4bed83899e0"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12033",
+                  "key": "AIPLAT-5",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model fallback capability",
+                  "status": "To Do",
+                  "status_category": "new",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+                  "updated_at": "2026-07-02T17:36:25.326000+08:00",
+                  "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 1,
+                    "To Do": 2
+                  },
+                  "by_status_category": {
+                    "done": 1,
+                    "new": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12037",
+                  "key": "AIPLAT-9",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for security guardrails setup on PII data and prompt ingestion",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-9",
+                  "updated_at": "2026-07-02T17:38:39.541000+08:00",
+                  "document_id": "jira:66274e591c533954cef9a045301c9478a34800e9ade85930fc42c644d09482f5"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12041",
+                  "key": "AIPLAT-13",
+                  "issue_type": "Epic",
+                  "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+                  "updated_at": "2026-07-02T17:38:54.274000+08:00",
+                  "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 3,
+                    "Bug": 1
+                  },
+                  "by_status": {
+                    "Done": 3,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 3,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12045",
+                  "key": "AIPLAT-17",
+                  "issue_type": "Epic",
+                  "title": "ai-model-service 1.0 MVP for ai model onboarding",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-17",
+                  "updated_at": "2026-07-02T17:39:08.019000+08:00",
+                  "document_id": "jira:c152c7292b2a5f2a1dc2b6be0484ec27eaee77dae9f9a2380abb49d27c162f31"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12053",
+                  "key": "AIPLAT-25",
+                  "issue_type": "Epic",
+                  "title": "ai platform compliance review process",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+                  "updated_at": "2026-07-14T15:42:02.402000+08:00",
+                  "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "In Progress": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "indeterminate": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12064",
+                  "key": "AIPLAT-36",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous improvement",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+                  "updated_at": "2026-07-02T17:39:23.859000+08:00",
+                  "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 2,
+                    "Done": 2
+                  },
+                  "by_status_category": {
+                    "new": 2,
+                    "done": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12069",
+                  "key": "AIPLAT-41",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous learning",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+                  "updated_at": "2026-07-02T17:39:32.111000+08:00",
+                  "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 3,
+                    "Done": 1
+                  },
+                  "by_status_category": {
+                    "new": 3,
+                    "done": 1
+                  }
+                }
+              }
+            ],
+            "unassigned": [],
+            "other": []
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 2.563,
+          "negative_check": null
+        },
+        "G": {
+          "status": "partial",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-21",
+            "AIPLAT-23",
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-3",
+            "AIPLAT-31",
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-4",
+            "AIPLAT-40",
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45",
+            "AIPLAT-46",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-1",
+            "AIPLAT-10",
+            "AIPLAT-11",
+            "AIPLAT-12",
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-17",
+            "AIPLAT-19",
+            "AIPLAT-2",
+            "AIPLAT-3",
+            "AIPLAT-4",
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8",
+            "AIPLAT-9"
+          ],
+          "returned_edges": [],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot",
+            "text_budget_exceeded"
+          ],
+          "text_characters": 16000,
+          "truncated": true,
+          "structure": {
+            "counts": {
+              "total": 35,
+              "by_type": {
+                "Epic": 8,
+                "Story": 26,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 18,
+                "To Do": 10,
+                "In Progress": 7
+              },
+              "by_status_category": {
+                "done": 18,
+                "new": 10,
+                "indeterminate": 7
+              }
+            },
+            "epics": [
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12029",
+                  "key": "AIPLAT-1",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model routing setup",
+                  "status": "Done",
+                  "status_category": "done",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-1",
+                  "updated_at": "2026-07-14T15:41:15.013000+08:00",
+                  "document_id": "jira:06144e01e4d91a355985cfde5c3627f14a7975f0fd25dbe03801e4bed83899e0"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12033",
+                  "key": "AIPLAT-5",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model fallback capability",
+                  "status": "To Do",
+                  "status_category": "new",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+                  "updated_at": "2026-07-02T17:36:25.326000+08:00",
+                  "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 1,
+                    "To Do": 2
+                  },
+                  "by_status_category": {
+                    "done": 1,
+                    "new": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12037",
+                  "key": "AIPLAT-9",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for security guardrails setup on PII data and prompt ingestion",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-9",
+                  "updated_at": "2026-07-02T17:38:39.541000+08:00",
+                  "document_id": "jira:66274e591c533954cef9a045301c9478a34800e9ade85930fc42c644d09482f5"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 3
+                  },
+                  "by_status_category": {
+                    "done": 3
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12041",
+                  "key": "AIPLAT-13",
+                  "issue_type": "Epic",
+                  "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+                  "updated_at": "2026-07-02T17:38:54.274000+08:00",
+                  "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 3,
+                    "Bug": 1
+                  },
+                  "by_status": {
+                    "Done": 3,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 3,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12045",
+                  "key": "AIPLAT-17",
+                  "issue_type": "Epic",
+                  "title": "ai-model-service 1.0 MVP for ai model onboarding",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-17",
+                  "updated_at": "2026-07-02T17:39:08.019000+08:00",
+                  "document_id": "jira:c152c7292b2a5f2a1dc2b6be0484ec27eaee77dae9f9a2380abb49d27c162f31"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "To Do": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "new": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12053",
+                  "key": "AIPLAT-25",
+                  "issue_type": "Epic",
+                  "title": "ai platform compliance review process",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+                  "updated_at": "2026-07-14T15:42:02.402000+08:00",
+                  "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+                },
+                "children_counts": {
+                  "total": 3,
+                  "by_type": {
+                    "Story": 3
+                  },
+                  "by_status": {
+                    "Done": 2,
+                    "In Progress": 1
+                  },
+                  "by_status_category": {
+                    "done": 2,
+                    "indeterminate": 1
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12064",
+                  "key": "AIPLAT-36",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous improvement",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+                  "updated_at": "2026-07-02T17:39:23.859000+08:00",
+                  "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 2,
+                    "Done": 2
+                  },
+                  "by_status_category": {
+                    "new": 2,
+                    "done": 2
+                  }
+                }
+              },
+              {
+                "issue": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12069",
+                  "key": "AIPLAT-41",
+                  "issue_type": "Epic",
+                  "title": "AI platform continuous learning",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+                  "updated_at": "2026-07-02T17:39:32.111000+08:00",
+                  "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+                },
+                "children_counts": {
+                  "total": 4,
+                  "by_type": {
+                    "Story": 4
+                  },
+                  "by_status": {
+                    "To Do": 3,
+                    "Done": 1
+                  },
+                  "by_status_category": {
+                    "new": 3,
+                    "done": 1
+                  }
+                }
+              }
+            ],
+            "unassigned": [],
+            "other": []
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "actual_counts": {
+            "total": 35,
+            "by_type": {
+              "Epic": 8,
+              "Story": 26,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 18,
+              "To Do": 10,
+              "In Progress": 7
+            },
+            "by_status_category": {
+              "done": 18,
+              "new": 10,
+              "indeterminate": 7
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 27.026,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R03",
+      "question": "What Stories and Bugs belong to AIPLAT-13, the RAG pipeline Epic, and what are their statuses?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 200,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.2,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 3,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 3,
+              "To Do": 1
+            },
+            "by_status_category": {
+              "done": 3,
+              "new": 1
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 0.108,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 5692,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12041",
+              "key": "AIPLAT-13",
+              "issue_type": "Epic",
+              "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+              "updated_at": "2026-07-02T17:38:54.274000+08:00",
+              "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 3,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 3,
+                "To Do": 1
+              },
+              "by_status_category": {
+                "done": 3,
+                "new": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12042",
+                "key": "AIPLAT-14",
+                "issue_type": "Story",
+                "title": "Ingest approved knowledge documents for RAG indexing",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-14",
+                "updated_at": "2026-07-10T22:07:45.685000+08:00",
+                "document_id": "jira:819bdfa47321818cc51afe215224bd9c3f057e991e6254c5de653572409ff604"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12043",
+                "key": "AIPLAT-15",
+                "issue_type": "Story",
+                "title": "Chunk and index documents for semantic retrieval",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-15",
+                "updated_at": "2026-07-14T15:40:42.881000+08:00",
+                "document_id": "jira:6b29caeeb1a5eec3c358cf732bcc4dadde2de5ea67f18679d37113b61ce58144"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12044",
+                "key": "AIPLAT-16",
+                "issue_type": "Story",
+                "title": "Retrieve grounded context for RAG queries",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-16",
+                "updated_at": "2026-07-07T22:03:35.087000+08:00",
+                "document_id": "jira:7b6d49938719c8eebfbd4a01ac9de83eb7bbbf7779d924777703b9797d3d814c"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12074",
+                "key": "AIPLAT-46",
+                "issue_type": "Bug",
+                "title": "RAG retrieval returns unauthorized chunks across knowledge domains",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-46",
+                "updated_at": "2026-07-07T22:03:34.272000+08:00",
+                "document_id": "jira:3fe620fc0557396c13c85540667a0a7045e8d4e8c504efdeee373917860b0a70"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 3,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 3,
+              "To Do": 1
+            },
+            "by_status_category": {
+              "done": 3,
+              "new": 1
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 3,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 3,
+              "To Do": 1
+            },
+            "by_status_category": {
+              "done": 3,
+              "new": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 0.61,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 5692,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12041",
+              "key": "AIPLAT-13",
+              "issue_type": "Epic",
+              "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+              "updated_at": "2026-07-02T17:38:54.274000+08:00",
+              "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 3,
+                "Bug": 1
+              },
+              "by_status": {
+                "Done": 3,
+                "To Do": 1
+              },
+              "by_status_category": {
+                "done": 3,
+                "new": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12042",
+                "key": "AIPLAT-14",
+                "issue_type": "Story",
+                "title": "Ingest approved knowledge documents for RAG indexing",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-14",
+                "updated_at": "2026-07-10T22:07:45.685000+08:00",
+                "document_id": "jira:819bdfa47321818cc51afe215224bd9c3f057e991e6254c5de653572409ff604"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12043",
+                "key": "AIPLAT-15",
+                "issue_type": "Story",
+                "title": "Chunk and index documents for semantic retrieval",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-15",
+                "updated_at": "2026-07-14T15:40:42.881000+08:00",
+                "document_id": "jira:6b29caeeb1a5eec3c358cf732bcc4dadde2de5ea67f18679d37113b61ce58144"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12044",
+                "key": "AIPLAT-16",
+                "issue_type": "Story",
+                "title": "Retrieve grounded context for RAG queries",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-16",
+                "updated_at": "2026-07-07T22:03:35.087000+08:00",
+                "document_id": "jira:7b6d49938719c8eebfbd4a01ac9de83eb7bbbf7779d924777703b9797d3d814c"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12074",
+                "key": "AIPLAT-46",
+                "issue_type": "Bug",
+                "title": "RAG retrieval returns unauthorized chunks across knowledge domains",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-46",
+                "updated_at": "2026-07-07T22:03:34.272000+08:00",
+                "document_id": "jira:3fe620fc0557396c13c85540667a0a7045e8d4e8c504efdeee373917860b0a70"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 3,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 3,
+              "To Do": 1
+            },
+            "by_status_category": {
+              "done": 3,
+              "new": 1
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 3,
+              "Bug": 1
+            },
+            "by_status": {
+              "Done": 3,
+              "To Do": 1
+            },
+            "by_status_category": {
+              "done": 3,
+              "new": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 18.04,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R04",
+      "question": "What Stories and Bugs belong to AIPLAT-5, the model fallback Epic, and what are their statuses?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 218,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.25,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 1,
+              "To Do": 2
+            },
+            "by_status_category": {
+              "done": 1,
+              "new": 2
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 0.106,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 3626,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12033",
+              "key": "AIPLAT-5",
+              "issue_type": "Epic",
+              "title": "ai-gateway 1.0 MVP for model fallback capability",
+              "status": "To Do",
+              "status_category": "new",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+              "updated_at": "2026-07-02T17:36:25.326000+08:00",
+              "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+            },
+            "counts": {
+              "total": 3,
+              "by_type": {
+                "Story": 3
+              },
+              "by_status": {
+                "Done": 1,
+                "To Do": 2
+              },
+              "by_status_category": {
+                "done": 1,
+                "new": 2
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12034",
+                "key": "AIPLAT-6",
+                "issue_type": "Story",
+                "title": "Define fallback model mapping for approved routes",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-6",
+                "updated_at": "2026-07-09T14:51:45.944000+08:00",
+                "document_id": "jira:7b5cc994425f8a31882d2a816500b7075a67a244516a7854d475527d4997e7a4"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12035",
+                "key": "AIPLAT-7",
+                "issue_type": "Story",
+                "title": "Trigger fallback on retryable provider failures",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-7",
+                "updated_at": "2026-07-14T15:40:42.305000+08:00",
+                "document_id": "jira:c5d33ee34ec7e77f83c71455e07ac28f0c56928d8363d7307de920e12093da93"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12036",
+                "key": "AIPLAT-8",
+                "issue_type": "Story",
+                "title": "Expose fallback outcomes in operations telemetry",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-8",
+                "updated_at": "2026-07-14T15:40:42.597000+08:00",
+                "document_id": "jira:ac5265c23c91dcf27ac2f182f55cc51b51b8ee7a362e0ff57c5aa07bec57a01d"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 3,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 1,
+              "To Do": 2
+            },
+            "by_status_category": {
+              "done": 1,
+              "new": 2
+            }
+          },
+          "actual_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 1,
+              "To Do": 2
+            },
+            "by_status_category": {
+              "done": 1,
+              "new": 2
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 0.381,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3626,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12033",
+              "key": "AIPLAT-5",
+              "issue_type": "Epic",
+              "title": "ai-gateway 1.0 MVP for model fallback capability",
+              "status": "To Do",
+              "status_category": "new",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+              "updated_at": "2026-07-02T17:36:25.326000+08:00",
+              "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+            },
+            "counts": {
+              "total": 3,
+              "by_type": {
+                "Story": 3
+              },
+              "by_status": {
+                "Done": 1,
+                "To Do": 2
+              },
+              "by_status_category": {
+                "done": 1,
+                "new": 2
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12034",
+                "key": "AIPLAT-6",
+                "issue_type": "Story",
+                "title": "Define fallback model mapping for approved routes",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-6",
+                "updated_at": "2026-07-09T14:51:45.944000+08:00",
+                "document_id": "jira:7b5cc994425f8a31882d2a816500b7075a67a244516a7854d475527d4997e7a4"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12035",
+                "key": "AIPLAT-7",
+                "issue_type": "Story",
+                "title": "Trigger fallback on retryable provider failures",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-7",
+                "updated_at": "2026-07-14T15:40:42.305000+08:00",
+                "document_id": "jira:c5d33ee34ec7e77f83c71455e07ac28f0c56928d8363d7307de920e12093da93"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12036",
+                "key": "AIPLAT-8",
+                "issue_type": "Story",
+                "title": "Expose fallback outcomes in operations telemetry",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-8",
+                "updated_at": "2026-07-14T15:40:42.597000+08:00",
+                "document_id": "jira:ac5265c23c91dcf27ac2f182f55cc51b51b8ee7a362e0ff57c5aa07bec57a01d"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 3,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 1,
+              "To Do": 2
+            },
+            "by_status_category": {
+              "done": 1,
+              "new": 2
+            }
+          },
+          "actual_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 1,
+              "To Do": 2
+            },
+            "by_status_category": {
+              "done": 1,
+              "new": 2
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 16.175,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "question": "What Stories and Bugs belong to AIPLAT-36, the continuous improvement Epic, and what are their statuses?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-36"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-36"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 168,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.2,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 2,
+              "Done": 2
+            },
+            "by_status_category": {
+              "new": 2,
+              "done": 2
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 0.122,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-40"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-40"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-37",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-38",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-39",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-40",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 6308,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12064",
+              "key": "AIPLAT-36",
+              "issue_type": "Epic",
+              "title": "AI platform continuous improvement",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+              "updated_at": "2026-07-02T17:39:23.859000+08:00",
+              "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 4
+              },
+              "by_status": {
+                "To Do": 2,
+                "Done": 2
+              },
+              "by_status_category": {
+                "new": 2,
+                "done": 2
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12065",
+                "key": "AIPLAT-37",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-gateway route rules require redeploy for provider changes",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-37",
+                "updated_at": "2026-07-14T15:40:43.483000+08:00",
+                "document_id": "jira:ac3ea7bf8154efda289d2c2b7f77974d47558dcc489d908cf72cb361c196ed4f"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12066",
+                "key": "AIPLAT-38",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-gateway retry and timeout behavior is inconsistent across providers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-38",
+                "updated_at": "2026-07-07T22:03:34.674000+08:00",
+                "document_id": "jira:500dab2cca52e4b080cda3a65b886ad29ad29547f37016aff751a8badf863f0a"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12067",
+                "key": "AIPLAT-39",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-rag-service index builds are not reproducible or visible to consumers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-39",
+                "updated_at": "2026-07-15T09:55:51.731000+08:00",
+                "document_id": "jira:71a85b7f6ccb5758fa5040d3003fb7b84f7508a57c3db702ee44cd436668cab6"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12068",
+                "key": "AIPLAT-40",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-model-management catalog lacks lifecycle controls and stale-model governance",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-40",
+                "updated_at": "2026-06-21T16:02:51.705000+08:00",
+                "document_id": "jira:afff0cfda0f01632808b1e98717bfd44b1643af404ed6f7c61fe9f8d5aebb605"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 2,
+              "Done": 2
+            },
+            "by_status_category": {
+              "new": 2,
+              "done": 2
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 2,
+              "Done": 2
+            },
+            "by_status_category": {
+              "new": 2,
+              "done": 2
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 1.013,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-40"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-36",
+            "AIPLAT-37",
+            "AIPLAT-38",
+            "AIPLAT-39",
+            "AIPLAT-40"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-37",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-38",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-39",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-40",
+              "target_key": "AIPLAT-36",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 6308,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12064",
+              "key": "AIPLAT-36",
+              "issue_type": "Epic",
+              "title": "AI platform continuous improvement",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-36",
+              "updated_at": "2026-07-02T17:39:23.859000+08:00",
+              "document_id": "jira:3a26ba3a6ea4a584a278b369499e1616fc0b7cce3a33f6871ca6d2114b0fd28c"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 4
+              },
+              "by_status": {
+                "To Do": 2,
+                "Done": 2
+              },
+              "by_status_category": {
+                "new": 2,
+                "done": 2
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12065",
+                "key": "AIPLAT-37",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-gateway route rules require redeploy for provider changes",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-37",
+                "updated_at": "2026-07-14T15:40:43.483000+08:00",
+                "document_id": "jira:ac3ea7bf8154efda289d2c2b7f77974d47558dcc489d908cf72cb361c196ed4f"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12066",
+                "key": "AIPLAT-38",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-gateway retry and timeout behavior is inconsistent across providers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-38",
+                "updated_at": "2026-07-07T22:03:34.674000+08:00",
+                "document_id": "jira:500dab2cca52e4b080cda3a65b886ad29ad29547f37016aff751a8badf863f0a"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12067",
+                "key": "AIPLAT-39",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-rag-service index builds are not reproducible or visible to consumers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-39",
+                "updated_at": "2026-07-15T09:55:51.731000+08:00",
+                "document_id": "jira:71a85b7f6ccb5758fa5040d3003fb7b84f7508a57c3db702ee44cd436668cab6"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12068",
+                "key": "AIPLAT-40",
+                "issue_type": "Story",
+                "title": "Tech debt: ai-model-management catalog lacks lifecycle controls and stale-model governance",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-40",
+                "updated_at": "2026-06-21T16:02:51.705000+08:00",
+                "document_id": "jira:afff0cfda0f01632808b1e98717bfd44b1643af404ed6f7c61fe9f8d5aebb605"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 2,
+              "Done": 2
+            },
+            "by_status_category": {
+              "new": 2,
+              "done": 2
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 2,
+              "Done": 2
+            },
+            "by_status_category": {
+              "new": 2,
+              "done": 2
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 17.326,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "question": "What Stories and Bugs belong to AIPLAT-41, the continuous learning Epic, and what are their statuses?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-41"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-41"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 219,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.2,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 3,
+              "Done": 1
+            },
+            "by_status_category": {
+              "new": 3,
+              "done": 1
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 0.112,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-42",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-43",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-44",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-45",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 4950,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12069",
+              "key": "AIPLAT-41",
+              "issue_type": "Epic",
+              "title": "AI platform continuous learning",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+              "updated_at": "2026-07-02T17:39:32.111000+08:00",
+              "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 4
+              },
+              "by_status": {
+                "To Do": 3,
+                "Done": 1
+              },
+              "by_status_category": {
+                "new": 3,
+                "done": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12070",
+                "key": "AIPLAT-42",
+                "issue_type": "Story",
+                "title": "Define AI platform capability matrix and learning pathway",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-42",
+                "updated_at": "2026-07-14T15:40:43.755000+08:00",
+                "document_id": "jira:0dc764b5c36d390d9238762beea632c8c3f1fa492c1d9676ea6cbe9216401907"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12071",
+                "key": "AIPLAT-43",
+                "issue_type": "Story",
+                "title": "Create Python programming learning track for AI platform engineers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-43",
+                "updated_at": "2026-07-07T22:03:35.479000+08:00",
+                "document_id": "jira:a365691393b46074fbafe6e3571b9cb57fac0259d764f76c7991a086e442ddf8"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12072",
+                "key": "AIPLAT-44",
+                "issue_type": "Story",
+                "title": "Create microservices and cloud-native design learning track",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-44",
+                "updated_at": "2026-06-21T15:48:01.149000+08:00",
+                "document_id": "jira:882e87c4dcbba21e941d546b44ae1f1411178bad6d65bd1bbea39799cf1da95b"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12073",
+                "key": "AIPLAT-45",
+                "issue_type": "Story",
+                "title": "Create business domain knowledge learning track",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-45",
+                "updated_at": "2026-06-21T15:48:14.443000+08:00",
+                "document_id": "jira:a65f67da0dcb832eef849da13ca1ee058cc111d126d5fd661e0acf11bb01ad48"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 3,
+              "Done": 1
+            },
+            "by_status_category": {
+              "new": 3,
+              "done": 1
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 3,
+              "Done": 1
+            },
+            "by_status_category": {
+              "new": 3,
+              "done": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 0.727,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-41",
+            "AIPLAT-42",
+            "AIPLAT-43",
+            "AIPLAT-44",
+            "AIPLAT-45"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-42",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-43",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-44",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-45",
+              "target_key": "AIPLAT-41",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 4950,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12069",
+              "key": "AIPLAT-41",
+              "issue_type": "Epic",
+              "title": "AI platform continuous learning",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-41",
+              "updated_at": "2026-07-02T17:39:32.111000+08:00",
+              "document_id": "jira:23ca8414edeb25bcceb5e7d29457bdfb1546938df3843b434500d3234d11a125"
+            },
+            "counts": {
+              "total": 4,
+              "by_type": {
+                "Story": 4
+              },
+              "by_status": {
+                "To Do": 3,
+                "Done": 1
+              },
+              "by_status_category": {
+                "new": 3,
+                "done": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12070",
+                "key": "AIPLAT-42",
+                "issue_type": "Story",
+                "title": "Define AI platform capability matrix and learning pathway",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-42",
+                "updated_at": "2026-07-14T15:40:43.755000+08:00",
+                "document_id": "jira:0dc764b5c36d390d9238762beea632c8c3f1fa492c1d9676ea6cbe9216401907"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12071",
+                "key": "AIPLAT-43",
+                "issue_type": "Story",
+                "title": "Create Python programming learning track for AI platform engineers",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-43",
+                "updated_at": "2026-07-07T22:03:35.479000+08:00",
+                "document_id": "jira:a365691393b46074fbafe6e3571b9cb57fac0259d764f76c7991a086e442ddf8"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12072",
+                "key": "AIPLAT-44",
+                "issue_type": "Story",
+                "title": "Create microservices and cloud-native design learning track",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-44",
+                "updated_at": "2026-06-21T15:48:01.149000+08:00",
+                "document_id": "jira:882e87c4dcbba21e941d546b44ae1f1411178bad6d65bd1bbea39799cf1da95b"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12073",
+                "key": "AIPLAT-45",
+                "issue_type": "Story",
+                "title": "Create business domain knowledge learning track",
+                "status": "To Do",
+                "status_category": "new",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-45",
+                "updated_at": "2026-06-21T15:48:14.443000+08:00",
+                "document_id": "jira:a65f67da0dcb832eef849da13ca1ee058cc111d126d5fd661e0acf11bb01ad48"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 4,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 3,
+              "Done": 1
+            },
+            "by_status_category": {
+              "new": 3,
+              "done": 1
+            }
+          },
+          "actual_counts": {
+            "total": 4,
+            "by_type": {
+              "Story": 4
+            },
+            "by_status": {
+              "To Do": 3,
+              "Done": 1
+            },
+            "by_status_category": {
+              "new": 3,
+              "done": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 21.766,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "question": "What Stories and Bugs belong to AIPLAT-25, the compliance review Epic, and what are their statuses?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-25"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-25"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 188,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.25,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 2,
+              "In Progress": 1
+            },
+            "by_status_category": {
+              "done": 2,
+              "indeterminate": 1
+            }
+          },
+          "actual_counts": null,
+          "counts_match": false,
+          "latency_ms": 0.16,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-31"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-31"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-27",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-29",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-31",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 3529,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12053",
+              "key": "AIPLAT-25",
+              "issue_type": "Epic",
+              "title": "ai platform compliance review process",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+              "updated_at": "2026-07-14T15:42:02.402000+08:00",
+              "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+            },
+            "counts": {
+              "total": 3,
+              "by_type": {
+                "Story": 3
+              },
+              "by_status": {
+                "Done": 2,
+                "In Progress": 1
+              },
+              "by_status_category": {
+                "done": 2,
+                "indeterminate": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12055",
+                "key": "AIPLAT-27",
+                "issue_type": "Story",
+                "title": "Create compliance review checklist for AI platform releases",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-27",
+                "updated_at": "2026-07-07T22:03:35.894000+08:00",
+                "document_id": "jira:9957394a25245ad68201163e7a29afee26716186e2b503b121be1b35d510fcc8"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12057",
+                "key": "AIPLAT-29",
+                "issue_type": "Story",
+                "title": "Track evidence and decisions for compliance reviews",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-29",
+                "updated_at": "2026-07-09T14:51:52.375000+08:00",
+                "document_id": "jira:75190f4d0ab60253e7162d94f168b4225cb16169fe4dc587344935736d4cca77"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12059",
+                "key": "AIPLAT-31",
+                "issue_type": "Story",
+                "title": "Gate production release on compliance approval",
+                "status": "In Progress",
+                "status_category": "indeterminate",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-31",
+                "updated_at": "2026-07-18T22:51:16.223000+08:00",
+                "document_id": "jira:06cd6db8d8250ef689035cc1cda4acac70646dbedcff0dca3b3dd193e89a67a7"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 3,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 2,
+              "In Progress": 1
+            },
+            "by_status_category": {
+              "done": 2,
+              "indeterminate": 1
+            }
+          },
+          "actual_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 2,
+              "In Progress": 1
+            },
+            "by_status_category": {
+              "done": 2,
+              "indeterminate": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 0.685,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-31"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-27",
+            "AIPLAT-29",
+            "AIPLAT-31"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-27",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-29",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-31",
+              "target_key": "AIPLAT-25",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3529,
+          "truncated": false,
+          "structure": {
+            "epic": {
+              "scope": {
+                "site_id": "https://30156758.atlassian.net",
+                "project_key": "AIPLAT",
+                "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+              },
+              "issue_id": "12053",
+              "key": "AIPLAT-25",
+              "issue_type": "Epic",
+              "title": "ai platform compliance review process",
+              "status": "In Progress",
+              "status_category": "indeterminate",
+              "source_url": "https://30156758.atlassian.net/browse/AIPLAT-25",
+              "updated_at": "2026-07-14T15:42:02.402000+08:00",
+              "document_id": "jira:cfca5a83383f565e22580bff47fd4864ee5e54232ae31ce80c33dbdefbb467c8"
+            },
+            "counts": {
+              "total": 3,
+              "by_type": {
+                "Story": 3
+              },
+              "by_status": {
+                "Done": 2,
+                "In Progress": 1
+              },
+              "by_status_category": {
+                "done": 2,
+                "indeterminate": 1
+              }
+            },
+            "children": [
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12055",
+                "key": "AIPLAT-27",
+                "issue_type": "Story",
+                "title": "Create compliance review checklist for AI platform releases",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-27",
+                "updated_at": "2026-07-07T22:03:35.894000+08:00",
+                "document_id": "jira:9957394a25245ad68201163e7a29afee26716186e2b503b121be1b35d510fcc8"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12057",
+                "key": "AIPLAT-29",
+                "issue_type": "Story",
+                "title": "Track evidence and decisions for compliance reviews",
+                "status": "Done",
+                "status_category": "done",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-29",
+                "updated_at": "2026-07-09T14:51:52.375000+08:00",
+                "document_id": "jira:75190f4d0ab60253e7162d94f168b4225cb16169fe4dc587344935736d4cca77"
+              },
+              {
+                "scope": {
+                  "site_id": "https://30156758.atlassian.net",
+                  "project_key": "AIPLAT",
+                  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                },
+                "issue_id": "12059",
+                "key": "AIPLAT-31",
+                "issue_type": "Story",
+                "title": "Gate production release on compliance approval",
+                "status": "In Progress",
+                "status_category": "indeterminate",
+                "source_url": "https://30156758.atlassian.net/browse/AIPLAT-31",
+                "updated_at": "2026-07-18T22:51:16.223000+08:00",
+                "document_id": "jira:06cd6db8d8250ef689035cc1cda4acac70646dbedcff0dca3b3dd193e89a67a7"
+              }
+            ],
+            "offset": 0,
+            "limit": 99,
+            "total": 3,
+            "has_more": false
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 2,
+              "In Progress": 1
+            },
+            "by_status_category": {
+              "done": 2,
+              "indeterminate": 1
+            }
+          },
+          "actual_counts": {
+            "total": 3,
+            "by_type": {
+              "Story": 3
+            },
+            "by_status": {
+              "Done": 2,
+              "In Progress": 1
+            },
+            "by_status_category": {
+              "done": 2,
+              "indeterminate": 1
+            }
+          },
+          "counts_match": true,
+          "latency_ms": 16.979,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R08",
+      "question": "Which issue does AIPLAT-46 block according to Jira?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1841,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.22,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2167,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.112,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3253,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 35.902,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R09",
+      "question": "Which recorded issue blocks AIPLAT-16?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1086,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.17,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1086,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.098,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3253,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 29.255,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R10",
+      "question": "Which issues does AIPLAT-16 itself block?",
+      "answerability": "no_recorded_relation",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1086,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.4,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1086,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.163,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16"
+          ],
+          "returned_edges": [],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 1086,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 30.988,
+          "negative_check": true
+        }
+      }
+    },
+    {
+      "id": "R11",
+      "question": "What recorded dependencies are connected to AIPLAT-46 within two hops?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1841,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.23,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2167,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.154,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3253,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 36.006,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R12",
+      "question": "Show the recorded dependencies among the children of Epic AIPLAT-13.",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 200,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.2,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.133,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 5692,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 0.8,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.48,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-13",
+            "AIPLAT-14",
+            "AIPLAT-15",
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-14",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-15",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-16",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-13",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 5692,
+          "truncated": false,
+          "structure": {
+            "epic_membership": [
+              {
+                "epic": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12041",
+                  "key": "AIPLAT-13",
+                  "issue_type": "Epic",
+                  "title": "ai-rag-service 1.0 MVP for rag pipeline setup",
+                  "status": "In Progress",
+                  "status_category": "indeterminate",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-13",
+                  "updated_at": "2026-07-02T17:38:54.274000+08:00",
+                  "document_id": "jira:443c1be19f27c1cb9180d8c7cdc36586dbf6bf2901821e96afd532fe7dd69cc3"
+                },
+                "edges": [
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12043",
+                    "target_issue_id": "12041",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12043",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  },
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12074",
+                    "target_issue_id": "12041",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12074",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  },
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12042",
+                    "target_issue_id": "12041",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12042",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  },
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12044",
+                    "target_issue_id": "12041",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12044",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  }
+                ]
+              }
+            ]
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 81.591,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R13",
+      "question": "Does AIPLAT-46 have any unresolved blocking pairs?",
+      "answerability": "no_recorded_relation",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1841,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.356,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2167,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.208,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 2167,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 34.815,
+          "negative_check": true
+        }
+      }
+    },
+    {
+      "id": "R14",
+      "question": "RAG retrieval returns unauthorized chunks across knowledge domains. Which recorded issue does this bug block?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1828,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 10.79,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 2167,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.5,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 11.769,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3253,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 43.325,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R15",
+      "question": "Retrieve grounded context for RAG queries: which recorded bug blocks this work?",
+      "answerability": "supported",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1552,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 11.071,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 4771,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 10.742,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-16",
+            "AIPLAT-39",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-46",
+              "target_key": "AIPLAT-16",
+              "relation_type": "BLOCKS"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 4771,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 80.388,
+          "negative_check": null
+        }
+      }
+    },
+    {
+      "id": "R16",
+      "question": "For the model fallback Epic AIPLAT-5, what dependencies are explicitly recorded?",
+      "answerability": "no_recorded_relation",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 218,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 0.25,
+          "structured_edge_coverage": 0.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.116,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [],
+          "text_characters": 3626,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.221,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-5",
+            "AIPLAT-6",
+            "AIPLAT-7",
+            "AIPLAT-8"
+          ],
+          "returned_edges": [
+            {
+              "source_key": "AIPLAT-6",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-7",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            },
+            {
+              "source_key": "AIPLAT-8",
+              "target_key": "AIPLAT-5",
+              "relation_type": "CHILD_OF"
+            }
+          ],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 3626,
+          "truncated": false,
+          "structure": {
+            "epic_membership": [
+              {
+                "epic": {
+                  "scope": {
+                    "site_id": "https://30156758.atlassian.net",
+                    "project_key": "AIPLAT",
+                    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                  },
+                  "issue_id": "12033",
+                  "key": "AIPLAT-5",
+                  "issue_type": "Epic",
+                  "title": "ai-gateway 1.0 MVP for model fallback capability",
+                  "status": "To Do",
+                  "status_category": "new",
+                  "source_url": "https://30156758.atlassian.net/browse/AIPLAT-5",
+                  "updated_at": "2026-07-02T17:36:25.326000+08:00",
+                  "document_id": "jira:0a3379b484a4c58825878aaa2e68036737dc773702e8f875ce96571f3f672908"
+                },
+                "edges": [
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12035",
+                    "target_issue_id": "12033",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12035",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  },
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12034",
+                    "target_issue_id": "12033",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12034",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  },
+                  {
+                    "scope": {
+                      "site_id": "https://30156758.atlassian.net",
+                      "project_key": "AIPLAT",
+                      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64"
+                    },
+                    "source_issue_id": "12036",
+                    "target_issue_id": "12033",
+                    "relation_type": "CHILD_OF",
+                    "origin_issue_id": "12036",
+                    "source_field": "parent",
+                    "source_type": "parent",
+                    "source_direction": "parent",
+                    "link_id": null
+                  }
+                ]
+              }
+            ]
+          },
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": 1.0,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 49.433,
+          "negative_check": true
+        }
+      }
+    },
+    {
+      "id": "R17",
+      "question": "What recorded dependencies are connected to AIPLAT-31?",
+      "answerability": "no_recorded_relation",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1150,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.165,
+          "negative_check": null
+        },
+        "S": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1150,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.086,
+          "negative_check": null
+        },
+        "G": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-31"
+          ],
+          "returned_edges": [],
+          "diagnostics": [
+            "capture_is_not_a_jira_transactional_snapshot"
+          ],
+          "text_characters": 1150,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": 1.0,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 27.857,
+          "negative_check": true
+        }
+      }
+    },
+    {
+      "id": "R18",
+      "question": "Show recorded dependencies for AIPLAT-999.",
+      "answerability": "not_in_snapshot",
+      "methods": {
+        "H": {
+          "status": "ok",
+          "error": null,
+          "returned_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-29",
+            "AIPLAT-39",
+            "AIPLAT-42",
+            "AIPLAT-46"
+          ],
+          "text_issue_keys": [
+            "AIPLAT-25",
+            "AIPLAT-29",
+            "AIPLAT-39",
+            "AIPLAT-42",
+            "AIPLAT-46"
+          ],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 1690,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": null,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 10.994,
+          "negative_check": null
+        },
+        "S": {
+          "status": "error",
+          "error": "LookupError",
+          "returned_issue_keys": [],
+          "text_issue_keys": [],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 0,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": null,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 0.024,
+          "negative_check": true
+        },
+        "G": {
+          "status": "error",
+          "error": "GraphNotFound",
+          "returned_issue_keys": [],
+          "text_issue_keys": [],
+          "returned_edges": [],
+          "diagnostics": [],
+          "text_characters": 0,
+          "truncated": false,
+          "structure": null,
+          "evidence_node_coverage": null,
+          "structured_edge_coverage": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_match": null,
+          "latency_ms": 16.252,
+          "negative_check": true
+        }
+      }
+    }
+  ],
+  "dataset_provenance": {
+    "kind": "real_frozen_jira_snapshot",
+    "site_id": "https://30156758.atlassian.net",
+    "project_key": "AIPLAT",
+    "normalized_path": "data/graph-poc/9f54ac536147f3064f730c8c/snapshots/84651bb20502364a91fcc0ee/normalized.json",
+    "normalized_sha256": "a020679dbc5e1caf5759870fb89f86e01888c4f217f799364014268e7d684968",
+    "annotation_method": "Human-readable questions and expected evidence authored from normalized issue and edge records; no API or retrieval/model outputs used to generate the oracle.",
+    "visible_issue_count": 35,
+    "relation_counts": {
+      "CHILD_OF": 27,
+      "BLOCKS": 1
+    },
+    "limitations": [
+      "Visible-project snapshot, not a transactional Jira snapshot or evidence about inaccessible issues.",
+      "One BLOCKS edge only; no observed cross-Epic dependency, cycle or distinct multi-hop dependency chain.",
+      "Both endpoints of the BLOCKS edge are Done; it is historical recorded structure, not a current unresolved blocker.",
+      "Description-only expected evidence records the intended seed; retrieval may return additional relevant seeds.",
+      "Expected issue keys are required evidence, not an exact upper bound. Expected edges preserve canonical Jira direction."
+    ],
+    "questions_sha256": "b4d63bd0676af73350b6201f7a4b46650a27716d594d87e26bccd7d057a3b06e"
+  },
+  "execution": {
+    "kind": "real_snapshot_retrieval_only",
+    "embedding_model": "text-embedding-3-small",
+    "answer_model": "gpt-5-2025-08-07",
+    "generation_enabled": false,
+    "query_embedding_tokens": 310,
+    "query_embedding_batch_ms": 2298.68,
+    "embedded_questions": 18,
+    "embedding_cache": "prewarmed for all arms",
+    "concurrency": 1,
+    "runs_per_case_per_method": 1,
+    "actual_billed_cost": null,
+    "limitations": [
+      "No successful answer-model generation; no human-rated answer correctness.",
+      "S filters canonical records in memory; G uses Neo4j. Not a database performance comparison.",
+      "Evidence coverage is not answer accuracy. Structured edges cannot measure H reasoning over prose.",
+      "Warm varied-query timings exclude embedding, index initialization and scoring."
+    ]
+  },
+  "summary": {
+    "H": {
+      "cases": 18,
+      "errors": 0,
+      "mean_evidence_node_coverage": 0.4514705882352941,
+      "mean_structured_edge_coverage": 0.0,
+      "exact_count_cases": 0,
+      "annotated_count_cases": 7,
+      "p50_ms": 0.195,
+      "p95_nearest_rank_ms": 11.071,
+      "negative_checks_passed": 0,
+      "negative_checks_scored": 0
+    },
+    "S": {
+      "cases": 18,
+      "errors": 1,
+      "mean_evidence_node_coverage": 0.8823529411764706,
+      "mean_structured_edge_coverage": 0.5666666666666667,
+      "exact_count_cases": 7,
+      "annotated_count_cases": 7,
+      "p50_ms": 0.4305,
+      "p95_nearest_rank_ms": 11.769,
+      "negative_checks_passed": 1,
+      "negative_checks_scored": 1
+    },
+    "G": {
+      "cases": 18,
+      "errors": 1,
+      "mean_evidence_node_coverage": 1.0,
+      "mean_structured_edge_coverage": 1.0,
+      "exact_count_cases": 7,
+      "annotated_count_cases": 7,
+      "p50_ms": 28.555999999999997,
+      "p95_nearest_rank_ms": 81.591,
+      "negative_checks_passed": 5,
+      "negative_checks_scored": 5
+    }
+  }
+}

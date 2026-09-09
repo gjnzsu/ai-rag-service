@@ -1,0 +1,11 @@
+{
+  "model": "gpt-5-2025-08-07",
+  "attempts": 1,
+  "generation_tokens": null,
+  "billed_cost": null,
+  "status": "unavailable",
+  "error_type": "NotFoundError",
+  "http_status": 404,
+  "error_code": "model_not_found",
+  "latency_ms": 3280.81
+}

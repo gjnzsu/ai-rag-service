@@ -1,0 +1,323 @@
+{
+  "provenance": {
+    "kind": "synthetic_test_fixtures",
+    "not_real_jira_evidence": true,
+    "annotation_method": "Fixture shapes and assertions inspected in existing automated tests; these JSON records document coverage and do not claim a new execution result.",
+    "separation": "Exclude from real AIPLAT retrieval quality metrics and business demonstrations."
+  },
+  "cases": [
+    {
+      "id": "S01",
+      "category": "two_hop_alternative_paths",
+      "synthetic": true,
+      "fixture": {
+        "nodes": [
+          "P-1",
+          "P-2",
+          "P-3",
+          "P-4"
+        ],
+        "edges": [
+          {
+            "source_key": "P-1",
+            "target_key": "P-2",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-1",
+            "target_key": "P-3",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-2",
+            "target_key": "P-4",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-3",
+            "target_key": "P-4",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-2",
+            "target_key": "P-1",
+            "relation_type": "BLOCKS"
+          }
+        ]
+      },
+      "request": {
+        "issue_key": "P-1",
+        "direction": "outbound",
+        "hops": 2
+      },
+      "expected": {
+        "issue_keys": [
+          "P-1",
+          "P-2",
+          "P-3",
+          "P-4"
+        ],
+        "required_paths": [
+          [
+            "P-1",
+            "P-2",
+            "P-4"
+          ],
+          [
+            "P-1",
+            "P-3",
+            "P-4"
+          ]
+        ],
+        "truncated": false
+      },
+      "test_refs": [
+        "tests/test_graph/test_traversal.py::test_two_hops_cycle_safe_and_retains_alternative_paths"
+      ],
+      "notes": "Two alternative two-hop paths must survive path deduplication. This shape is absent from AIPLAT."
+    },
+    {
+      "id": "S02",
+      "category": "cycle",
+      "synthetic": true,
+      "fixture": {
+        "nodes": [
+          "P-1",
+          "P-2",
+          "P-3",
+          "P-4"
+        ],
+        "edges": [
+          {
+            "source_key": "P-1",
+            "target_key": "P-2",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-1",
+            "target_key": "P-3",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-2",
+            "target_key": "P-4",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-3",
+            "target_key": "P-4",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-2",
+            "target_key": "P-1",
+            "relation_type": "BLOCKS"
+          }
+        ]
+      },
+      "request": {
+        "issue_key": "P-1",
+        "direction": "outbound",
+        "hops": 2
+      },
+      "expected": {
+        "required_paths": [
+          [
+            "P-1",
+            "P-2",
+            "P-1"
+          ]
+        ],
+        "unique_node_count": 4,
+        "truncated": false,
+        "max_path_edges": 2
+      },
+      "test_refs": [
+        "tests/test_graph/test_traversal.py::test_two_hops_cycle_safe_and_retains_alternative_paths"
+      ],
+      "notes": "Return the recorded cycle path within the hop bound while deduplicating nodes; do not recurse indefinitely."
+    },
+    {
+      "id": "S03",
+      "category": "cross_scope_isolation",
+      "synthetic": true,
+      "fixture": {
+        "scopes": [
+          "selected",
+          "other snapshot",
+          "other project",
+          "other site"
+        ],
+        "nodes_per_scope": [
+          "P-1",
+          "P-2",
+          "P-3",
+          "P-4"
+        ],
+        "edges_per_scope": [
+          {
+            "source_key": "P-1",
+            "target_key": "P-2",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-2",
+            "target_key": "P-3",
+            "relation_type": "BLOCKS"
+          },
+          {
+            "source_key": "P-3",
+            "target_key": "P-1",
+            "relation_type": "BLOCKS"
+          }
+        ],
+        "injected_invalid_edges": [
+          "Selected-scope relationship to foreign-snapshot endpoint P-4",
+          "Foreign-snapshot relationship between selected-scope endpoints"
+        ]
+      },
+      "request": {
+        "issue_key": "P-1",
+        "direction": "outbound",
+        "hops": 2,
+        "scope": "selected"
+      },
+      "expected": {
+        "paths": [
+          [
+            "P-1",
+            "P-2"
+          ],
+          [
+            "P-1",
+            "P-2",
+            "P-3"
+          ]
+        ],
+        "all_nodes_and_edges_scope": "selected",
+        "foreign_evidence_count": 0,
+        "result_unchanged_after_invalid_edges": true
+      },
+      "test_refs": [
+        "tests/test_graph/test_traversal.py::test_real_direction_multihop_and_scope_isolation",
+        "tests/test_graph/test_traversal.py::test_unknown_origin_and_mismatched_evidence_fail"
+      ],
+      "notes": "Real Neo4j integration test creates isolated synthetic scopes, then checks traversal rejects cross-scope contamination. No real Jira tickets are changed."
+    },
+    {
+      "id": "S04",
+      "category": "graph_backend_failure",
+      "synthetic": true,
+      "fixture": {
+        "failure": "graph store list_issues raises RuntimeError",
+        "available_evidence": "same-snapshot text evidence"
+      },
+      "expected": {
+        "coverage": "graph_unavailable",
+        "nodes": [],
+        "paths": [],
+        "preserve_text_scope": true,
+        "secret_error_detail_exposed": false
+      },
+      "test_refs": [
+        "tests/test_graph/test_retrieval.py::test_graph_failure_returns_same_snapshot_text_only"
+      ],
+      "notes": "Text-only degradation must be explicit and preserve the pinned snapshot."
+    },
+    {
+      "id": "S05",
+      "category": "text_backend_failure",
+      "synthetic": true,
+      "fixture": {
+        "failure": "text search for_issues raises RuntimeError",
+        "anchor": "AIPLAT-3 in synthetic context fixture"
+      },
+      "expected": {
+        "coverage": "partial",
+        "preserve_graph_paths": true,
+        "text_evidence": []
+      },
+      "test_refs": [
+        "tests/test_graph/test_retrieval.py::test_text_failure_preserves_explicit_graph_evidence"
+      ],
+      "notes": "An explicit graph anchor remains usable when text evidence is unavailable. AIPLAT-like fixture keys are synthetic."
+    },
+    {
+      "id": "S06",
+      "category": "answer_model_failure",
+      "synthetic": true,
+      "fixture": {
+        "failure": "answer model generation, construction or cleanup raises"
+      },
+      "expected": {
+        "preserve_retrieved_paths": true,
+        "answer_failure_explicit": true
+      },
+      "test_refs": [
+        "tests/test_graph/test_retrieval.py::test_query_failure_preserves_retrieved_paths",
+        "tests/test_graph/test_retrieval.py::test_query_construction_failure_preserves_evidence",
+        "tests/test_graph/test_retrieval.py::test_query_cleanup_failure_preserves_evidence"
+      ],
+      "notes": "Model failure does not convert available graph evidence into an empty successful answer."
+    },
+    {
+      "id": "S07",
+      "category": "node_budget_failure_mode",
+      "synthetic": true,
+      "fixture": {
+        "nodes": "P-1 through P-108",
+        "edges": "P-1 BLOCKS every P-2 through P-108"
+      },
+      "request": {
+        "issue_key": "P-1",
+        "limit": 3
+      },
+      "expected": {
+        "node_count": 3,
+        "coverage": "partial",
+        "truncated": true,
+        "no_dangling_paths": true
+      },
+      "test_refs": [
+        "tests/test_graph/test_traversal.py::test_node_limit_reports_partial_without_dangling_paths"
+      ],
+      "notes": "Truncation must be explicit; every returned path endpoint must be included."
+    },
+    {
+      "id": "S08",
+      "category": "unresolved_status_guard",
+      "synthetic": true,
+      "fixture": {
+        "edges": [
+          {
+            "source_key": "P-1",
+            "target_key": "P-2",
+            "relation_type": "BLOCKS"
+          }
+        ],
+        "source_status_category": "indeterminate",
+        "target_status_variants": [
+          "Done",
+          "unknown",
+          "indeterminate"
+        ]
+      },
+      "request": {
+        "issue_key": "P-1",
+        "unresolved_pair": true
+      },
+      "expected": {
+        "path_count_by_target_status": {
+          "Done": 0,
+          "unknown": 0,
+          "indeterminate": 1
+        }
+      },
+      "test_refs": [
+        "tests/test_graph/test_traversal.py::test_unresolved_requires_known_non_done_status",
+        "tests/test_graph/test_traversal.py::test_unresolved_never_promotes_other_relation_types"
+      ],
+      "notes": "Only known non-Done endpoints and the BLOCKS relation support an unresolved blocking-pair claim; UNKNOWN/RELATED_TO must not be promoted."
+    }
+  ]
+}

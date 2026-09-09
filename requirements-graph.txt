@@ -1,0 +1,2 @@
+# Optional local graph backend; does not change the base installation.
+neo4j==5.28.2

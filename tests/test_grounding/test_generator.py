@@ -188,3 +188,21 @@ def test_generator_rejects_non_positive_timeout():
     client, _ = _client(_response())
     with pytest.raises(ValueError, match="timeout"):
         GroundedAnswerGenerator(client=client, timeout_seconds=0)
+
+
+def test_gpt55_snapshot_configuration_and_strict_generation():
+    from app.config import Settings
+
+    model = "gpt-5.5-2026-04-23"
+    assert Settings.model_fields["answer_openai_model"].default == model
+    assert Settings(answer_openai_model=model).answer_openai_model == model
+    client, completions = _client(_response())
+    result = GroundedAnswerGenerator(model=model, client=client).generate("Retry?", [_evidence()])
+    assert result.answer == "Retry requests up to three times [E1]."
+    assert completions.calls[0]["model"] == model
+    assert completions.calls[0]["response_format"]["json_schema"]["strict"] is True
+
+
+def test_gpt55_alias_is_rejected():
+    with pytest.raises(ValueError, match="pinned"):
+        GroundedAnswerGenerator(model="gpt-5.5")

@@ -1,0 +1,47 @@
+[
+  {
+    "endpoint": "/graph/retrieve",
+    "status": 200,
+    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+    "seed_method": "hybrid",
+    "seeds": [
+      "AIPLAT-46"
+    ],
+    "path_count": 1,
+    "coverage": "complete",
+    "answer_status": null,
+    "elapsed_ms": 4533.01
+  },
+  {
+    "endpoint": "/graph/retrieve",
+    "status": 200,
+    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+    "seed_method": "explicit",
+    "seeds": [
+      "AIPLAT-14",
+      "AIPLAT-15",
+      "AIPLAT-16",
+      "AIPLAT-46"
+    ],
+    "path_count": 1,
+    "coverage": "complete",
+    "answer_status": null,
+    "elapsed_ms": 108.17
+  },
+  {
+    "endpoint": "/graph/query",
+    "status": 200,
+    "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+    "seed_method": "explicit",
+    "seeds": [
+      "AIPLAT-46"
+    ],
+    "path_count": 1,
+    "coverage": "complete",
+    "answer_status": "answer_unavailable",
+    "elapsed_ms": 2693.71
+  },
+  {
+    "legacy_and_graph_routes_present": true
+  }
+]

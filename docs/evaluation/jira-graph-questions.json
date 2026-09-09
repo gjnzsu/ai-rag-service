@@ -1,0 +1,607 @@
+{
+  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+  "provenance": {
+    "kind": "real_frozen_jira_snapshot",
+    "site_id": "https://30156758.atlassian.net",
+    "project_key": "AIPLAT",
+    "normalized_path": "data/graph-poc/9f54ac536147f3064f730c8c/snapshots/84651bb20502364a91fcc0ee/normalized.json",
+    "normalized_sha256": "a020679dbc5e1caf5759870fb89f86e01888c4f217f799364014268e7d684968",
+    "annotation_method": "Human-readable questions and expected evidence authored from normalized issue and edge records; no API or retrieval/model outputs used to generate the oracle.",
+    "visible_issue_count": 35,
+    "relation_counts": {
+      "CHILD_OF": 27,
+      "BLOCKS": 1
+    },
+    "limitations": [
+      "Visible-project snapshot, not a transactional Jira snapshot or evidence about inaccessible issues.",
+      "One BLOCKS edge only; no observed cross-Epic dependency, cycle or distinct multi-hop dependency chain.",
+      "Both endpoints of the BLOCKS edge are Done; it is historical recorded structure, not a current unresolved blocker.",
+      "Description-only expected evidence records the intended seed; retrieval may return additional relevant seeds.",
+      "Expected issue keys are required evidence, not an exact upper bound. Expected edges preserve canonical Jira direction."
+    ]
+  },
+  "cases": [
+    {
+      "id": "R01",
+      "question": "List all Epics in the AIPLAT backlog and report the total numbers of Epics, Stories and Bugs.",
+      "intent": "overview",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-1",
+        "AIPLAT-5",
+        "AIPLAT-9",
+        "AIPLAT-13",
+        "AIPLAT-17",
+        "AIPLAT-25",
+        "AIPLAT-36",
+        "AIPLAT-41"
+      ],
+      "expected_edges": [],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "expected_counts": {
+        "total": 35,
+        "by_type": {
+          "Epic": 8,
+          "Story": 26,
+          "Bug": 1
+        },
+        "by_status": {
+          "Done": 18,
+          "To Do": 10,
+          "In Progress": 7
+        },
+        "by_status_category": {
+          "done": 18,
+          "new": 10,
+          "indeterminate": 7
+        }
+      }
+    },
+    {
+      "id": "R02",
+      "question": "Give a complete product backlog panorama, with all Epic names and overall status counts, rather than only similar tickets.",
+      "intent": "overview",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-1",
+        "AIPLAT-5",
+        "AIPLAT-9",
+        "AIPLAT-13",
+        "AIPLAT-17",
+        "AIPLAT-25",
+        "AIPLAT-36",
+        "AIPLAT-41"
+      ],
+      "expected_edges": [],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "expected_counts": {
+        "total": 35,
+        "by_type": {
+          "Epic": 8,
+          "Story": 26,
+          "Bug": 1
+        },
+        "by_status": {
+          "Done": 18,
+          "To Do": 10,
+          "In Progress": 7
+        },
+        "by_status_category": {
+          "done": 18,
+          "new": 10,
+          "indeterminate": 7
+        }
+      }
+    },
+    {
+      "id": "R03",
+      "question": "What Stories and Bugs belong to AIPLAT-13, the RAG pipeline Epic, and what are their statuses?",
+      "intent": "epic_detail",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-13",
+        "AIPLAT-14",
+        "AIPLAT-15",
+        "AIPLAT-16",
+        "AIPLAT-46"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-14",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-15",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-16",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "epic_key": "AIPLAT-13",
+      "expected_counts": {
+        "total": 4,
+        "by_type": {
+          "Story": 3,
+          "Bug": 1
+        },
+        "by_status": {
+          "Done": 3,
+          "To Do": 1
+        },
+        "by_status_category": {
+          "done": 3,
+          "new": 1
+        }
+      }
+    },
+    {
+      "id": "R04",
+      "question": "What Stories and Bugs belong to AIPLAT-5, the model fallback Epic, and what are their statuses?",
+      "intent": "epic_detail",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-5",
+        "AIPLAT-6",
+        "AIPLAT-7",
+        "AIPLAT-8"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-6",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-7",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-8",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "epic_key": "AIPLAT-5",
+      "expected_counts": {
+        "total": 3,
+        "by_type": {
+          "Story": 3
+        },
+        "by_status": {
+          "Done": 1,
+          "To Do": 2
+        },
+        "by_status_category": {
+          "done": 1,
+          "new": 2
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "question": "What Stories and Bugs belong to AIPLAT-36, the continuous improvement Epic, and what are their statuses?",
+      "intent": "epic_detail",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-36",
+        "AIPLAT-37",
+        "AIPLAT-38",
+        "AIPLAT-39",
+        "AIPLAT-40"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-37",
+          "target_key": "AIPLAT-36",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-38",
+          "target_key": "AIPLAT-36",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-39",
+          "target_key": "AIPLAT-36",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-40",
+          "target_key": "AIPLAT-36",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "epic_key": "AIPLAT-36",
+      "expected_counts": {
+        "total": 4,
+        "by_type": {
+          "Story": 4
+        },
+        "by_status": {
+          "To Do": 2,
+          "Done": 2
+        },
+        "by_status_category": {
+          "new": 2,
+          "done": 2
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "question": "What Stories and Bugs belong to AIPLAT-41, the continuous learning Epic, and what are their statuses?",
+      "intent": "epic_detail",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-41",
+        "AIPLAT-42",
+        "AIPLAT-43",
+        "AIPLAT-44",
+        "AIPLAT-45"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-42",
+          "target_key": "AIPLAT-41",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-43",
+          "target_key": "AIPLAT-41",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-44",
+          "target_key": "AIPLAT-41",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-45",
+          "target_key": "AIPLAT-41",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "epic_key": "AIPLAT-41",
+      "expected_counts": {
+        "total": 4,
+        "by_type": {
+          "Story": 4
+        },
+        "by_status": {
+          "To Do": 3,
+          "Done": 1
+        },
+        "by_status_category": {
+          "new": 3,
+          "done": 1
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "question": "What Stories and Bugs belong to AIPLAT-25, the compliance review Epic, and what are their statuses?",
+      "intent": "epic_detail",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-25",
+        "AIPLAT-27",
+        "AIPLAT-29",
+        "AIPLAT-31"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-27",
+          "target_key": "AIPLAT-25",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-29",
+          "target_key": "AIPLAT-25",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-31",
+          "target_key": "AIPLAT-25",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "epic_key": "AIPLAT-25",
+      "expected_counts": {
+        "total": 3,
+        "by_type": {
+          "Story": 3
+        },
+        "by_status": {
+          "Done": 2,
+          "In Progress": 1
+        },
+        "by_status_category": {
+          "done": 2,
+          "indeterminate": 1
+        }
+      }
+    },
+    {
+      "id": "R08",
+      "question": "Which issue does AIPLAT-46 block according to Jira?",
+      "intent": "dependencies",
+      "direction": "outbound",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-46",
+        "AIPLAT-16"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "issue_key": "AIPLAT-46"
+    },
+    {
+      "id": "R09",
+      "question": "Which recorded issue blocks AIPLAT-16?",
+      "intent": "dependencies",
+      "direction": "inbound",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-16",
+        "AIPLAT-46"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Required evidence is independently annotated from the frozen normalized Jira records, not from retrieval output.",
+      "issue_key": "AIPLAT-16"
+    },
+    {
+      "id": "R10",
+      "question": "Which issues does AIPLAT-16 itself block?",
+      "intent": "dependencies",
+      "direction": "outbound",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-16"
+      ],
+      "expected_edges": [],
+      "answerability": "no_recorded_relation",
+      "notes": "The one recorded BLOCKS edge points into AIPLAT-16. Do not reverse it or claim there are no real-world dependencies.",
+      "issue_key": "AIPLAT-16"
+    },
+    {
+      "id": "R11",
+      "question": "What recorded dependencies are connected to AIPLAT-46 within two hops?",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 2,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-46",
+        "AIPLAT-16"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Only one real BLOCKS edge exists. A two-hop budget does not imply a distinct two-hop chain; cycle/multihop capability is synthetic-only.",
+      "issue_key": "AIPLAT-46"
+    },
+    {
+      "id": "R12",
+      "question": "Show the recorded dependencies among the children of Epic AIPLAT-13.",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-13",
+        "AIPLAT-14",
+        "AIPLAT-15",
+        "AIPLAT-16",
+        "AIPLAT-46"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-14",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-15",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-16",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-13",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Epic membership is explicit CHILD_OF evidence; the recorded BLOCKS pair is AIPLAT-46 to AIPLAT-16, both Done.",
+      "epic_key": "AIPLAT-13"
+    },
+    {
+      "id": "R13",
+      "question": "Does AIPLAT-46 have any unresolved blocking pairs?",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": true,
+      "expected_issue_keys": [
+        "AIPLAT-46"
+      ],
+      "expected_edges": [],
+      "answerability": "no_recorded_relation",
+      "notes": "Both AIPLAT-46 and AIPLAT-16 have status_category done. Keep the seed, return no unresolved BLOCKS pair; do not label this a current blocker.",
+      "issue_key": "AIPLAT-46"
+    },
+    {
+      "id": "R14",
+      "question": "RAG retrieval returns unauthorized chunks across knowledge domains. Which recorded issue does this bug block?",
+      "intent": "dependencies",
+      "direction": "outbound",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-46",
+        "AIPLAT-16"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Description-only retrieval: the bug title identifies intended seed AIPLAT-46, whose BLOCKS edge reaches AIPLAT-16. Neither key is supplied as an anchor."
+    },
+    {
+      "id": "R15",
+      "question": "Retrieve grounded context for RAG queries: which recorded bug blocks this work?",
+      "intent": "dependencies",
+      "direction": "inbound",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-16",
+        "AIPLAT-46"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-46",
+          "target_key": "AIPLAT-16",
+          "relation_type": "BLOCKS"
+        }
+      ],
+      "answerability": "supported",
+      "notes": "Description-only retrieval: the story title identifies intended seed AIPLAT-16; traverse incoming BLOCKS to AIPLAT-46, preserving canonical edge direction."
+    },
+    {
+      "id": "R16",
+      "question": "For the model fallback Epic AIPLAT-5, what dependencies are explicitly recorded?",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-5",
+        "AIPLAT-6",
+        "AIPLAT-7",
+        "AIPLAT-8"
+      ],
+      "expected_edges": [
+        {
+          "source_key": "AIPLAT-6",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-7",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        },
+        {
+          "source_key": "AIPLAT-8",
+          "target_key": "AIPLAT-5",
+          "relation_type": "CHILD_OF"
+        }
+      ],
+      "answerability": "no_recorded_relation",
+      "notes": "Membership exists but no BLOCKS, RELATED_TO or UNKNOWN dependency is recorded for these children. Empty dependencies do not prove independence.",
+      "epic_key": "AIPLAT-5"
+    },
+    {
+      "id": "R17",
+      "question": "What recorded dependencies are connected to AIPLAT-31?",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [
+        "AIPLAT-31"
+      ],
+      "expected_edges": [],
+      "answerability": "no_recorded_relation",
+      "notes": "The issue is In Progress but has no recorded dependency edge; its CHILD_OF membership alone must not be promoted to BLOCKS.",
+      "issue_key": "AIPLAT-31"
+    },
+    {
+      "id": "R18",
+      "question": "Show recorded dependencies for AIPLAT-999.",
+      "intent": "dependencies",
+      "direction": "both",
+      "hops": 1,
+      "unresolved_pair": false,
+      "expected_issue_keys": [],
+      "expected_edges": [],
+      "answerability": "not_in_snapshot",
+      "notes": "Key is absent from this visible snapshot. Return not-found; do not infer deletion, permission state, or replace the explicit key with a semantic match.",
+      "issue_key": "AIPLAT-999"
+    }
+  ]
+}

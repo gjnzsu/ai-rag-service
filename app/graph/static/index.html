@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira backlog graph</title>
+  <link rel="stylesheet" href="/graph/demo/assets/demo.css">
+</head>
+<body>
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">LOCAL READ-ONLY DEMO</p>
+      <h1>Jira backlog graph</h1>
+      <p class="lede">Inspect hierarchy and recorded relationships in one pinned snapshot.</p>
+    </div>
+    <label class="project-field">Project <input id="project-key" value="AIPLAT" maxlength="64" pattern="[A-Z][A-Z0-9_]*" autocomplete="off"></label>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Graph views">
+    <button id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview">Epic overview</button>
+    <button id="tab-detail" role="tab" aria-selected="false" aria-controls="panel-detail" tabindex="-1">Epic detail</button>
+    <button id="tab-dependencies" role="tab" aria-selected="false" aria-controls="panel-dependencies" tabindex="-1">Dependency evidence</button>
+  </nav>
+
+  <main>
+    <div id="global-status" class="sr-only" aria-live="polite"></div>
+
+    <section id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+      <div class="panel-heading"><div><p class="kicker">Portfolio structure</p><h2>Epic overview</h2><p>Full snapshot counts, Epic status, and direct-child completion.</p></div>
+        <form id="overview-form"><button type="submit">Load overview</button></form></div>
+      <div id="overview-results" class="results" aria-live="polite"><p class="empty">Load the project snapshot to begin.</p></div>
+    </section>
+
+    <section id="panel-detail" role="tabpanel" aria-labelledby="tab-detail" hidden>
+      <div class="panel-heading"><div><p class="kicker">Direct hierarchy</p><h2>Epic detail</h2><p>Review direct children with snapshot-pinned pagination.</p></div></div>
+      <form id="detail-form" class="controls">
+        <label>Epic key <input id="detail-epic-key" value="AIPLAT-13" pattern="[A-Z][A-Z0-9_]*-[0-9]+" required autocomplete="off"></label>
+        <label>Rows <select id="detail-limit"><option>10</option><option selected>25</option><option>50</option><option>100</option></select></label>
+        <button type="submit">Load Epic</button>
+      </form>
+      <div id="detail-results" class="results" aria-live="polite"><p class="empty">Choose an Epic to inspect.</p></div>
+    </section>
+
+    <section id="panel-dependencies" role="tabpanel" aria-labelledby="tab-dependencies" hidden>
+      <div class="panel-heading"><div><p class="kicker">Canonical relationship evidence</p><h2>Dependency evidence</h2><p>Recorded directions, endpoint statuses, provenance, and supporting text.</p></div></div>
+      <form id="dependencies-form" class="controls dependencies-controls">
+        <fieldset><legend>Find by</legend>
+          <label class="radio"><input type="radio" name="dependency-mode" value="issue" checked> Issue key</label>
+          <label class="radio"><input type="radio" name="dependency-mode" value="epic"> Epic key</label>
+          <label class="radio"><input type="radio" name="dependency-mode" value="description"> Business description</label>
+        </fieldset>
+        <label class="wide">Key or description <input id="dependency-anchor" value="AIPLAT-46" required autocomplete="off"></label>
+        <button id="use-preset" class="secondary" type="button">Use security preset</button>
+        <label>Direction <select id="dependency-direction"><option value="both">Both</option><option value="outbound">Outbound</option><option value="inbound">Inbound</option></select></label>
+        <label>Hops <select id="dependency-hops"><option>1</option><option>2</option></select></label>
+        <label>Limit <input id="dependency-limit" type="number" min="1" max="100" value="25"></label>
+        <label>Relationship <select id="dependency-relation"><option value="BLOCKS">Blocks</option><option value="RELATED_TO">Related to</option><option value="UNKNOWN">Unknown</option></select></label>
+        <label class="check"><input id="dependency-unresolved" type="checkbox"> Only pairs with known unfinished statuses</label>
+        <button type="submit">Retrieve evidence</button>
+      </form>
+      <div id="dependency-results" class="results" aria-live="polite"><p class="empty">Retrieve by key or business description.</p></div>
+    </section>
+  </main>
+  <script src="/graph/demo/assets/panorama.js" defer></script>
+  <script src="/graph/demo/assets/demo.js" defer></script>
+</body>
+</html>

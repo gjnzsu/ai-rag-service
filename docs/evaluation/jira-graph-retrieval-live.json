@@ -1,0 +1,65 @@
+{
+  "cases": [
+    {
+      "case": "explicit_epic",
+      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+      "seed_method": "explicit",
+      "seeds": [
+        "AIPLAT-14",
+        "AIPLAT-15",
+        "AIPLAT-16",
+        "AIPLAT-46"
+      ],
+      "coverage": "complete",
+      "paths": [
+        [
+          "AIPLAT-46",
+          "BLOCKS",
+          "AIPLAT-16"
+        ]
+      ],
+      "text_chunks": 16,
+      "diagnostics": [
+        "capture_is_not_a_jira_transactional_snapshot"
+      ],
+      "retrieve_ms": 276.31
+    },
+    {
+      "case": "hybrid_security",
+      "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+      "seed_method": "hybrid",
+      "seeds": [
+        "AIPLAT-46"
+      ],
+      "coverage": "complete",
+      "paths": [
+        [
+          "AIPLAT-46",
+          "BLOCKS",
+          "AIPLAT-16"
+        ]
+      ],
+      "text_chunks": 9,
+      "diagnostics": [
+        "capture_is_not_a_jira_transactional_snapshot"
+      ],
+      "retrieve_ms": 1753.32
+    }
+  ],
+  "answer_model": "gpt-5-2025-08-07",
+  "generation_error": {
+    "type": "NotFoundError",
+    "status": 404,
+    "code": "model_not_found"
+  },
+  "answer": {
+    "status": "answer_unavailable",
+    "citation_count": 0,
+    "diagnostics": [
+      "citation_validation_failed"
+    ],
+    "elapsed_ms": 504.34,
+    "usage": []
+  },
+  "embedding_tokens": 7
+}

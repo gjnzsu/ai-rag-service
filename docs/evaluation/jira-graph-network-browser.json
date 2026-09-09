@@ -1,0 +1,16 @@
+[
+  {
+    "width": 1440,
+    "layout_compute_ms": 54,
+    "stable_after_two_frames": true,
+    "page_errors": [],
+    "no_document_overflow": true
+  },
+  {
+    "width": 390,
+    "layout_compute_ms": 38.69999998807907,
+    "stable_after_two_frames": true,
+    "page_errors": [],
+    "no_document_overflow": true
+  }
+]

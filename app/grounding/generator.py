@@ -42,7 +42,7 @@ class GroundedAnswerGenerator:
             if timeout_seconds is None
             else timeout_seconds
         )
-        if not _SNAPSHOT_PATTERN.fullmatch(self.model):
+        if self.model != "gpt-5.5-2026-04-23" and not _SNAPSHOT_PATTERN.fullmatch(self.model):
             raise ValueError("model must be a pinned GPT-5 snapshot")
         if self.timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")

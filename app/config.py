@@ -1,7 +1,7 @@
 import re
 from typing import Literal
 
-from pydantic import field_validator
+from pydantic import SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _OPENAI_SNAPSHOT_PATTERN = re.compile(r"^gpt-5-\d{4}-\d{2}-\d{2}$")
@@ -18,6 +18,21 @@ class Settings(BaseSettings):
     confluence_url: str = ""
     chroma_persist_dir: str = "./chroma_db"
     lexical_db_path: str = "./lexical.db"
+    graph_enabled: bool = False
+    graph_demo_enabled: bool = False
+    graph_data_dir: str = "./data/graph-poc"
+    graph_site_url: str = ""
+    graph_allowed_projects: tuple[str, ...] = ("AIPLAT",)
+    graph_neo4j_uri: str = "bolt://127.0.0.1:7687"
+    graph_neo4j_user: str = "neo4j"
+    graph_neo4j_password: SecretStr = SecretStr("")
+
+    @model_validator(mode="after")
+    def validate_graph_demo(self):
+        if self.graph_demo_enabled and not self.graph_enabled:
+            raise ValueError("graph_demo_enabled requires graph_enabled")
+        return self
+
     lexical_issue_key_weight: float = 10.0
     lexical_title_weight: float = 5.0
     lexical_content_weight: float = 1.0
@@ -40,7 +55,7 @@ class Settings(BaseSettings):
     grounding_evidence_top_k: int = 5
     grounding_prompt_max_chars: int = 4000
     grounding_excerpt_max_chars: int = 200
-    answer_openai_model: str = "gpt-5-2025-08-07"
+    answer_openai_model: str = "gpt-5.5-2026-04-23"
     answer_openai_timeout_seconds: float = 15.0
     chunk_size: int = 512
     chunk_overlap: int = 50
@@ -57,7 +72,7 @@ class Settings(BaseSettings):
     @field_validator("answer_openai_model")
     @classmethod
     def validate_openai_answer_snapshot(cls, value: str) -> str:
-        if not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
+        if value != "gpt-5.5-2026-04-23" and not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
             raise ValueError("OpenAI answer model must be a pinned GPT-5 snapshot")
         return value
 

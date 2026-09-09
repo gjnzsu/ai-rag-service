@@ -1,0 +1,19 @@
+{
+  "scenario": "live business-description preset",
+  "status": 200,
+  "snapshot_id": "7cc2704c483c423c9bc1d749040bbd64",
+  "seed_method": "hybrid",
+  "seeds": [
+    "AIPLAT-46"
+  ],
+  "paths": [
+    [
+      "AIPLAT-46",
+      "BLOCKS",
+      "AIPLAT-16"
+    ]
+  ],
+  "elapsed_ms": 4164.94,
+  "answer_model_called": false,
+  "embedding_usage": "not captured by HTTP response"
+}

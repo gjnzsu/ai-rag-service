@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-09",
+  "model": "gpt-5.5-2026-04-23",
+  "snapshot_id": "7b9d816aa2c445c9919635aff149f705",
+  "results": [
+    {
+      "case": "cross_epic",
+      "http_status": 200,
+      "elapsed_seconds": 8.83,
+      "answer": {
+        "answer": "I don't have enough information to answer this question.",
+        "citations": [],
+        "status": "insufficient_evidence",
+        "diagnostics": []
+      }
+    },
+    {
+      "case": "done_dependency",
+      "http_status": 200,
+      "elapsed_seconds": 6.22,
+      "answer": {
+        "answer": "AIPLAT-46 has a recorded BLOCKS relationship to AIPLAT-16, \u201cRetrieve grounded context for RAG queries.\u201d [E3][E2] Both issues are recorded as status Done with status_category done, so they are not still unresolved in the supplied snapshot. [E1][E2]",
+        "citations": [
+          {
+            "citation_id": "E3",
+            "document_id": "jira:7b6d49938719c8eebfbd4a01ac9de83eb7bbbf7779d924777703b9797d3d814c",
+            "chunk_id": "graph-edge:1",
+            "source_url": "https://30156758.atlassian.net/browse/AIPLAT-16",
+            "excerpt": "Canonical directed Jira edge: AIPLAT-46 (Done / done) BLOCKS AIPLAT-16 (Done / done); provenance: origin issue AIPLAT-16, field issuelinks, source type Blocks, recorded direction inward."
+          },
+          {
+            "citation_id": "E2",
+            "document_id": "jira:7b6d49938719c8eebfbd4a01ac9de83eb7bbbf7779d924777703b9797d3d814c",
+            "chunk_id": "graph-node:12044",
+            "source_url": "https://30156758.atlassian.net/browse/AIPLAT-16",
+            "excerpt": "Issue AIPLAT-16: issue_id=12044; title='Retrieve grounded context for RAG queries'; type=Story; status=Done; status_category=done."
+          },
+          {
+            "citation_id": "E1",
+            "document_id": "jira:3fe620fc0557396c13c85540667a0a7045e8d4e8c504efdeee373917860b0a70",
+            "chunk_id": "graph-node:12074",
+            "source_url": "https://30156758.atlassian.net/browse/AIPLAT-46",
+            "excerpt": "Issue AIPLAT-46: issue_id=12074; title='RAG retrieval returns unauthorized chunks across knowledge domains'; type=Bug; status=Done; status_category=done."
+          }
+        ],
+        "status": "supported",
+        "diagnostics": []
+      }
+    },
+    {
+      "case": "cross_epic_dependency_only",
+      "http_status": 200,
+      "elapsed_seconds": 4.47,
+      "answer": {
+        "answer": "AIPLAT-37 BLOCKS AIPLAT-23; AIPLAT-37 is recorded as status To Do with status category new, and AIPLAT-23 is recorded as status To Do with status category new.[E3]",
+        "citations": [
+          {
+            "citation_id": "E3",
+            "document_id": "jira:2aa9f369c18c921b6cf3de78d05fd0a67b3567e92d56183d3ec48c1747f4077a",
+            "chunk_id": "graph-edge:1",
+            "source_url": "https://30156758.atlassian.net/browse/AIPLAT-23",
+            "excerpt": "Canonical directed Jira edge: AIPLAT-37 (To Do / new) BLOCKS AIPLAT-23 (To Do / new); provenance: origin issue AIPLAT-23, field issuelinks, source type Blocks, recorded direction inward."
+          }
+        ],
+        "status": "supported",
+        "diagnostics": []
+      }
+    }
+  ]
+}
