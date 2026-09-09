@@ -41,7 +41,7 @@ def test_settings_validate_the_provider_and_default_to_none():
 def test_settings_default_to_immutable_openai_and_qwen_model_versions():
     configured = _settings()
 
-    assert configured.reranker_openai_model == "gpt-5-2025-08-07"
+    assert configured.reranker_openai_model == configured.answer_openai_model == "gpt-5.5-2026-04-23"
     assert configured.reranker_qwen_model == "Qwen/Qwen3-Reranker-0.6B"
     assert configured.reranker_qwen_revision == "e61197ed45024b0ed8a2d74b80b4d909f1255473"
 

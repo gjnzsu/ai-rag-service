@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     retrieval_rrf_k: int = 60
     retrieval_score_threshold: float | None = None
     reranker_provider: Literal["none", "openai", "qwen_local"] = "none"
-    reranker_openai_model: str = "gpt-5-2025-08-07"
+    reranker_openai_model: str = "gpt-5.5-2026-04-23"
     reranker_openai_timeout_seconds: float = 5.0
     reranker_qwen_model: str = "Qwen/Qwen3-Reranker-0.6B"
     reranker_qwen_revision: str = "e61197ed45024b0ed8a2d74b80b4d909f1255473"
@@ -65,7 +65,7 @@ class Settings(BaseSettings):
     @field_validator("reranker_openai_model")
     @classmethod
     def validate_openai_reranker_snapshot(cls, value: str) -> str:
-        if not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
+        if value != "gpt-5.5-2026-04-23" and not _OPENAI_SNAPSHOT_PATTERN.fullmatch(value):
             raise ValueError("OpenAI reranker model must be a pinned GPT-5 snapshot")
         return value
 

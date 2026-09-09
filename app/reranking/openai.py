@@ -44,7 +44,7 @@ class GPT5Reranker:
         api_key: str | None = None,
         client: Any | None = None,
     ) -> None:
-        if not _SNAPSHOT_PATTERN.fullmatch(model):
+        if model != "gpt-5.5-2026-04-23" and not _SNAPSHOT_PATTERN.fullmatch(model):
             raise ValueError("model must be a pinned GPT-5 snapshot")
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")

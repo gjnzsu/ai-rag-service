@@ -97,7 +97,7 @@
         <mxCell id="hybrid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid retrieval&lt;/b&gt;&lt;br&gt;Exact + vector + BM25 → RRF" vertex="1">
           <mxGeometry height="75" width="290" x="690" y="555" as="geometry" />
         </mxCell>
-        <mxCell id="selection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Rerank + evidence selection&lt;/b&gt;&lt;br&gt;Optional GPT-5 / Qwen3" vertex="1">
+        <mxCell id="selection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Rerank + evidence selection&lt;/b&gt;&lt;br&gt;Optional GPT-5.5 / Qwen3" vertex="1">
           <mxGeometry height="75" width="350" x="1070" y="555" as="geometry" />
         </mxCell>
         <mxCell id="graphapi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph API&lt;/b&gt;&lt;br&gt;/graph/retrieve · /graph/query" vertex="1">

@@ -219,3 +219,25 @@ def test_openai_accepts_canonical_colon_delimited_chunk_ids():
     assert [item.chunk_id for item in result] == [chunk_id]
     assert result[0].rerank_score == 3.0
     assert len(completions.calls) == 1
+
+
+def test_gpt55_snapshot_reranks_with_strict_output():
+    from app.config import Settings
+
+    model = "gpt-5.5-2026-04-23"
+    assert Settings(openai_api_key="test-key", _env_file=None, reranker_openai_model=model).reranker_openai_model == model
+    client, completions = _client(_response([
+        {"chunk_id": "b", "relevance_grade": 3},
+        {"chunk_id": "a", "relevance_grade": 0},
+    ]))
+    reranker = GPT5Reranker(model=model, timeout_seconds=5, client=client)
+    result = reranker.rerank("query", [_candidate("a"), _candidate("b")], 2)
+    assert [item.chunk_id for item in result] == ["b", "a"]
+    assert reranker.last_status == "ok"
+    assert completions.calls[0]["model"] == model
+    assert completions.calls[0]["response_format"]["json_schema"]["strict"] is True
+
+
+def test_gpt55_floating_alias_is_rejected():
+    with pytest.raises(ValueError, match="pinned"):
+        GPT5Reranker(model="gpt-5.5", timeout_seconds=5)
