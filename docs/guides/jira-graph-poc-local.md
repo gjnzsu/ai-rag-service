@@ -4,6 +4,8 @@
 
 现已包含只读 Jira 采集、三索引构建、快照发布和结构查询 API；组合检索、证据回答 API 与默认关闭的轻量演示页也已实现。
 
+首次了解架构可先阅读 [Hybrid + Graph RAG 端到端流程](hybrid-graph-rag-end-to-end.md)。
+
 ## 工作区与 Python
 
 在 `.worktrees/jira-backlog-graph-poc` 的 `codex/jira-backlog-graph-poc` 分支工作。

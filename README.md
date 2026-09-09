@@ -263,3 +263,8 @@ To redeploy to GKE after changes:
 bash deploy.sh
 ```
 This script automates building the Docker image with Cloud Build and applying Kubernetes manifests to GKE.
+
+
+## Architecture and onboarding
+
+- [Hybrid + Graph RAG end-to-end guide (中文)](docs/guides/hybrid-graph-rag-end-to-end.md): indexing, retrieval, grounded answers, API examples, and code entry points.

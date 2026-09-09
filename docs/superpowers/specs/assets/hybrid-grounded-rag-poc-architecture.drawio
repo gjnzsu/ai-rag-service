@@ -1,340 +1,182 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6" pages="2">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
   <diagram id="hybrid-grounded-rag-poc" name="Architecture">
-    <mxGraphModel dx="1303" dy="793" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="980" math="0" shadow="0" adaptiveColors="auto">
+    <mxGraphModel dx="1971" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="1180" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1F2937;" value="Hybrid Retrieval and Grounded Answers PoC Architecture" vertex="1">
-          <mxGeometry height="40" width="1160" x="520" y="10" as="geometry" />
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="Hybrid + Graph RAG — ai-rag-service" vertex="1">
+          <mxGeometry height="35" width="1570" x="25" y="10" as="geometry" />
         </mxCell>
-        <mxCell id="index_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F3F7FC;strokeColor=#6C8EBF;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="INDEXING PATH" vertex="1">
-          <mxGeometry height="320" width="2160" x="20" y="60" as="geometry" />
+        <mxCell id="ingestion" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="1  INDEXING" vertex="1">
+          <mxGeometry height="35" width="1570" x="25" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="jira" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;Jira&lt;/b&gt;&lt;br&gt;SCRUM Issues" vertex="1">
-          <mxGeometry height="60" width="150" x="30" y="55" as="geometry" />
+        <mxCell id="sources" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;" value="&lt;b&gt;Jira / Confluence / PDF&lt;/b&gt;" vertex="1">
+          <mxGeometry height="70" width="240" x="30" y="112.5" as="geometry" />
         </mxCell>
-        <mxCell id="confluence" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;Confluence&lt;/b&gt;&lt;br&gt;AITest Space" vertex="1">
-          <mxGeometry height="60" width="150" x="30" y="130" as="geometry" />
+        <mxCell id="connectors" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Connector adapters&lt;/b&gt;&lt;br&gt;Canonical documents" vertex="1">
+          <mxGeometry height="75" width="250" x="330" y="110" as="geometry" />
         </mxCell>
-        <mxCell id="pdf" parent="index_lane" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;PDF Files&lt;/b&gt;&lt;br&gt;Test Documents" vertex="1">
-          <mxGeometry height="70" width="150" x="30" y="205" as="geometry" />
+        <mxCell id="chunk" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Shared chunker&lt;/b&gt;&lt;br&gt;Stable document / chunk IDs" vertex="1">
+          <mxGeometry height="75" width="250" x="650" y="110" as="geometry" />
         </mxCell>
-        <mxCell id="connectors" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Connector Adapters&lt;/b&gt;&lt;br&gt;Fetch and parse source data" vertex="1">
-          <mxGeometry height="70" width="180" x="250" y="125" as="geometry" />
+        <mxCell id="embed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;OpenAI embedder&lt;/b&gt;&lt;br&gt;text-embedding-3-small" vertex="1">
+          <mxGeometry height="75" width="270" x="970" y="110" as="geometry" />
         </mxCell>
-        <mxCell id="canonical" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Canonical Document&lt;/b&gt;&lt;br&gt;Stable IDs, metadata, source URL" vertex="1">
-          <mxGeometry height="70" width="190" x="490" y="125" as="geometry" />
+        <mxCell id="chroma" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;ChromaDB&lt;/b&gt;&lt;br&gt;Vector index" vertex="1">
+          <mxGeometry height="75" width="250" x="1330" y="110" as="geometry" />
         </mxCell>
-        <mxCell id="chunker" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Shared Chunker&lt;/b&gt;&lt;br&gt;Deterministic chunk IDs" vertex="1">
-          <mxGeometry height="70" width="180" x="730" y="125" as="geometry" />
+        <mxCell id="fts" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;FTS5 writer&lt;/b&gt;&lt;br&gt;Key / title / content" vertex="1">
+          <mxGeometry height="75" width="270" x="970" y="225" as="geometry" />
         </mxCell>
-        <mxCell id="embedder" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;OpenAI Embedder&lt;/b&gt;&lt;br&gt;text-embedding-3-small" vertex="1">
-          <mxGeometry height="70" width="190" x="980" y="70" as="geometry" />
+        <mxCell id="sqlite" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;SQLite FTS5&lt;/b&gt;&lt;br&gt;Keyword + text index" vertex="1">
+          <mxGeometry height="75" width="250" x="1330" y="225" as="geometry" />
         </mxCell>
-        <mxCell id="fts_writer" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;FTS5 Index Writer&lt;/b&gt;&lt;br&gt;Key + title + content" vertex="1">
-          <mxGeometry height="70" width="190" x="980" y="210" as="geometry" />
+        <mxCell id="jira" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;" value="&lt;b&gt;Jira AIPLAT&lt;/b&gt;&lt;br&gt;Issues + parent + links" vertex="1">
+          <mxGeometry height="75" width="240" x="30" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="chroma" parent="index_lane" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;ChromaDB&lt;/b&gt;&lt;br&gt;Vectors + metadata" vertex="1">
-          <mxGeometry height="70" width="150" x="1240" y="70" as="geometry" />
+        <mxCell id="snapshot" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph snapshot builder&lt;/b&gt;&lt;br&gt;Normalize + build + publish" vertex="1">
+          <mxGeometry height="75" width="280" x="330" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="sqlite" parent="index_lane" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;SQLite FTS5&lt;/b&gt;&lt;br&gt;Text + inverted index" vertex="1">
-          <mxGeometry height="70" width="150" x="1240" y="210" as="geometry" />
+        <mxCell id="neo" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Neo4j&lt;/b&gt;&lt;br&gt;CHILD_OF / BLOCKS" vertex="1">
+          <mxGeometry height="75" width="270" x="970" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="index_note" parent="index_lane" style="shape=note;whiteSpace=wrap;html=1;size=20;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Indexing invariant&lt;/b&gt;&lt;br&gt;Both stores use the same document_id and chunk_id.&lt;br&gt;Ingest builds the FTS5 inverted index.&lt;br&gt;BM25 scoring runs only when queried." vertex="1">
-          <mxGeometry height="140" width="350" x="1490" y="95" as="geometry" />
+        <mxCell id="manifest" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Active manifest&lt;/b&gt;&lt;br&gt;Publish when 3 stores ready" vertex="1">
+          <mxGeometry height="75" width="250" x="1330" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="legend" parent="index_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;Blue: service component&lt;br&gt;Purple: model / scoring&lt;br&gt;Green: persistent index&lt;br&gt;Dashed border: optional stage" vertex="1">
-          <mxGeometry height="160" width="220" x="1900" y="85" as="geometry" />
-        </mxCell>
-        <mxCell id="e_i1" edge="1" parent="index_lane" source="jira" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+        <mxCell id="i1" edge="1" parent="1" source="sources" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="connectors" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i2" edge="1" parent="index_lane" source="confluence" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+        <mxCell id="i2" edge="1" parent="1" source="connectors" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="chunk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i3" edge="1" parent="index_lane" source="pdf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="connectors">
+        <mxCell id="i3" edge="1" parent="1" source="chunk" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="embed" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i4" edge="1" parent="index_lane" source="connectors" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="canonical">
+        <mxCell id="i4" edge="1" parent="1" source="embed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="chroma" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i5" edge="1" parent="index_lane" source="canonical" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="chunker">
+        <mxCell id="i5" edge="1" parent="1" source="fts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="sqlite" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i6" edge="1" parent="index_lane" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="embedder">
+        <mxCell id="i6" edge="1" parent="1" source="jira" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="snapshot" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i7" edge="1" parent="index_lane" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="fts_writer">
+        <mxCell id="i7" edge="1" parent="1" source="snapshot" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="neo" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i8" edge="1" parent="index_lane" source="embedder" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="chroma">
+        <mxCell id="i8" edge="1" parent="1" source="neo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="manifest" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e_i9" edge="1" parent="index_lane" source="fts_writer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="sqlite">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="query_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F8F4FB;strokeColor=#9673A6;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="QUERY AND GROUNDED ANSWER PATH" vertex="1">
-          <mxGeometry height="420" width="2160" x="20" y="400" as="geometry" />
-        </mxCell>
-        <mxCell id="client" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;" value="&lt;b&gt;AI Application&lt;/b&gt;&lt;br&gt;Question + filters" vertex="1">
-          <mxGeometry height="70" width="150" x="30" y="160" as="geometry" />
-        </mxCell>
-        <mxCell id="api" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;FastAPI&lt;/b&gt;&lt;br&gt;/retrieve or /query" vertex="1">
-          <mxGeometry height="70" width="160" x="220" y="160" as="geometry" />
-        </mxCell>
-        <mxCell id="query_hints" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Query Hints&lt;/b&gt;&lt;br&gt;Jira key + metadata filters" vertex="1">
-          <mxGeometry height="70" width="180" x="420" y="160" as="geometry" />
-        </mxCell>
-        <mxCell id="coordinator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Retrieval Coordinator&lt;/b&gt;&lt;br&gt;Runs independent candidate searches" vertex="1">
-          <mxGeometry height="70" width="190" x="640" y="160" as="geometry" />
-        </mxCell>
-        <mxCell id="exact" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Exact Match&lt;/b&gt;&lt;br&gt;Jira key / filters" vertex="1">
-          <mxGeometry height="60" width="160" x="880" y="45" as="geometry" />
-        </mxCell>
-        <mxCell id="vector_retriever" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Vector Retriever&lt;/b&gt;&lt;br&gt;ChromaDB semantic Top 30" vertex="1">
-          <mxGeometry height="60" width="160" x="880" y="165" as="geometry" />
-        </mxCell>
-        <mxCell id="lexical_retriever" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;Lexical Retriever&lt;/b&gt;&lt;br&gt;Keyword match + BM25 rank&lt;br&gt;Top 30" vertex="1">
-          <mxGeometry height="60" width="160" x="880" y="275" as="geometry" />
-        </mxCell>
-        <mxCell id="rrf" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;portConstraint=eastwest;" value="&lt;b&gt;RRF Fusion&lt;/b&gt;&lt;br&gt;Merge, rank, dedupe&lt;br&gt;Top 20" vertex="1">
-          <mxGeometry height="80" width="165" x="1090" y="155" as="geometry" />
-        </mxCell>
-        <mxCell id="reranker" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;dashed=1;strokeWidth=2;" value="&lt;b&gt;Optional Reranker&lt;/b&gt;&lt;br&gt;NoOp / GPT-5 / Qwen3 0.6B" vertex="1">
-          <mxGeometry height="80" width="190" x="1300" y="155" as="geometry" />
-        </mxCell>
-        <mxCell id="selector" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Evidence Selector&lt;/b&gt;&lt;br&gt;Thresholds, diversity, sufficiency&lt;br&gt;Top 5-10" vertex="1">
-          <mxGeometry height="80" width="190" x="1535" y="155" as="geometry" />
-        </mxCell>
-        <mxCell id="retrieve_output" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;/retrieve&lt;/b&gt;&lt;br&gt;Evidence + scores&lt;br&gt;chunk IDs + source URLs" vertex="1">
-          <mxGeometry height="85" width="175" x="1780" y="55" as="geometry" />
-        </mxCell>
-        <mxCell id="generator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Answer Generator&lt;/b&gt;&lt;br&gt;Evidence IDs + grounded prompt" vertex="1">
-          <mxGeometry height="75" width="175" x="1780" y="220" as="geometry" />
-        </mxCell>
-        <mxCell id="validator" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Citation Validator&lt;/b&gt;&lt;br&gt;Known IDs + server-owned URLs" vertex="1">
-          <mxGeometry height="75" width="165" x="1980" y="220" as="geometry" />
-        </mxCell>
-        <mxCell id="query_output" parent="query_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;/query&lt;/b&gt;&lt;br&gt;Answer + citations&lt;br&gt;grounding status" vertex="1">
-          <mxGeometry height="70" width="165" x="1980" y="325" as="geometry" />
-        </mxCell>
-        <mxCell id="fallback_note" parent="query_lane" style="shape=note;whiteSpace=wrap;html=1;size=20;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#333333;align=left;spacingLeft=10;" value="&lt;b&gt;Safe degradation&lt;/b&gt;&lt;br&gt;One retriever fails: use the other path. Reranker fails: keep RRF order. Insufficient evidence: refuse without fabricated citations." vertex="1">
-          <mxGeometry height="105" width="635" x="1090" y="275" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q1" edge="1" parent="query_lane" source="client" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="api">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q2" edge="1" parent="query_lane" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="query_hints">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q3" edge="1" parent="query_lane" source="query_hints" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="coordinator">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q4" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="exact">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q5" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="vector_retriever">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q6" edge="1" parent="query_lane" source="coordinator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="lexical_retriever">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q7" edge="1" parent="query_lane" source="exact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q8" edge="1" parent="query_lane" source="vector_retriever" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q9" edge="1" parent="query_lane" source="lexical_retriever" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="rrf">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q10" edge="1" parent="query_lane" source="rrf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="reranker">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q11" edge="1" parent="query_lane" source="reranker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;" target="selector">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q12" edge="1" parent="query_lane" source="selector" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;fontColor=#4D7A38;" target="retrieve_output" value="evidence">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q13" edge="1" parent="query_lane" source="selector" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673A6;endArrow=classic;fontColor=#6A4D79;" target="generator" value="selected">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q14" edge="1" parent="query_lane" source="generator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;" target="validator">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e_q15" edge="1" parent="query_lane" source="validator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#82B366;endArrow=classic;" target="query_output">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="eval_lane" parent="1" style="swimlane;startSize=32;horizontal=1;rounded=1;fillColor=#F5F5F5;strokeColor=#666666;fontColor=#1F2937;fontStyle=1;fontSize=14;html=1;pointerEvents=0;" value="EVALUATION HARNESS" vertex="1">
-          <mxGeometry height="120" width="2160" x="20" y="840" as="geometry" />
-        </mxCell>
-        <mxCell id="eval_configs" parent="eval_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Comparable Configurations&lt;/b&gt;&lt;br&gt;A Vector-only | B Hybrid + RRF | C1 + GPT-5 | C2 + Qwen3" vertex="1">
-          <mxGeometry height="55" width="700" x="140" y="45" as="geometry" />
-        </mxCell>
-        <mxCell id="eval_metrics" parent="eval_lane" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Quality and Cost Metrics&lt;/b&gt;&lt;br&gt;Recall@20 | Hit@5 | MRR@10 | Context Precision | Citation Correctness | Abstention | P50/P95 | Tokens | CPU/RAM" vertex="1">
-          <mxGeometry height="55" width="1080" x="930" y="45" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
-  <diagram id="jira-graph-rag-poc" name="Graph RAG Component Flow">
-    <mxGraphModel dx="1971" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1160" math="0" shadow="0" adaptiveColors="auto">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;fillColor=none;strokeColor=none;fontSize=25;" value="&lt;b&gt;Jira Graph RAG PoC — Platform Component Flow&lt;/b&gt;" vertex="1">
-          <mxGeometry height="45" width="1320" x="240" y="10" as="geometry" />
-        </mxCell>
-        <mxCell id="build" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="1  READ-ONLY SNAPSHOT BUILD / PUBLISH" vertex="1">
-          <mxGeometry height="310" width="1760" x="20" y="65" as="geometry" />
-        </mxCell>
-        <mxCell id="jira" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Jira AIPLAT&lt;/b&gt;&lt;br&gt;Epics / Stories / Bugs&lt;br&gt;Parent + issue links" vertex="1">
-          <mxGeometry height="75" width="220" x="25" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="collect" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Jira collector + normalizer&lt;/b&gt;&lt;br&gt;Pagination / stable IDs&lt;br&gt;CHILD_OF / directed BLOCKS" vertex="1">
-          <mxGeometry height="75" width="250" x="290" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="buildsvc" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Snapshot builder&lt;/b&gt;&lt;br&gt;Canonical records + chunks&lt;br&gt;OpenAI embedding adapter" vertex="1">
-          <mxGeometry height="75" width="240" x="590" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="neo" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Neo4j&lt;/b&gt;&lt;br&gt;Issue nodes + typed edges" vertex="1">
-          <mxGeometry height="65" width="260" x="910" y="50" as="geometry" />
-        </mxCell>
-        <mxCell id="chr" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Chroma&lt;/b&gt;&lt;br&gt;text-embedding-3-small vectors" vertex="1">
-          <mxGeometry height="65" width="260" x="910" y="140" as="geometry" />
-        </mxCell>
-        <mxCell id="fts" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;SQLite FTS5&lt;/b&gt;&lt;br&gt;Same-snapshot text + keywords" vertex="1">
-          <mxGeometry height="65" width="260" x="910" y="230" as="geometry" />
-        </mxCell>
-        <mxCell id="manifest" parent="build" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Active manifest&lt;/b&gt;&lt;br&gt;Publish only when all stores ready&lt;br&gt;Failure keeps previous snapshot" vertex="1">
-          <mxGeometry height="85" width="360" x="1320" y="130" as="geometry" />
-        </mxCell>
-        <mxCell id="b1" edge="1" parent="build" source="jira" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="collect" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b2" edge="1" parent="build" source="collect" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="buildsvc" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b3" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="neo" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b4" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="chr" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b5" edge="1" parent="build" source="buildsvc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" target="fts" value="">
+        <mxCell id="i9" edge="1" parent="1" source="chunk" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="fts" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="870" y="171" />
-              <mxPoint x="870" y="262" />
+              <mxPoint x="930" y="147" />
+              <mxPoint x="930" y="262" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="b6" edge="1" parent="build" source="neo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b7" edge="1" parent="build" source="chr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="b8" edge="1" parent="build" source="fts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="manifest" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="retrieve" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="2  STATELESS GRAPH API / RETRIEVAL — ONE SNAPSHOT PER REQUEST" vertex="1">
-          <mxGeometry height="385" width="1760" x="20" y="395" as="geometry" />
-        </mxCell>
-        <mxCell id="entry" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Platform consumers / BA-PM demo&lt;/b&gt;&lt;br&gt;/graph/demo: Grouped + Network&lt;br&gt;Overview / Epic / dependencies" vertex="1">
-          <mxGeometry height="90" width="250" x="25" y="180" as="geometry" />
-        </mxCell>
-        <mxCell id="api" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph API&lt;/b&gt;&lt;br&gt;GET structure endpoints&lt;br&gt;POST /graph/retrieve or /graph/query" vertex="1">
-          <mxGeometry height="90" width="260" x="325" y="180" as="geometry" />
-        </mxCell>
-        <mxCell id="seed" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Seed resolution&lt;/b&gt;&lt;br&gt;Explicit key OR hybrid search&lt;br&gt;Vector + FTS / RRF + exact key" vertex="1">
-          <mxGeometry height="90" width="260" x="650" y="180" as="geometry" />
-        </mxCell>
-        <mxCell id="expand" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph retrieval service&lt;/b&gt;&lt;br&gt;Overview / Epic structure&lt;br&gt;Directed dependency traversal" vertex="1">
-          <mxGeometry height="90" width="260" x="980" y="180" as="geometry" />
-        </mxCell>
-        <mxCell id="evidence" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Graph + text evidence&lt;/b&gt;&lt;br&gt;Nodes / paths / source URLs&lt;br&gt;Coverage + diagnostics" vertex="1">
-          <mxGeometry height="90" width="330" x="1310" y="180" as="geometry" />
-        </mxCell>
-        <mxCell id="pin" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Manifest resolver&lt;/b&gt;&lt;br&gt;Pin project + snapshot" vertex="1">
-          <mxGeometry height="70" width="260" x="325" y="55" as="geometry" />
-        </mxCell>
-        <mxCell id="textread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;SnapshotSearch&lt;/b&gt;&lt;br&gt;Chroma + SQLite FTS5" vertex="1">
-          <mxGeometry height="70" width="260" x="650" y="55" as="geometry" />
-        </mxCell>
-        <mxCell id="graphread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Neo4j GraphStore&lt;/b&gt;&lt;br&gt;Scoped nodes + edges" vertex="1">
-          <mxGeometry height="70" width="260" x="980" y="55" as="geometry" />
-        </mxCell>
-        <mxCell id="bodyread" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;spacing=8;shape=cylinder3;boundedLbl=1;" value="&lt;b&gt;Same-snapshot text&lt;/b&gt;&lt;br&gt;Linked issue passages" vertex="1">
-          <mxGeometry height="70" width="330" x="1310" y="55" as="geometry" />
-        </mxCell>
-        <mxCell id="r1" edge="1" parent="retrieve" source="entry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="api" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r2" edge="1" parent="retrieve" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="seed" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r3" edge="1" parent="retrieve" source="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="expand" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r4" edge="1" parent="retrieve" source="expand" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="evidence" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r5" edge="1" parent="retrieve" source="pin" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="api" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r6" edge="1" parent="retrieve" source="textread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="seed" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r7" edge="1" parent="retrieve" source="graphread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="expand" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r8" edge="1" parent="retrieve" source="bodyread" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="evidence" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="rnote" parent="retrieve" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="GET endpoints return structure without an LLM. /graph/retrieve returns evidence directly. /graph/query adds the answer path below.&lt;br&gt;Dependency traversal: at most 2 hops / 100 nodes; preserve recorded Done → Done links; no automatic Epic-membership enrichment." vertex="1">
-          <mxGeometry height="65" width="1550" x="90" y="295" as="geometry" />
-        </mxCell>
-        <mxCell id="answer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;swimlane;startSize=35;horizontal=1;fontStyle=1;pointerEvents=0;fillColor=#F3F7FC;" value="3  OPTIONAL GROUNDED ANSWER — REUSES EXISTING GENERATOR / CITATION VALIDATOR" vertex="1">
-          <mxGeometry height="265" width="1760" x="20" y="800" as="geometry" />
-        </mxCell>
-        <mxCell id="adapt" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;GraphAnswerer&lt;/b&gt;&lt;br&gt;Graph facts + text → evidence IDs&lt;br&gt;Coverage-aware grounded prompt" vertex="1">
-          <mxGeometry height="85" width="300" x="70" y="65" as="geometry" />
-        </mxCell>
-        <mxCell id="gen" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;GroundedAnswerGenerator&lt;/b&gt;&lt;br&gt;OpenAI gpt-5.5-2026-04-23&lt;br&gt;Chat Completions / strict JSON" vertex="1">
-          <mxGeometry height="85" width="310" x="460" y="65" as="geometry" />
-        </mxCell>
-        <mxCell id="validate" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;CitationValidator&lt;/b&gt;&lt;br&gt;Known evidence IDs&lt;br&gt;Server-owned source URLs" vertex="1">
-          <mxGeometry height="85" width="280" x="860" y="65" as="geometry" />
-        </mxCell>
-        <mxCell id="out" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;/graph/query response&lt;/b&gt;&lt;br&gt;Answer + citations + status&lt;br&gt;Retain retrieval evidence" vertex="1">
-          <mxGeometry height="85" width="370" x="1250" y="65" as="geometry" />
-        </mxCell>
-        <mxCell id="a1" edge="1" parent="answer" source="adapt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="gen" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="a2" edge="1" parent="answer" source="gen" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="validate" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="a3" edge="1" parent="answer" source="validate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;fontSize=12;" target="out" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="anote" parent="answer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="Input: the evidence envelope from step 2. Missing evidence → insufficient_evidence; model failure → answer_unavailable with evidence retained.&lt;br&gt;Public service component: no Jira write-back, multi-turn business workflow, or production deployment in this PoC." vertex="1">
-          <mxGeometry height="60" width="1530" x="100" y="175" as="geometry" />
-        </mxCell>
-        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;spacing=8;" value="&lt;b&gt;Legend&lt;/b&gt;  Blue: service / data flow arrows    Green: storage or read access to the same stores    Purple: model boundary    Yellow: source / constraint&lt;br&gt;SnapshotSearch reuses hybrid primitives; it does not call the legacy /retrieve endpoint or its optional reranker. Original architecture remains on page 1." vertex="1">
-          <mxGeometry height="65" width="1550" x="120" y="1080" as="geometry" />
-        </mxCell>
-        <mxCell id="answer_input" edge="1" parent="1" source="evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#6C8EBF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="adapt">
+        <mxCell id="i10" edge="1" parent="1" source="snapshot" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" target="chunk" value="text">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1760" y="620" />
-              <mxPoint x="1760" y="790" />
-              <mxPoint x="55" y="790" />
-              <mxPoint x="55" y="907" />
+              <mxPoint x="775" y="377" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="isolation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="Graph snapshot: isolated Neo4j scope, Chroma collection and SQLite file" vertex="1">
+          <mxGeometry height="35" width="1250" x="330" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieval" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="2  RETRIEVAL" vertex="1">
+          <mxGeometry height="35" width="1570" x="25" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#1F2937;" value="&lt;b&gt;Platform client / BA-PM demo&lt;/b&gt;&lt;br&gt;Question + filters / intent" vertex="1">
+          <mxGeometry height="85" width="280" x="30" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="hybridapi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid API&lt;/b&gt;&lt;br&gt;/retrieve · /query" vertex="1">
+          <mxGeometry height="75" width="240" x="370" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="hybrid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid retrieval&lt;/b&gt;&lt;br&gt;Exact + vector + BM25 → RRF" vertex="1">
+          <mxGeometry height="75" width="290" x="690" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="selection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Rerank + evidence selection&lt;/b&gt;&lt;br&gt;Optional GPT-5 / Qwen3" vertex="1">
+          <mxGeometry height="75" width="350" x="1070" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="graphapi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph API&lt;/b&gt;&lt;br&gt;/graph/retrieve · /graph/query" vertex="1">
+          <mxGeometry height="85" width="240" x="370" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="seed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Seed resolution&lt;/b&gt;&lt;br&gt;Explicit key OR SnapshotSearch&lt;br&gt;Vector + FTS / RRF + exact" vertex="1">
+          <mxGeometry height="85" width="290" x="690" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="traversal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph retrieval&lt;/b&gt;&lt;br&gt;Neo4j paths + linked text&lt;br&gt;Overview / Epic / dependencies" vertex="1">
+          <mxGeometry height="85" width="350" x="1070" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="q1" edge="1" parent="1" source="client" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="hybridapi" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q2" edge="1" parent="1" source="hybridapi" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="hybrid" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q3" edge="1" parent="1" source="hybrid" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="selection" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q4" edge="1" parent="1" source="client" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="graphapi" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q5" edge="1" parent="1" source="graphapi" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="seed" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q6" edge="1" parent="1" source="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="traversal" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="readnote" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="Indexes: Chroma + SQLite FTS5; Graph RAG also reads Neo4j, pinned to the same snapshot." vertex="1">
+          <mxGeometry height="35" width="1090" x="370" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="grounding" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="3  SHARED GROUNDED ANSWERS" vertex="1">
+          <mxGeometry height="35" width="1570" x="25" y="875" as="geometry" />
+        </mxCell>
+        <mxCell id="adapter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Evidence adapter&lt;/b&gt;&lt;br&gt;Passages / graph facts + IDs" vertex="1">
+          <mxGeometry height="85" width="260" x="370" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="generator" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Answer generator&lt;/b&gt;&lt;br&gt;GPT-5.5 · strict JSON" vertex="1">
+          <mxGeometry height="85" width="260" x="710" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="validator" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Citation validator&lt;/b&gt;&lt;br&gt;Evidence IDs + source URLs" vertex="1">
+          <mxGeometry height="85" width="270" x="1050" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="response" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#D5E8D4;strokeColor=#82B366;fontColor=#1F2937;" value="&lt;b&gt;Response&lt;/b&gt;&lt;br&gt;Answer + citations&lt;br&gt;Grounding status" vertex="1">
+          <mxGeometry height="85" width="210" x="1380" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="adapter" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="generator" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="generator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="validator" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="validator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;" target="response" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" edge="1" parent="1" source="traversal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" target="adapter" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1540" y="743" />
+              <mxPoint x="1540" y="862" />
+              <mxPoint x="500" y="862" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a5" edge="1" parent="1" source="selection" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=14;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" target="adapter" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1540" y="593" />
+              <mxPoint x="1540" y="860" />
+              <mxPoint x="500" y="860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="outputs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="/retrieve endpoints return evidence directly.  Graph GET endpoints return structure without generation." vertex="1">
+          <mxGeometry height="35" width="1210" x="370" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;fontSize=16;" value="Blue: service / flow    Purple: model or scoring    Green: storage / output    Yellow: source / client" vertex="1">
+          <mxGeometry height="35" width="1560" x="30" y="1110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
