@@ -1,5 +1,7 @@
 # 组合检索 checkpoint — 2026-09-08
 
+> 最新状态：2026-09-10 用户已确认 PoC 测试完成，见 [用户验收记录](jira-graph-user-acceptance.md)。本文以下保留当时的实验结果。
+
 ## 实现范围
 
 完成固定意图的显式锚点/同快照 hybrid 起点、图扩展、关系与正文分开取证、POST /graph/retrieve 和 /graph/query。旧 /retrieve、/query 保留。没有实现演示页、自由查询 agent 或 Jira 写回。

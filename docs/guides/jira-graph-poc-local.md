@@ -1,6 +1,6 @@
 # Jira Graph PoC：本地准备
 
-> 2026-09-09 最新收尾与待办验收见 [PoC 交接记录](../evaluation/jira-graph-poc-handoff.md)；GPT-5.5 已打通真实生成，旧模型 404 为历史验证结果。
+> 2026-09-10 用户验收已完成，最新状态见 [PoC 交接记录](../evaluation/jira-graph-poc-handoff.md)；GPT-5.5 已打通真实生成，旧模型 404 为历史验证结果。
 
 现已包含只读 Jira 采集、三索引构建、快照发布和结构查询 API；组合检索、证据回答 API 与默认关闭的轻量演示页也已实现。
 
@@ -8,7 +8,7 @@
 
 ## 工作区与 Python
 
-在 `.worktrees/jira-backlog-graph-poc` 的 `codex/jira-backlog-graph-poc` 分支工作。
+代码已进入 main。已有本地演示环境保留在 `.worktrees/jira-backlog-graph-poc`；全新安装可在主仓库执行，路径按本机实际位置调整。Git 不包含凭据、数据库或已构建快照。
 本次 `.venv` 使用 `--system-site-packages` 复用已有应用依赖，单独安装 ruff 0.8.0 与 neo4j 5.28.2，没有修改全局 Python。它隔离新增工具，但不是完全独立的依赖环境。
 全新环境可运行：
 
@@ -217,7 +217,7 @@ The overview response includes `data.graph` (`nodes`, `edges`, `total_nodes`, `t
 
 数据回退：旧快照完整保留，可先在平台 API 显式传入旧 `snapshot_id` 查询核验，不改 active 指针。重建失败会自动保留旧 active。当前发布器禁止旧采集覆盖新版本，没有提供管理员强制 active 回退命令；不要直接手改 manifest 或绕过校验。需要恢复实时数据时用上文只读 CLI 新建完整快照。
 
-本次验收保留本地 API 和 Neo4j 运行供演示；未实际关闭功能、删除数据、提交、推送或部署。生产权限与运维不在本 PoC 范围内。
+用户已确认本地 PoC 验收完成，代码已提交并推送 main。服务是否正在运行需现场检查；验收不包含生产部署或数据库清理。
 
 
 ## 2026-09-09 跨 Epic 演示快照
@@ -240,3 +240,13 @@ Load overview 后，全景右上角提供 **Grouped**（默认分组）与 **Net
 - 跨 Epic 示例：切换 Network，点击 AIPLAT-37，橙色 BLOCKS 箭头指向 AIPLAT-23。归属分别为 AIPLAT-36 和 AIPLAT-17。图形距离没有业务语义，连线交叉也不是新增节点；必要时拖动节点改善观看角度。
 
 布局在浏览器做固定步数的有界计算，不使用外部 CDN、模型或持续物理动画。保留已有 100 节点/500 边数据预算和截断提示。小屏通过画布区域滚动与缩放查看。原 API 和数据索引没有变化。
+
+
+## 验收后的复测提示
+
+用户验收于 2026-09-10 完成，参见 [验收记录](../evaluation/jira-graph-user-acceptance.md)。
+
+- Business description 输入 `Publish approved model to platform catalog`，Direction 先选 Both，再 Retrieve evidence；可检查起点 AIPLAT-23 与 AIPLAT-37 BLOCKS AIPLAT-23。
+- Outbound 问“我阻塞谁”，Inbound 问“谁阻塞我”；从被阻塞事项出发选 Outbound，可能正确返回无出向关系。
+- 然后 Generate grounded answer，核对状态、引用与来源。此按钮在同一快照上重新检索后生成回答。
+- 图中的 E 编号是单次回答的证据 ID，不是 chunk_id；后续请求可能重新编号。

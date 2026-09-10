@@ -127,3 +127,8 @@ P1–P11 上限总计 515 分钟（约 8 小时 35 分钟），不包括确认�
 ## 2026-09-09 用户验收前收尾
 
 统一交接文档：docs/evaluation/jira-graph-poc-handoff.md。包含本版范围、6 个待执行 BA/PM 问题、模型最新证据与已知限制；用户业务验收保持待完成。恢复未运行的 Docker/Neo4j/API 后，完整质量门禁 561 passed，143.02 秒；OpenSpec strict 3 passed。无功能扩展、提交、合并、推送或部署。
+
+
+## 2026-09-10 用户验收完成
+
+用户明确确认全部测试完成并授权正式收尾。以 docs/evaluation/jira-graph-user-acceptance.md 为当前状态入口；上文 checkpoint 的待确认与旧模型限制为历史记录。实施代码与架构、模型更新已进入 main，截至 0d1b636。本次仅同步收尾文档，不扩展原目标或重新打开已归档 change。

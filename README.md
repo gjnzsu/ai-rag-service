@@ -14,9 +14,11 @@ The service is deployed to Google Kubernetes Engine (GKE).
 ## 🛠 Tech Stack
 
 - **Framework:** FastAPI
-- **LLM:** OpenAI GPT-5 pinned snapshot (`gpt-5-2025-08-07`)
+- **LLM:** OpenAI GPT-5.5 pinned snapshot (`gpt-5.5-2026-04-23`)
 - **Embedding Model:** OpenAI text-embedding-3-small
 - **Vector DB:** ChromaDB (Persistent storage on GKE PVC)
+- **Keyword index:** SQLite FTS5
+- **Graph DB:** Neo4j (optional local Graph RAG PoC)
 - **Cloud:** Google Cloud Platform (GKE, Artifact Registry, Cloud Build)
 - **Parsing:** PyMuPDF, Atlassian Python API
 
@@ -25,7 +27,7 @@ The service is deployed to Google Kubernetes Engine (GKE).
 - `text-embedding-3-small` converts document chunks and user queries into
   vectors for similarity search in ChromaDB. It does not generate answers.
 - `POST /query` provides an end-to-end RAG flow: this service retrieves the
-  relevant context and uses its configured pinned GPT-5 model to generate the final
+  relevant context and uses its configured pinned GPT-5.5 model to generate the final
   answer.
 - `POST /retrieve` provides retrieval only: it returns the relevant chunks and
   metadata without calling the answer model. AI applications that
@@ -35,7 +37,7 @@ The service is deployed to Google Kubernetes Engine (GKE).
 For example, if `ai-market-studio` already defines its own LLM, the recommended
 integration is to call `/retrieve` and let that LLM generate the final answer.
 Use `/query` when the caller wants this RAG service to own both retrieval and
-answer generation with its pinned GPT-5 model.
+answer generation with its pinned GPT-5.5 model.
 
 ## Hybrid retrieval, reranking, and grounding
 
@@ -61,7 +63,7 @@ for the corpus after enabling lexical retrieval; do not treat the pre-existing
 Chroma collection as a lexical index.
 
 `RERANKER_PROVIDER=none` is the safe default. `openai` selects the pinned
-`RERANKER_OPENAI_MODEL=gpt-5-2025-08-07` with a five-second timeout;
+`RERANKER_OPENAI_MODEL=gpt-5.5-2026-04-23` with a five-second timeout;
 `qwen_local` selects the pinned
 `Qwen/Qwen3-Reranker-0.6B` revision. Both rerankers are bounded to a small
 candidate list (Qwen: 20 candidates, 512 tokens, batch size 4, five-second
@@ -71,7 +73,7 @@ on the operator host that will run it. Grounded answers select 5–10 evidence
 items (default 5), cap prompt content at 4,000 characters and excerpts at 200,
 and will refuse when evidence is insufficient; retrieval alone cannot guarantee
 that a generated answer is correct. Answer generation uses the pinned
-`ANSWER_OPENAI_MODEL=gpt-5-2025-08-07` with a 15-second timeout.
+`ANSWER_OPENAI_MODEL=gpt-5.5-2026-04-23` with a 15-second timeout.
 
 ## Repeatable evaluation
 
@@ -267,4 +269,12 @@ This script automates building the Docker image with Cloud Build and applying Ku
 
 ## Architecture and onboarding
 
+![Hybrid + Graph RAG architecture](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
+
+[Editable Draw.io source](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio)
+
+The local Jira Graph RAG PoC was accepted by the user on 2026-09-10. It provides Epic overview, drill-down, directed dependencies, hybrid seed retrieval, and grounded answers with citations. Graph endpoints are optional (`GRAPH_ENABLED`); the local demo also requires `GRAPH_DEMO_ENABLED`. This local acceptance does not establish that Graph RAG is deployed at the GKE URL above.
+
+- [User acceptance and remaining limits](docs/evaluation/jira-graph-user-acceptance.md)
+- [Local setup and demo](docs/guides/jira-graph-poc-local.md)
 - [Hybrid + Graph RAG end-to-end guide (中文)](docs/guides/hybrid-graph-rag-end-to-end.md): indexing, retrieval, grounded answers, API examples, and code entry points.

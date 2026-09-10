@@ -41,10 +41,10 @@ different recorded value.
 | Lexical DB path and reindex/corpus revision | `./lexical.db` | `NOT YET RECORDED` |
 | Lexical weights (Jira key / title / content) | `10 / 5 / 1` | `NOT YET RECORDED` |
 | Vector store path and embedding model/revision | `./chroma_db`; `NOT YET RECORDED` | `NOT YET RECORDED` |
-| OpenAI reranker model / timeout | `gpt-5-2025-08-07` / `5 s` | `NOT YET RECORDED` |
+| OpenAI reranker model / timeout | `gpt-5.5-2026-04-23` / `5 s` | `NOT YET RECORDED` |
 | Qwen reranker model / revision | `Qwen/Qwen3-Reranker-0.6B` / `e61197ed45024b0ed8a2d74b80b4d909f1255473` | `NOT YET RECORDED` |
 | Qwen max candidates / max length / batch / timeout / circuit breaker | `20 / 512 / 4 / 5 s / 30 s` | `NOT YET RECORDED` |
-| Answer model / timeout | `gpt-5-2025-08-07` / `15 s` | `NOT YET RECORDED` |
+| Answer model / timeout | `gpt-5.5-2026-04-23` / `15 s` | `NOT YET RECORDED` |
 | Grounding evidence top-k / prompt cap / excerpt cap | `5 / 4000 chars / 200 chars` | `NOT YET RECORDED` |
 
 ## Experiment matrix

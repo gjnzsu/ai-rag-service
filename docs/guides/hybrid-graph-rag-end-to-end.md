@@ -4,7 +4,7 @@
 
 ![统一架构图](../superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
 
-[可编辑 Draw.io 源文件](../superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio) · [本地准备与运行](jira-graph-poc-local.md) · [BA/PM 验收清单](../evaluation/jira-graph-poc-handoff.md)
+[可编辑 Draw.io 源文件](../superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio) · [本地准备与运行](jira-graph-poc-local.md) · [BA/PM 验收与交接清单](../evaluation/jira-graph-poc-handoff.md)
 
 ## 1. 先理解三个阶段
 
@@ -193,3 +193,12 @@ $result.answer
 - 页面打不开先检查 API；结构查询失败检查 Neo4j、manifest 和 scope；语义定位失败检查同快照文本索引及 embedding；只有回答失败时再检查生成模型配置。完整启动与重建步骤见本地指南。
 
 本说明依据源码与架构图整理，不构成新增一次实时 Jira / LLM 验收。真实生成样例与限制见 [GPT-5.5 验证报告](../evaluation/jira-graph-gpt55-validation.md)。
+
+
+## 9. 用户验收与证据编号
+
+本轮 PoC 已于 2026-09-10 获用户整体验收确认，代表案例与保留限制见 [验收记录](../evaluation/jira-graph-user-acceptance.md)。
+
+E1、E2 等编号在每次 GraphAnswerer 整理证据时按顺序分配，发生在检索之后、生成回答之前。节点事实、关系事实和正文片段都可以获得编号。它不是向量库 key；相同证据在不同请求中可能获得不同编号。跨请求追踪需要使用 snapshot_id 以及事项、chunk 或关系身份。模型只引用证据编号，不创建原始事实。
+
+不知道依赖方向时，先使用 Both；从 AIPLAT-23 找到阻塞它的 AIPLAT-37，使用 Inbound 或 Both。Both 不改变实际 BLOCKS 箭头方向。
