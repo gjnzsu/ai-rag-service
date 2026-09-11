@@ -4,7 +4,7 @@ metadata:
   name: rag-service
   namespace: rag-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: rag-service
   ports:
