@@ -22,6 +22,10 @@ The service is deployed to Google Kubernetes Engine (GKE).
 - **Cloud:** Google Cloud Platform (GKE, Artifact Registry, Cloud Build)
 - **Parsing:** PyMuPDF, Atlassian Python API
 
+Optional [query embedding cache experiment](docs/guides/query-embedding-cache.md):
+process-local exact-input LRU + TTL for Vector/Hybrid and Graph query vectors,
+disabled by default (`QUERY_EMBEDDING_CACHE_ENABLED=true` to enable).
+
 ### Model Responsibilities and Integration Modes
 
 - `text-embedding-3-small` converts document chunks and user queries into

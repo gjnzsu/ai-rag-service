@@ -12,6 +12,7 @@ from app.graph.retrieval import GraphRetrievalService
 from app.graph.models import Direction, RelationType
 from app.graph.service import GraphNotFound, GraphService, GraphUnavailable
 from app.graph.snapshots import SnapshotRepository
+from app.query_embedding_cache import embed_query
 
 router = APIRouter()
 SnapshotQuery = Annotated[str | None, Query(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")]
@@ -76,12 +77,18 @@ def get_graph_retrieval_service():
             # Match the frozen index, not the default service embedding configuration.
             if not manifest.index_versions['chroma'].endswith('/text-embedding-3-small'):
                 raise ValueError('Unsupported snapshot embedding model')
-            if not clients:
-                import httpx
-                from openai import OpenAI
-                clients.append(OpenAI(api_key=settings.openai_api_key, timeout=15, max_retries=0,
-                                      http_client=httpx.Client()))
-            return OpenAIChunkEmbedder(clients[0])(texts)
+            def load(text):
+                if not clients:
+                    import httpx
+                    from openai import OpenAI
+                    clients.append(OpenAI(api_key=settings.openai_api_key, timeout=15, max_retries=0,
+                                          http_client=httpx.Client()))
+                return OpenAIChunkEmbedder(clients[0])([text])[0]
+
+            return [embed_query(
+                text, scope=('graph', manifest.scope.site_id, manifest.scope.project_key,
+                             manifest.account_scope), load=lambda text=text: load(text),
+            ) for text in texts]
         return SnapshotSearch(repository.directory(manifest.scope), manifest.scope, embed)
 
     service = GraphRetrievalService(repository,

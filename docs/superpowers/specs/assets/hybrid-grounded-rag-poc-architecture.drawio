@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
   <diagram id="hybrid-grounded-rag-poc" name="Architecture">
-    <mxGraphModel dx="1971" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="1180" math="0" shadow="0">
+    <mxGraphModel dx="1830" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="1730" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -94,8 +94,8 @@
         <mxCell id="hybridapi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid API&lt;/b&gt;&lt;br&gt;/retrieve · /query" vertex="1">
           <mxGeometry height="75" width="240" x="370" y="555" as="geometry" />
         </mxCell>
-        <mxCell id="hybrid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid retrieval&lt;/b&gt;&lt;br&gt;Exact + vector + BM25 → RRF" vertex="1">
-          <mxGeometry height="75" width="290" x="690" y="555" as="geometry" />
+        <mxCell id="hybrid" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Hybrid retrieval&lt;/b&gt;&lt;br&gt;Exact + vector + BM25 → RRF&lt;br&gt;Query embedding: Q below" vertex="1">
+          <mxGeometry height="90" width="290" x="690" y="547.5" as="geometry" />
         </mxCell>
         <mxCell id="selection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#E1D5E7;strokeColor=#9673A6;fontColor=#1F2937;" value="&lt;b&gt;Rerank + evidence selection&lt;/b&gt;&lt;br&gt;Optional GPT-5.5 / Qwen3" vertex="1">
           <mxGeometry height="75" width="350" x="1070" y="555" as="geometry" />
@@ -103,7 +103,7 @@
         <mxCell id="graphapi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph API&lt;/b&gt;&lt;br&gt;/graph/retrieve · /graph/query" vertex="1">
           <mxGeometry height="85" width="240" x="370" y="700" as="geometry" />
         </mxCell>
-        <mxCell id="seed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Seed resolution&lt;/b&gt;&lt;br&gt;Explicit key OR SnapshotSearch&lt;br&gt;Vector + FTS / RRF + exact" vertex="1">
+        <mxCell id="seed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Seed resolution&lt;/b&gt;&lt;br&gt;Explicit key OR SnapshotSearch&lt;br&gt;Semantic embedding: Q below" vertex="1">
           <mxGeometry height="85" width="290" x="690" y="700" as="geometry" />
         </mxCell>
         <mxCell id="traversal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Graph retrieval&lt;/b&gt;&lt;br&gt;Neo4j paths + linked text&lt;br&gt;Overview / Epic / dependencies" vertex="1">
@@ -176,7 +176,56 @@
           <mxGeometry height="35" width="1210" x="370" y="1050" as="geometry" />
         </mxCell>
         <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;fontSize=16;" value="Blue: service / flow    Purple: model or scoring    Green: storage / output    Yellow: source / client" vertex="1">
-          <mxGeometry height="35" width="1560" x="30" y="1110" as="geometry" />
+          <mxGeometry height="35" width="1560" x="30" y="1670" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="Q  QUERY EMBEDDING CACHE · retrieval detail" vertex="1">
+          <mxGeometry height="40" width="1570" x="25" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-context" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="Used by Vector/Hybrid and Graph semantic queries. Shared component, separate scope keys. Default: OFF." vertex="1">
+          <mxGeometry height="40" width="1550" x="30" y="1170" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Query embedding adapter&lt;/b&gt;&lt;br&gt;Actual text + scope&lt;br&gt;Model / endpoint / input version" vertex="1">
+          <mxGeometry height="100" width="310" x="30" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="query-cache" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#D5E8D4;strokeColor=#82B366;" value="&lt;b&gt;Process-local query cache&lt;/b&gt;&lt;br&gt;Exact key · LRU + TTL&lt;br&gt;1,024 entries · 900 seconds" vertex="1">
+          <mxGeometry height="100" width="370" x="430" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-return" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Return query vector&lt;/b&gt;&lt;br&gt;Resume current index / snapshot&lt;br&gt;retrieval and answer flow" vertex="1">
+          <mxGeometry height="100" width="320" x="1260" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="query-provider" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#E1D5E7;strokeColor=#9673A6;" value="&lt;b&gt;Embedding adapter&lt;/b&gt;&lt;br&gt;Call OpenAI embedding API&lt;br&gt;Cache valid result if enabled" vertex="1">
+          <mxGeometry height="100" width="340" x="850" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-enabled" edge="1" parent="1" source="cache-input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="query-cache" value="enabled">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-hit" edge="1" parent="1" source="query-cache" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="cache-return" value="hit: copy stored vector">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-miss" edge="1" parent="1" source="query-cache" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" target="query-provider" value="miss / expired">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="615" y="1470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cache-provider-return" edge="1" parent="1" source="query-provider" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" target="cache-return" value="vector">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1420" y="1470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cache-disabled" edge="1" parent="1" source="cache-input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" target="query-provider" value="disabled: call API directly">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="185" y="1560" />
+              <mxPoint x="1020" y="1560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cache-lifecycle" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="&lt;b&gt;No Redis&lt;/b&gt; · OrderedDict + Lock · per worker · cleared on restart&lt;br&gt;Exact input only, not semantic matching. Retrieval results and answers are not cached." vertex="1">
+          <mxGeometry height="65" width="1550" x="30" y="1590" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

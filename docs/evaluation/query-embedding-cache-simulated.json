@@ -1,0 +1,34 @@
+{
+  "disabled": {
+    "requests": 3,
+    "provider_calls": 3,
+    "elapsed_ms": [
+      20.348,
+      20.568,
+      20.393
+    ],
+    "median_ms": 20.393,
+    "repeated_vectors_equal": true
+  },
+  "enabled": {
+    "requests": 3,
+    "provider_calls": 1,
+    "elapsed_ms": [
+      25.097,
+      0.329,
+      0.27
+    ],
+    "median_ms": 0.329,
+    "repeated_vectors_equal": true
+  },
+  "mode": "simulated_20ms_provider",
+  "boundary": "embedding only; not end-to-end RAG latency",
+  "cache": {
+    "hits": 2,
+    "misses": 1,
+    "evictions": 0,
+    "expirations": 0,
+    "errors": 0,
+    "entries": 1
+  }
+}

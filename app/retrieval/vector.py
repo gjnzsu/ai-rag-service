@@ -7,6 +7,7 @@ from openai import OpenAI
 
 from app.config import settings
 from app.pipeline.store import _to_chroma_where
+from app.query_embedding_cache import embed_query
 from app.retrieval.models import RetrievalCandidate
 
 
@@ -27,10 +28,13 @@ class ChromaVectorRetriever:
         if top_k <= 0:
             return []
 
-        embedding = self.openai_client.embeddings.create(
-            model="text-embedding-3-small",
-            input=[query],
-        ).data[0].embedding
+        embedding = embed_query(
+            query, scope=('vector', settings.chroma_persist_dir, collection_name),
+            client=self.openai_client,
+            load=lambda: self.openai_client.embeddings.create(
+                model="text-embedding-3-small", input=[query],
+            ).data[0].embedding,
+        )
         collection = self.chroma_client.get_or_create_collection(
             name=collection_name,
             metadata={"hnsw:space": "cosine"},

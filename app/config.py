@@ -1,7 +1,7 @@
 import re
 from typing import Literal
 
-from pydantic import SecretStr, field_validator, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _OPENAI_SNAPSHOT_PATTERN = re.compile(r"^gpt-5-\d{4}-\d{2}-\d{2}$")
@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     jira_api_token: str = ""
     confluence_url: str = ""
     chroma_persist_dir: str = "./chroma_db"
+    query_embedding_cache_enabled: bool = False
+    query_embedding_cache_max_entries: int = Field(default=1024, ge=1, le=100000)
+    query_embedding_cache_ttl_seconds: float = Field(default=900, gt=0, allow_inf_nan=False)
     lexical_db_path: str = "./lexical.db"
     graph_enabled: bool = False
     graph_demo_enabled: bool = False

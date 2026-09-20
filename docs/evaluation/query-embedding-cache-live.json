@@ -1,0 +1,34 @@
+{
+  "disabled": {
+    "requests": 3,
+    "provider_calls": 3,
+    "elapsed_ms": [
+      2932.325,
+      976.549,
+      962.45
+    ],
+    "median_ms": 976.549,
+    "repeated_vectors_equal": false
+  },
+  "enabled": {
+    "requests": 3,
+    "provider_calls": 1,
+    "elapsed_ms": [
+      832.876,
+      0.256,
+      0.175
+    ],
+    "median_ms": 0.256,
+    "repeated_vectors_equal": true
+  },
+  "mode": "live",
+  "boundary": "embedding only; not end-to-end RAG latency",
+  "cache": {
+    "hits": 2,
+    "misses": 1,
+    "evictions": 0,
+    "expirations": 0,
+    "errors": 0,
+    "entries": 1
+  }
+}

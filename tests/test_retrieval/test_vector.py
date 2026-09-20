@@ -5,6 +5,19 @@ import pytest
 from app.retrieval.vector import ChromaVectorRetriever
 
 
+def test_query_cache_reuses_embedding_but_queries_current_collection(monkeypatch):
+    monkeypatch.setattr('app.config.settings.query_embedding_cache_enabled', True)
+    calls = []
+    client = SimpleNamespace(base_url='https://cache-test.invalid/v1', embeddings=SimpleNamespace(
+        create=lambda **kwargs: calls.append(kwargs) or SimpleNamespace(
+            data=[SimpleNamespace(embedding=[0.5] * 1536)])))
+    collection = _Collection()
+    for _ in range(2):
+        ChromaVectorRetriever(client, _Chroma(collection)).search('cache integration', 2, None, 'cache-test')
+    assert len(calls) == 1
+    assert len(collection.calls) == 2
+
+
 class _Collection:
     def __init__(self, result=None, error=None):
         self.result = result or {"ids": [[]], "documents": [[]], "metadatas": [[]], "distances": [[]]}

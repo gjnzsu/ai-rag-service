@@ -532,3 +532,28 @@ If production evaluation shows unnecessary latency or an enabled reranker can
 demote an exact result, consider either short-circuiting simple exact-key queries
 or pinning exact matches ahead of reranking the remaining candidates. These are
 production optimizations and are intentionally outside the PoC scope.
+
+## 20. Query Embedding Cache Addendum (2026-09-19)
+
+The follow-up experiment adds an optional process-local query embedding cache
+before the embedding API call in Vector/Hybrid retrieval and Graph semantic
+seed retrieval. It is disabled by default. Python `OrderedDict` and `Lock`
+provide bounded LRU storage with TTL; Redis is not introduced.
+
+Cache keys identify the exact model input together with its data scope,
+endpoint and credential fingerprint, model, dimensions, and preprocessing
+version. Similar wording does not match. A hit returns a copy of the stored
+vector; retrieval and answer generation still execute for the current request.
+Graph query vectors may be reused across snapshots within the same scope,
+while retrieval remains pinned to the selected snapshot.
+
+The default capacity is 1,024 entries and TTL is 900 seconds. Workers do not
+share entries, restarts clear them, and concurrent cold requests may make
+duplicate provider calls. Retrieval-result caching and semantic/answer caching
+remain deferred. The initial measurements cover the embedding boundary only,
+not end-to-end RAG latency.
+
+See [query embedding cache design and experiment](../../guides/query-embedding-cache.md)
+for component responsibilities, exact-match examples, configuration, failure
+behavior, and measured results. This addendum records the follow-up implementation
+without changing the original PoC acceptance baseline.
