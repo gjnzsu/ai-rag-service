@@ -4,13 +4,13 @@ A RAG (Retrieval-Augmented Generation) service for ingesting data from Jira, Con
 
 ## Architecture overview
 
-![Hybrid + Graph + Agentic RAG architecture](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
+![Hybrid + Graph + Agentic RAG architecture](docs/illustrations/hybrid-grounded-rag-poc-architecture.drawio.png)
 
 Indexing, Hybrid/Graph retrieval, grounded answers, coordinator-driven Agentic
 Epic analysis, and the optional query embedding cache.
 
-[Full-size architecture image](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png) ·
-[Editable Draw.io source](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio)
+[Full-size architecture image](docs/illustrations/hybrid-grounded-rag-poc-architecture.drawio.png) ·
+[Editable Draw.io source](docs/illustrations/hybrid-grounded-rag-poc-architecture.drawio)
 
 ## 🚀 GKE Deployment
 
@@ -297,11 +297,11 @@ The local Jira Graph RAG PoC was accepted by the user on 2026-09-10. It provides
 
 ### Agentic Epic analysis architecture
 
-![Agentic coordinator architecture](docs/superpowers/specs/assets/agentic-epic-analysis-en.png)
+![Agentic coordinator architecture](docs/illustrations/agentic-epic-analysis-en.png)
 
-[English Draw.io source](docs/superpowers/specs/assets/agentic-epic-analysis-en.drawio) ·
-[中文版图片](docs/superpowers/specs/assets/agentic-epic-analysis.drawio.png) ·
-[中文版 Draw.io](docs/superpowers/specs/assets/agentic-epic-analysis.drawio)
+[English Draw.io source](docs/illustrations/agentic-epic-analysis-en.drawio) ·
+[中文版图片](docs/illustrations/agentic-epic-analysis.drawio.png) ·
+[中文版 Draw.io](docs/illustrations/agentic-epic-analysis.drawio)
 
 The coordinator owns the initial read, bounded ReAct loop, evidence consolidation
 and final report generation. GraphService returns query data; ReportGenerator

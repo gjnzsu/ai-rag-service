@@ -2,9 +2,9 @@
 
 本文面向第一次使用服务的 BA/PM、平台调用方和新加入的开发人员，说明当前 PoC 如何从源数据构建索引、检索证据并生成回答。以仓库当前实现为准；页面是轻量演示入口，能力由平台 API 提供。
 
-![统一架构图](../superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
+![统一架构图](../illustrations/hybrid-grounded-rag-poc-architecture.drawio.png)
 
-[可编辑 Draw.io 源文件](../superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio) · [本地准备与运行](jira-graph-poc-local.md) · [BA/PM 验收与交接清单](../evaluation/jira-graph-poc-handoff.md)
+[可编辑 Draw.io 源文件](../illustrations/hybrid-grounded-rag-poc-architecture.drawio) · [本地准备与运行](jira-graph-poc-local.md) · [BA/PM 验收与交接清单](../evaluation/jira-graph-poc-handoff.md)
 
 ## 1. 先理解三个阶段
 
@@ -31,7 +31,7 @@
 
 推荐第一次按顺序尝试：项目全景 → AIPLAT-17 下钻 → AIPLAT-37 的出向依赖 → 基于证据生成回答。Graph 请求的 `intent` 仍由页面或调用方选择。另有默认关闭的 `/agentic/query`：协调层在固定 Epic 与快照内执行有界 ReAct 循环，模型选择依赖补查或结束，代码维护覆盖账本并驱动最终报告生成。它不自动在 Hybrid API 与 Graph API 之间路由。
 
-总架构图第 4 区展示 Agentic 路径：复用 GraphService，使用独立 ReportGenerator 并复用引用校验器；当前结构查询不调用 embedding，因此不使用下方 Q 缓存。参见 [Agentic 启动与验收指南](agentic-epic-analysis.md) 和 [协调层详细架构图](../superpowers/specs/assets/agentic-epic-analysis.drawio.png)。该能力已于 2026-09-21 通过本地用户验收，实验未观察到相对固定流程的效率收益。
+总架构图第 4 区展示 Agentic 路径：复用 GraphService，使用独立 ReportGenerator 并复用引用校验器；当前结构查询不调用 embedding，因此不使用下方 Q 缓存。参见 [Agentic 启动与验收指南](agentic-epic-analysis.md) 和 [协调层详细架构图](../illustrations/agentic-epic-analysis.drawio.png)。该能力已于 2026-09-21 通过本地用户验收，实验未观察到相对固定流程的效率收益。
 
 ## 3. Indexing：数据怎样进入服务
 

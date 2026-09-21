@@ -2,11 +2,11 @@
 
 该能力仍属于平台级 RAG 服务：调用方传入问题和 Epic，服务返回知识分析结果。内部由一个有界 ReAct 决策循环协调检索；不是独立业务 Agent，也不需要 MCP、LangGraph 或多 Agent 框架。
 
-![Agentic retrieval architecture](../superpowers/specs/assets/agentic-epic-analysis.drawio.png)
+![Agentic retrieval architecture](../illustrations/agentic-epic-analysis.drawio.png)
 
-[可编辑架构图](../superpowers/specs/assets/agentic-epic-analysis.drawio)
+[可编辑架构图](../illustrations/agentic-epic-analysis.drawio)
 
-[English diagram](../superpowers/specs/assets/agentic-epic-analysis-en.png) · [English Draw.io](../superpowers/specs/assets/agentic-epic-analysis-en.drawio)
+[English diagram](../illustrations/agentic-epic-analysis-en.png) · [English Draw.io](../illustrations/agentic-epic-analysis-en.drawio)
 
 2026-09-21 用户确认本地测试通过。验收记录见 [实验报告](../evaluation/agentic-epic-analysis-results.md)；这不代表已经部署到 GKE。
 
