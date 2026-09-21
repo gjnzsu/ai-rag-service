@@ -1,5 +1,7 @@
 # Jira Graph PoC：本地准备
 
+> Agentic Epic 分析于 2026-09-21 通过本地用户验收，完整启动命令见 [Agentic 指南](agentic-epic-analysis.md)。新功能从主仓库当前代码启动；旧 worktree 只复用 Python 环境、凭据和快照。下文结构查询示例中的 `OPENAI_API_KEY=test-key` 不能用于真实模型生成，请按 Agentic 指南分别加载主凭据与 Graph 配置。
+
 > 2026-09-10 用户验收已完成，最新状态见 [PoC 交接记录](../evaluation/jira-graph-poc-handoff.md)；GPT-5.5 已打通真实生成，旧模型 404 为历史验证结果。
 
 现已包含只读 Jira 采集、三索引构建、快照发布和结构查询 API；组合检索、证据回答 API 与默认关闭的轻量演示页也已实现。

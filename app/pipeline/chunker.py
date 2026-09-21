@@ -1,5 +1,3 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
 from app.config import settings
 from app.connectors.base import Document
 
@@ -9,6 +7,9 @@ def chunk_documents(
     chunk_size: int | None = None,
     chunk_overlap: int | None = None,
 ) -> list[dict]:
+    # Keep ingestion-only dependencies out of API startup and query requests.
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+
     chunk_size = chunk_size or settings.chunk_size
     chunk_overlap = chunk_overlap or settings.chunk_overlap
     splitter = RecursiveCharacterTextSplitter(

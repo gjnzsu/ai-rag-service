@@ -34,6 +34,8 @@ class NoNeo4j:
     def find_spec(self, fullname, path=None, target=None):
         if fullname == "neo4j" or fullname.startswith("neo4j."):
             raise AssertionError("disabled app imported neo4j")
+        if fullname == "langchain_text_splitters" or fullname.startswith("langchain_text_splitters."):
+            raise AssertionError("app startup imported ingestion-only text splitters")
 sys.meta_path.insert(0, NoNeo4j())
 from fastapi.testclient import TestClient
 from app.main import create_app

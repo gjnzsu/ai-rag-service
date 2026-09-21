@@ -1,0 +1,3849 @@
+{
+  "recorded_at": "2026-09-20T10:07:44.976404+00:00",
+  "snapshot_id": "f1ef094abab04f7a9a2c658839337a23",
+  "implementation_sha256": "db88e75109732d359acf3254f760cd1e39c7df77f8f1f497b051f6bd3cba158b",
+  "model": "gpt-5.5-2026-04-23",
+  "reasoning_effort": "low",
+  "cache": "No embedding, retrieval or answer cache used by this structural flow; provider prompt caching uncontrolled.",
+  "workers": 3,
+  "summaries": {
+    "agent": {
+      "requests": 36,
+      "errors": 0,
+      "checks_passed": {
+        "facts_correct": 36,
+        "routing_correct": 36,
+        "coverage_correct": 36,
+        "relations_correct": 36,
+        "finding_references_valid": 36,
+        "generation_supported": 36,
+        "necessary_backend_calls_only": 36
+      },
+      "totals": {
+        "tool_calls": 57,
+        "backend_calls": 81,
+        "database_queries": 252,
+        "decision_calls": 57,
+        "generation_calls": 36
+      },
+      "recorded_tokens": 127239,
+      "calls_without_usage": 0,
+      "median_ms": 9156.5,
+      "p95_ms": 15796.0
+    },
+    "baseline": {
+      "requests": 36,
+      "errors": 0,
+      "checks_passed": {
+        "facts_correct": 36,
+        "routing_correct": 36,
+        "coverage_correct": 36,
+        "relations_correct": 36,
+        "finding_references_valid": 36,
+        "generation_supported": 36,
+        "necessary_backend_calls_only": 36
+      },
+      "totals": {
+        "tool_calls": 57,
+        "backend_calls": 81,
+        "database_queries": 252,
+        "decision_calls": 0,
+        "generation_calls": 36
+      },
+      "recorded_tokens": 68913,
+      "calls_without_usage": 0,
+      "median_ms": 6976.5,
+      "p95_ms": 10484.0
+    }
+  },
+  "cases": [
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8687.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 811,
+            "output_tokens": 40,
+            "total_tokens": 851
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 120,
+            "total_tokens": 1472
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6375.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 118,
+            "total_tokens": 1470
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 9890.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 833,
+            "output_tokens": 45,
+            "total_tokens": 878
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 223,
+            "total_tokens": 1829
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 7375.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 220,
+            "total_tokens": 1826
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10578.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 821,
+            "output_tokens": 61,
+            "total_tokens": 882
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 925,
+            "output_tokens": 41,
+            "total_tokens": 966
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 193,
+            "total_tokens": 1735
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 110.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 7594.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 216,
+            "total_tokens": 1758
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 109.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8828.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 860,
+            "output_tokens": 40,
+            "total_tokens": 900
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 161,
+            "total_tokens": 1690
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5985.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 149,
+            "total_tokens": 1678
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10547.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 870,
+            "output_tokens": 61,
+            "total_tokens": 931
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1327,
+            "output_tokens": 41,
+            "total_tokens": 1368
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 234,
+            "total_tokens": 2250
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8828.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 187,
+            "total_tokens": 2203
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 125.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10109.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 882,
+            "output_tokens": 53,
+            "total_tokens": 935
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 924,
+            "output_tokens": 45,
+            "total_tokens": 969
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 283,
+            "total_tokens": 2119
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 47.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9953.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 424,
+            "total_tokens": 2260
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8328.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 830,
+            "output_tokens": 40,
+            "total_tokens": 870
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 153,
+            "total_tokens": 1539
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8078.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 146,
+            "total_tokens": 1532
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10391.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 840,
+            "output_tokens": 61,
+            "total_tokens": 901
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1304,
+            "output_tokens": 41,
+            "total_tokens": 1345
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 226,
+            "total_tokens": 2089
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6703.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 222,
+            "total_tokens": 2085
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10828.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 852,
+            "output_tokens": 53,
+            "total_tokens": 905
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1254,
+            "output_tokens": 45,
+            "total_tokens": 1299
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 280,
+            "total_tokens": 2277
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 15.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6610.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 249,
+            "total_tokens": 2246
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 32.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6953.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 863,
+            "output_tokens": 40,
+            "total_tokens": 903
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 204,
+            "total_tokens": 1720
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5938.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 224,
+            "total_tokens": 1740
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9750.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 873,
+            "output_tokens": 61,
+            "total_tokens": 934
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1328,
+            "output_tokens": 41,
+            "total_tokens": 1369
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 281,
+            "total_tokens": 2115
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 79.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6484.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 250,
+            "total_tokens": 2084
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 63.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 1,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8453.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 885,
+            "output_tokens": 53,
+            "total_tokens": 938
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1278,
+            "output_tokens": 45,
+            "total_tokens": 1323
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 240,
+            "total_tokens": 2212
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 1,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6703.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 236,
+            "total_tokens": 2208
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5343.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 116,
+            "total_tokens": 1468
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 7203.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 811,
+            "output_tokens": 40,
+            "total_tokens": 851
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 138,
+            "total_tokens": 1490
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6047.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 146,
+            "total_tokens": 1675
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 7422.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 860,
+            "output_tokens": 40,
+            "total_tokens": 900
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 128,
+            "total_tokens": 1657
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 7625.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 272,
+            "total_tokens": 1878
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 7938.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 833,
+            "output_tokens": 45,
+            "total_tokens": 878
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 255,
+            "total_tokens": 1861
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6891.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 177,
+            "total_tokens": 1719
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 93.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10375.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 821,
+            "output_tokens": 61,
+            "total_tokens": 882
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 925,
+            "output_tokens": 41,
+            "total_tokens": 966
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 181,
+            "total_tokens": 1723
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 94.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5828.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 121,
+            "total_tokens": 1507
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6953.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 830,
+            "output_tokens": 40,
+            "total_tokens": 870
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 160,
+            "total_tokens": 1546
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6047.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 246,
+            "total_tokens": 2262
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 93.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9313.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 870,
+            "output_tokens": 61,
+            "total_tokens": 931
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1327,
+            "output_tokens": 41,
+            "total_tokens": 1368
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 256,
+            "total_tokens": 2272
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6875.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 302,
+            "total_tokens": 2138
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 32.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8781.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 882,
+            "output_tokens": 53,
+            "total_tokens": 935
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 924,
+            "output_tokens": 45,
+            "total_tokens": 969
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 241,
+            "total_tokens": 2077
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5813.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 148,
+            "total_tokens": 1664
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6906.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 863,
+            "output_tokens": 40,
+            "total_tokens": 903
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 148,
+            "total_tokens": 1664
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 7094.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 228,
+            "total_tokens": 2091
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8828.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 840,
+            "output_tokens": 61,
+            "total_tokens": 901
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1304,
+            "output_tokens": 41,
+            "total_tokens": 1345
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 196,
+            "total_tokens": 2059
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 172.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6812.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 207,
+            "total_tokens": 2204
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9375.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 852,
+            "output_tokens": 53,
+            "total_tokens": 905
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1254,
+            "output_tokens": 45,
+            "total_tokens": 1299
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 247,
+            "total_tokens": 2244
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 6984.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 811,
+            "output_tokens": 40,
+            "total_tokens": 851
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 119,
+            "total_tokens": 1471
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-completion",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 5500.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1352,
+            "output_tokens": 117,
+            "total_tokens": 1469
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 7047.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 272,
+            "total_tokens": 2106
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9000.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 873,
+            "output_tokens": 61,
+            "total_tokens": 934
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1328,
+            "output_tokens": 41,
+            "total_tokens": 1369
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 236,
+            "total_tokens": 2070
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 94.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 2,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 7485.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 266,
+            "total_tokens": 2238
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 234.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 2,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8437.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 885,
+            "output_tokens": 53,
+            "total_tokens": 938
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1278,
+            "output_tokens": 45,
+            "total_tokens": 1323
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 217,
+            "total_tokens": 2189
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 32.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8422.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 860,
+            "output_tokens": 40,
+            "total_tokens": 900
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 197,
+            "total_tokens": 1726
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-completion",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 9953.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1529,
+            "output_tokens": 143,
+            "total_tokens": 1672
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8812.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 833,
+            "output_tokens": 45,
+            "total_tokens": 878
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 235,
+            "total_tokens": 1841
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-combined",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 11032.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1606,
+            "output_tokens": 227,
+            "total_tokens": 1833
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 12250.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 821,
+            "output_tokens": 61,
+            "total_tokens": 882
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 925,
+            "output_tokens": 41,
+            "total_tokens": 966
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 180,
+            "total_tokens": 1722
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 125.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-1-blockers",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 10484.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1542,
+            "output_tokens": 229,
+            "total_tokens": 1771
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-2",
+              "AIPLAT-3",
+              "AIPLAT-4"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 188.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 13500.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 830,
+            "output_tokens": 40,
+            "total_tokens": 870
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 135,
+            "total_tokens": 1521
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-completion",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8438.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1386,
+            "output_tokens": 135,
+            "total_tokens": 1521
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 15891.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 870,
+            "output_tokens": 61,
+            "total_tokens": 931
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1327,
+            "output_tokens": 41,
+            "total_tokens": 1368
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 245,
+            "total_tokens": 2261
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 172.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-blockers",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8593.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 2016,
+            "output_tokens": 204,
+            "total_tokens": 2220
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-14",
+              "AIPLAT-15",
+              "AIPLAT-16"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 94.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 15796.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 882,
+            "output_tokens": 53,
+            "total_tokens": 935
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 924,
+            "output_tokens": 45,
+            "total_tokens": 969
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 246,
+            "total_tokens": 2082
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 47.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-13-combined",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 8984.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1836,
+            "output_tokens": 260,
+            "total_tokens": 2096
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-15"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 1,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8750.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 863,
+            "output_tokens": 40,
+            "total_tokens": 903
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 150,
+            "total_tokens": 1666
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-completion",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 1,
+        "backend_calls": 1,
+        "database_queries": 2,
+        "decision_calls": 0,
+        "decision_rounds": 1,
+        "generation_calls": 1,
+        "elapsed_ms": 8579.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1516,
+            "output_tokens": 143,
+            "total_tokens": 1659
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 11375.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 840,
+            "output_tokens": 61,
+            "total_tokens": 901
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1304,
+            "output_tokens": 41,
+            "total_tokens": 1345
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 272,
+            "total_tokens": 2135
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 94.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-blockers",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9687.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1863,
+            "output_tokens": 256,
+            "total_tokens": 2119
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-19",
+              "AIPLAT-21",
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 109.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 11188.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 852,
+            "output_tokens": 53,
+            "total_tokens": 905
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1254,
+            "output_tokens": 45,
+            "total_tokens": 1299
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 256,
+            "total_tokens": 2253
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 93.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-17-combined",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9015.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1997,
+            "output_tokens": 224,
+            "total_tokens": 2221
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-23"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 47.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9609.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 873,
+            "output_tokens": 61,
+            "total_tokens": 934
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1328,
+            "output_tokens": 41,
+            "total_tokens": 1369
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 235,
+            "total_tokens": 2069
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 109.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-blockers",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 4,
+        "database_queries": 14,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 6906.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1834,
+            "output_tokens": 269,
+            "total_tokens": 2103
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-27",
+              "AIPLAT-29",
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 78.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 3,
+      "arm": "agent",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 2,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 9610.0,
+        "model_usage": [
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 885,
+            "output_tokens": 53,
+            "total_tokens": 938
+          },
+          {
+            "stage": "decision",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1278,
+            "output_tokens": 45,
+            "total_tokens": 1323
+          },
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 220,
+            "total_tokens": 2192
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    },
+    {
+      "case": "AIPLAT-25-combined",
+      "repeat": 3,
+      "arm": "baseline",
+      "checks": {
+        "facts_correct": true,
+        "routing_correct": true,
+        "coverage_correct": true,
+        "relations_correct": true,
+        "finding_references_valid": true,
+        "generation_supported": true,
+        "necessary_backend_calls_only": true
+      },
+      "execution": {
+        "status": "completed",
+        "stop_reason": "finished",
+        "tool_calls": 2,
+        "backend_calls": 2,
+        "database_queries": 6,
+        "decision_calls": 0,
+        "decision_rounds": 2,
+        "generation_calls": 1,
+        "elapsed_ms": 5984.0,
+        "model_usage": [
+          {
+            "stage": "generation",
+            "model": "gpt-5.5-2026-04-23",
+            "input_tokens": 1972,
+            "output_tokens": 217,
+            "total_tokens": 2189
+          }
+        ],
+        "trace": [
+          {
+            "tool": "get_epic_backlog",
+            "status": "complete"
+          },
+          {
+            "tool": "get_issue_dependencies",
+            "issue_keys": [
+              "AIPLAT-31"
+            ],
+            "direction": "inbound",
+            "status": "executed",
+            "elapsed_ms": 31.0
+          }
+        ]
+      },
+      "generation_status": "supported"
+    }
+  ],
+  "semantic_review": {
+    "reviewed_reports": 72,
+    "independent_reviewer": 62,
+    "implementation_reviewer": 10,
+    "findings": "No reversed relation, unsupported rating/forecast, wrong count, or false scope completeness observed."
+  },
+  "user_acceptance": {
+    "date": "2026-09-21",
+    "status": "passed",
+    "basis": "User confirmed local testing passed; no itemized test log supplied."
+  }
+}

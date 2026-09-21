@@ -32,6 +32,9 @@ def create_app() -> FastAPI:
     app.include_router(ingest_router, prefix="/ingest", tags=["ingest"])
     app.include_router(lifecycle_router, tags=["lifecycle"])
     app.include_router(query_router, tags=["query"])
+    if settings.agentic_rag_enabled:
+        from app.api.agentic import router as agentic_router
+        app.include_router(agentic_router, prefix="/agentic", tags=["agentic"])
     if settings.graph_enabled:
         from app.api.graph import router as graph_router
         app.include_router(graph_router, prefix="/graph", tags=["graph"])

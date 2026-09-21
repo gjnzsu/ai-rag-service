@@ -25,10 +25,13 @@
 | 让服务根据普通文档证据回答 | `POST /query` | 是 |
 | 获取图路径和相关文本，自行组织回答或可视化 | `POST /graph/retrieve` | 否 |
 | 让服务根据图与文本证据回答 | `POST /graph/query` | 是 |
+| 指定 Epic，由模型决定必要的结构化补查并生成报告 | `POST /agentic/query`（可选） | 是，另有决策模型调用 |
 
 “没有调用回答模型”不等于“没有任何模型调用”：用自然语言做向量检索仍可能调用 embedding 模型。Graph 的显式 key 和确定性结构查询无需依赖语义匹配。
 
-推荐第一次按顺序尝试：项目全景 → AIPLAT-17 下钻 → AIPLAT-37 的出向依赖 → 基于证据生成回答。Graph 请求的 `intent` 由页面或调用方选择，当前服务不使用 LLM 自动规划任意查询意图，也不自动在 Hybrid API 与 Graph API 之间路由。
+推荐第一次按顺序尝试：项目全景 → AIPLAT-17 下钻 → AIPLAT-37 的出向依赖 → 基于证据生成回答。Graph 请求的 `intent` 仍由页面或调用方选择。另有默认关闭的 `/agentic/query`：协调层在固定 Epic 与快照内执行有界 ReAct 循环，模型选择依赖补查或结束，代码维护覆盖账本并驱动最终报告生成。它不自动在 Hybrid API 与 Graph API 之间路由。
+
+总架构图第 4 区展示 Agentic 路径：复用 GraphService，使用独立 ReportGenerator 并复用引用校验器；当前结构查询不调用 embedding，因此不使用下方 Q 缓存。参见 [Agentic 启动与验收指南](agentic-epic-analysis.md) 和 [协调层详细架构图](../superpowers/specs/assets/agentic-epic-analysis.drawio.png)。该能力已于 2026-09-21 通过本地用户验收，实验未观察到相对固定流程的效率收益。
 
 ## 3. Indexing：数据怎样进入服务
 

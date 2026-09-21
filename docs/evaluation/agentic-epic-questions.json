@@ -1,0 +1,330 @@
+{
+  "snapshot_id": "f1ef094abab04f7a9a2c658839337a23",
+  "cases": [
+    {
+      "id": "AIPLAT-1-completion",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-1",
+        "question": "请分析这个 Epic 下全部直接 Story 的完成数量、状态分布和完成率。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 3,
+        "direct_bugs": [],
+        "required_seeds": [],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-1-blockers",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-1",
+        "question": "请检查这个 Epic 下所有 Story（包括已完成项）的入向已记录阻塞，区分双方未完成与历史关系。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "blockers"
+        ],
+        "population": "all_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 3,
+        "direct_bugs": [],
+        "required_seeds": [
+          "AIPLAT-2",
+          "AIPLAT-3",
+          "AIPLAT-4"
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-1-combined",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-1",
+        "question": "请分析 Story 完成情况、Epic 直属 Bug，并检查所有未完成 Story 是否存在入向已记录阻塞（包括 Bug 或其他事项作为阻塞来源），附上证据。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion",
+          "bugs",
+          "blockers"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 3,
+        "direct_bugs": [],
+        "required_seeds": [],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-13-completion",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-13",
+        "question": "请分析这个 Epic 下全部直接 Story 的完成数量、状态分布和完成率。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-46"
+        ],
+        "required_seeds": [],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-13-blockers",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-13",
+        "question": "请检查这个 Epic 下所有 Story（包括已完成项）的入向已记录阻塞，区分双方未完成与历史关系。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "blockers"
+        ],
+        "population": "all_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-46"
+        ],
+        "required_seeds": [
+          "AIPLAT-14",
+          "AIPLAT-15",
+          "AIPLAT-16"
+        ],
+        "edges": [
+          {
+            "source": "AIPLAT-46",
+            "target": "AIPLAT-16",
+            "unresolved": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "AIPLAT-13-combined",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-13",
+        "question": "请分析 Story 完成情况、Epic 直属 Bug，并检查所有未完成 Story 是否存在入向已记录阻塞（包括 Bug 或其他事项作为阻塞来源），附上证据。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion",
+          "bugs",
+          "blockers"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-46"
+        ],
+        "required_seeds": [
+          "AIPLAT-15"
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-17-completion",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-17",
+        "question": "请分析这个 Epic 下全部直接 Story 的完成数量、状态分布和完成率。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [],
+        "required_seeds": [],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-17-blockers",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-17",
+        "question": "请检查这个 Epic 下所有 Story（包括已完成项）的入向已记录阻塞，区分双方未完成与历史关系。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "blockers"
+        ],
+        "population": "all_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [],
+        "required_seeds": [
+          "AIPLAT-19",
+          "AIPLAT-21",
+          "AIPLAT-23"
+        ],
+        "edges": [
+          {
+            "source": "AIPLAT-37",
+            "target": "AIPLAT-23",
+            "unresolved": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "AIPLAT-17-combined",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-17",
+        "question": "请分析 Story 完成情况、Epic 直属 Bug，并检查所有未完成 Story 是否存在入向已记录阻塞（包括 Bug 或其他事项作为阻塞来源），附上证据。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion",
+          "bugs",
+          "blockers"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [],
+        "required_seeds": [
+          "AIPLAT-23"
+        ],
+        "edges": [
+          {
+            "source": "AIPLAT-37",
+            "target": "AIPLAT-23",
+            "unresolved": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "AIPLAT-25-completion",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-25",
+        "question": "请分析这个 Epic 下全部直接 Story 的完成数量、状态分布和完成率。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-47"
+        ],
+        "required_seeds": [],
+        "edges": []
+      }
+    },
+    {
+      "id": "AIPLAT-25-blockers",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-25",
+        "question": "请检查这个 Epic 下所有 Story（包括已完成项）的入向已记录阻塞，区分双方未完成与历史关系。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "blockers"
+        ],
+        "population": "all_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-47"
+        ],
+        "required_seeds": [
+          "AIPLAT-27",
+          "AIPLAT-29",
+          "AIPLAT-31"
+        ],
+        "edges": [
+          {
+            "source": "AIPLAT-47",
+            "target": "AIPLAT-31",
+            "unresolved": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "AIPLAT-25-combined",
+      "request": {
+        "project_key": "AIPLAT",
+        "epic_key": "AIPLAT-25",
+        "question": "请分析 Story 完成情况、Epic 直属 Bug，并检查所有未完成 Story 是否存在入向已记录阻塞（包括 Bug 或其他事项作为阻塞来源），附上证据。",
+        "snapshot_id": "f1ef094abab04f7a9a2c658839337a23"
+      },
+      "oracle": {
+        "requested": [
+          "completion",
+          "bugs",
+          "blockers"
+        ],
+        "population": "unfinished_stories",
+        "direction": "inbound",
+        "story_count": 3,
+        "done_count": 2,
+        "direct_bugs": [
+          "AIPLAT-47"
+        ],
+        "required_seeds": [
+          "AIPLAT-31"
+        ],
+        "edges": [
+          {
+            "source": "AIPLAT-47",
+            "target": "AIPLAT-31",
+            "unresolved": true
+          }
+        ]
+      }
+    }
+  ],
+  "annotation": "Frozen from normalized snapshot; oracle never supplied to the agent."
+}

@@ -2,6 +2,16 @@
 
 A RAG (Retrieval-Augmented Generation) service for ingesting data from Jira, Confluence, Market Data (FX), and PDF files, using OpenAI and ChromaDB.
 
+## Architecture overview
+
+![Hybrid + Graph + Agentic RAG architecture](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
+
+Indexing, Hybrid/Graph retrieval, grounded answers, coordinator-driven Agentic
+Epic analysis, and the optional query embedding cache.
+
+[Full-size architecture image](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png) ·
+[Editable Draw.io source](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio)
+
 ## 🚀 GKE Deployment
 
 The service is deployed to Google Kubernetes Engine (GKE).
@@ -27,6 +37,11 @@ process-local exact-input LRU + TTL for Vector/Hybrid and Graph query vectors,
 disabled by default (`QUERY_EMBEDDING_CACHE_ENABLED=true` to enable).
 
 ### Model Responsibilities and Integration Modes
+
+- `POST /agentic/query` provides optional Epic analysis through a bounded ReAct
+  coordinator: it selects structural dependency lookups, verifies coverage and
+  findings, and generates one final report. Enable both `GRAPH_ENABLED` and
+  `AGENTIC_RAG_ENABLED`. This path does not call the embedding model.
 
 - `text-embedding-3-small` converts document chunks and user queries into
   vectors for similarity search in ChromaDB. It does not generate answers.
@@ -273,12 +288,30 @@ This script automates building the Docker image with Cloud Build and applying Ku
 
 ## Architecture and onboarding
 
-![Hybrid + Graph RAG architecture](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio.png)
-
-[Editable Draw.io source](docs/superpowers/specs/assets/hybrid-grounded-rag-poc-architecture.drawio)
-
 The local Jira Graph RAG PoC was accepted by the user on 2026-09-10. It provides Epic overview, drill-down, directed dependencies, hybrid seed retrieval, and grounded answers with citations. Graph endpoints are optional (`GRAPH_ENABLED`); the local demo also requires `GRAPH_DEMO_ENABLED`. This local acceptance does not establish that Graph RAG is deployed at the GKE URL above.
 
 - [User acceptance and remaining limits](docs/evaluation/jira-graph-user-acceptance.md)
 - [Local setup and demo](docs/guides/jira-graph-poc-local.md)
 - [Hybrid + Graph RAG end-to-end guide (中文)](docs/guides/hybrid-graph-rag-end-to-end.md): indexing, retrieval, grounded answers, API examples, and code entry points.
+- [Agentic Epic analysis POC (中文)](docs/guides/agentic-epic-analysis.md): optional bounded retrieval decisions, evidence coverage, API and evaluation.
+
+### Agentic Epic analysis architecture
+
+![Agentic coordinator architecture](docs/superpowers/specs/assets/agentic-epic-analysis-en.png)
+
+[English Draw.io source](docs/superpowers/specs/assets/agentic-epic-analysis-en.drawio) ·
+[中文版图片](docs/superpowers/specs/assets/agentic-epic-analysis.drawio.png) ·
+[中文版 Draw.io](docs/superpowers/specs/assets/agentic-epic-analysis.drawio)
+
+The coordinator owns the initial read, bounded ReAct loop, evidence consolidation
+and final report generation. GraphService returns query data; ReportGenerator
+generates once and validates citations. The feature remains disabled by default.
+
+Local user acceptance passed on **2026-09-21**. In the 72-request controlled
+experiment, both arms passed the checks with identical retrieval counts; the
+Agent used 84.6% more tokens and had 31.2% higher median latency than the
+deterministic workflow. These small-sample results establish feasibility, not a
+performance advantage or deployment at the GKE URL above.
+
+- [Startup and acceptance examples](docs/guides/agentic-epic-analysis.md)
+- [Experiment results and limitations](docs/evaluation/agentic-epic-analysis-results.md)

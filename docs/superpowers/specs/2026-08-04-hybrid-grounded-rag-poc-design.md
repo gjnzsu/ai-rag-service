@@ -4,6 +4,8 @@
 **Status:** Approved design  
 **Service:** AI RAG Service
 
+> Historical design scope: the agentic retrieval loop excluded below was subsequently implemented as a separate optional Epic-analysis POC, accepted locally on 2026-09-21. See the [Agentic guide](../../guides/agentic-epic-analysis.md) and [results](../../evaluation/agentic-epic-analysis-results.md). The shared architecture image now includes that later extension; the original experiment scope remains unchanged.
+
 ## 1. Summary
 
 This proof of concept enhances the existing FastAPI, OpenAI, and ChromaDB RAG service with:

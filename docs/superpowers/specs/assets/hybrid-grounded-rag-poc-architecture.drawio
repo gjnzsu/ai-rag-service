@@ -1,10 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
   <diagram id="hybrid-grounded-rag-poc" name="Architecture">
-    <mxGraphModel dx="1830" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="1730" math="0" shadow="0">
+    <mxGraphModel dx="1830" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="2280" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="Hybrid + Graph RAG — ai-rag-service" vertex="1">
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="Hybrid + Graph + Agentic RAG — ai-rag-service" vertex="1">
           <mxGeometry height="35" width="1570" x="25" y="10" as="geometry" />
         </mxCell>
         <mxCell id="ingestion" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="1  INDEXING" vertex="1">
@@ -130,7 +131,7 @@
         <mxCell id="readnote" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="Indexes: Chroma + SQLite FTS5; Graph RAG also reads Neo4j, pinned to the same snapshot." vertex="1">
           <mxGeometry height="35" width="1090" x="370" y="810" as="geometry" />
         </mxCell>
-        <mxCell id="grounding" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="3  SHARED GROUNDED ANSWERS" vertex="1">
+        <mxCell id="grounding" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="3  GROUNDED ANSWERS" vertex="1">
           <mxGeometry height="35" width="1570" x="25" y="875" as="geometry" />
         </mxCell>
         <mxCell id="adapter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;" value="&lt;b&gt;Evidence adapter&lt;/b&gt;&lt;br&gt;Passages / graph facts + IDs" vertex="1">
@@ -176,25 +177,25 @@
           <mxGeometry height="35" width="1210" x="370" y="1050" as="geometry" />
         </mxCell>
         <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontColor=#1F2937;fillColor=none;strokeColor=none;fontSize=16;" value="Blue: service / flow    Purple: model or scoring    Green: storage / output    Yellow: source / client" vertex="1">
-          <mxGeometry height="35" width="1560" x="30" y="1670" as="geometry" />
+          <mxGeometry height="35" width="1560" x="30" y="2220.0" as="geometry" />
         </mxCell>
         <mxCell id="cache-title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontStyle=1;fontSize=20;" value="Q  QUERY EMBEDDING CACHE · retrieval detail" vertex="1">
-          <mxGeometry height="40" width="1570" x="25" y="1120" as="geometry" />
+          <mxGeometry height="40" width="1570" x="25" y="1670.0" as="geometry" />
         </mxCell>
         <mxCell id="cache-context" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="Used by Vector/Hybrid and Graph semantic queries. Shared component, separate scope keys. Default: OFF." vertex="1">
-          <mxGeometry height="40" width="1550" x="30" y="1170" as="geometry" />
+          <mxGeometry height="40" width="1550" x="30" y="1720.0" as="geometry" />
         </mxCell>
         <mxCell id="cache-input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Query embedding adapter&lt;/b&gt;&lt;br&gt;Actual text + scope&lt;br&gt;Model / endpoint / input version" vertex="1">
-          <mxGeometry height="100" width="310" x="30" y="1240" as="geometry" />
+          <mxGeometry height="100" width="310" x="30" y="1790.0" as="geometry" />
         </mxCell>
         <mxCell id="query-cache" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#D5E8D4;strokeColor=#82B366;" value="&lt;b&gt;Process-local query cache&lt;/b&gt;&lt;br&gt;Exact key · LRU + TTL&lt;br&gt;1,024 entries · 900 seconds" vertex="1">
-          <mxGeometry height="100" width="370" x="430" y="1240" as="geometry" />
+          <mxGeometry height="100" width="370" x="430" y="1790.0" as="geometry" />
         </mxCell>
         <mxCell id="cache-return" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Return query vector&lt;/b&gt;&lt;br&gt;Resume current index / snapshot&lt;br&gt;retrieval and answer flow" vertex="1">
-          <mxGeometry height="100" width="320" x="1260" y="1240" as="geometry" />
+          <mxGeometry height="100" width="320" x="1260" y="1790.0" as="geometry" />
         </mxCell>
         <mxCell id="query-provider" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=#E1D5E7;strokeColor=#9673A6;" value="&lt;b&gt;Embedding adapter&lt;/b&gt;&lt;br&gt;Call OpenAI embedding API&lt;br&gt;Cache valid result if enabled" vertex="1">
-          <mxGeometry height="100" width="340" x="850" y="1420" as="geometry" />
+          <mxGeometry height="100" width="340" x="850" y="1970.0" as="geometry" />
         </mxCell>
         <mxCell id="cache-enabled" edge="1" parent="1" source="cache-input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="query-cache" value="enabled">
           <mxGeometry relative="1" as="geometry" />
@@ -205,29 +206,29 @@
         <mxCell id="cache-miss" edge="1" parent="1" source="query-cache" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" target="query-provider" value="miss / expired">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="615" y="1470" />
+              <mxPoint x="615" y="2020.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="cache-provider-return" edge="1" parent="1" source="query-provider" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" target="cache-return" value="vector">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1420" y="1470" />
+              <mxPoint x="1420" y="2020.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="cache-disabled" edge="1" parent="1" source="cache-input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6C8EBF;endArrow=classic;fontSize=16;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" target="query-provider" value="disabled: call API directly">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="185" y="1560" />
-              <mxPoint x="1020" y="1560" />
+              <mxPoint x="185" y="2110.0" />
+              <mxPoint x="1020" y="2110.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="cache-lifecycle" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;fontColor=#1F2937;fillColor=none;strokeColor=none;align=left;fontSize=16;" value="&lt;b&gt;No Redis&lt;/b&gt; · OrderedDict + Lock · per worker · cleared on restart&lt;br&gt;Exact input only, not semantic matching. Retrieval results and answers are not cached." vertex="1">
-          <mxGeometry height="65" width="1550" x="30" y="1590" as="geometry" />
+          <mxGeometry height="65" width="1550" x="30" y="2140.0" as="geometry" />
         </mxCell>
-      </root>
+      <mxCell id="agentic-title" value="4  AGENTIC EPIC ANALYSIS · optional platform capability" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#DAE8FC;fontStyle=1;align=left;"><mxGeometry x="25" y="1120" width="1570" height="40" as="geometry" /></mxCell><mxCell id="agentic-context" value="Coordinator owns retrieval decisions, evidence coverage and final reporting. See the dedicated diagram for call / return details." vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=none;strokeColor=none;align=left;"><mxGeometry x="30" y="1170" width="1550" height="40" as="geometry" /></mxCell><mxCell id="agentic-owner" value="Coordinator" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#eff6ff;swimlane;startSize=35;fontStyle=1;align=left;spacingLeft=15;strokeWidth=2;"><mxGeometry x="330" y="1225" width="450" height="320" as="geometry" /></mxCell><mxCell id="agentic-api" value="&lt;b&gt;POST /agentic/query&lt;/b&gt;&lt;br&gt;Project + Epic + Question&lt;br&gt;Optional snapshot" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#fff2cc;"><mxGeometry x="30" y="1270" width="240" height="90" as="geometry" /></mxCell><mxCell id="agentic-loop" value="&lt;b&gt;Initial read + Bounded ReAct&lt;/b&gt;&lt;br&gt;LLM selects lookup / finish&lt;br&gt;Accumulate evidence + coverage ledger" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#DAE8FC;"><mxGeometry x="350" y="1270" width="410" height="90" as="geometry" /></mxCell><mxCell id="agentic-tools" value="&lt;b&gt;EpicTools → GraphService&lt;/b&gt;&lt;br&gt;Backlog pages + Story statistics&lt;br&gt;One-hop BLOCKS dependencies" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#DAE8FC;"><mxGeometry x="850" y="1270" width="310" height="90" as="geometry" /></mxCell><mxCell id="agentic-store" value="&lt;b&gt;Existing Neo4j + Manifest&lt;/b&gt;&lt;br&gt;Pinned project / snapshot&lt;br&gt;Read-only structural queries" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#d5e8d4;"><mxGeometry x="1250" y="1270" width="320" height="90" as="geometry" /></mxCell><mxCell id="agentic-finalize" value="&lt;b&gt;Coordinator finalization&lt;/b&gt;&lt;br&gt;Merge evidence + Assign IDs&lt;br&gt;Verify findings / complete vs partial" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#DAE8FC;"><mxGeometry x="350" y="1440" width="410" height="85" as="geometry" /></mxCell><mxCell id="agentic-generator" value="&lt;b&gt;ReportGenerator&lt;/b&gt;&lt;br&gt;One final LLM call&lt;br&gt;Shared CitationValidator" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#e1d5e7;"><mxGeometry x="850" y="1440" width="310" height="85" as="geometry" /></mxCell><mxCell id="agentic-response" value="&lt;b&gt;Structured report + Answer&lt;/b&gt;&lt;br&gt;Facts / Findings / Coverage&lt;br&gt;Preserve facts on generation failure" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=#d5e8d4;"><mxGeometry x="1250" y="1440" width="320" height="85" as="geometry" /></mxCell><mxCell id="agentic-note" value="AGENTIC_RAG_ENABLED=false by default · Requires GRAPH_ENABLED · No embedding call on this structural path · No answer cache" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;spacing=8;strokeColor=#6C8EBF;fillColor=none;strokeColor=none;align=left;"><mxGeometry x="30" y="1575" width="1550" height="45" as="geometry" /></mxCell><mxCell id="aa" source="agentic-api" target="agentic-loop" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="ab" source="agentic-loop" target="agentic-tools" value="Calls" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="ac" source="agentic-tools" target="agentic-store" value="Reads" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="ad" source="agentic-loop" target="agentic-finalize" value="Finish / Budget stop" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="ae" source="agentic-finalize" target="agentic-generator" value="Calls once" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="af" source="agentic-generator" target="agentic-response" value="Returns" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeColor=#475569;fontSize=15;labelBackgroundColor=#ffffff;"><mxGeometry relative="1" as="geometry" /></mxCell></root>
     </mxGraphModel>
   </diagram>
 </mxfile>

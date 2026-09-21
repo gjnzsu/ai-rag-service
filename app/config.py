@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     query_embedding_cache_ttl_seconds: float = Field(default=900, gt=0, allow_inf_nan=False)
     lexical_db_path: str = "./lexical.db"
     graph_enabled: bool = False
+    agentic_rag_enabled: bool = False
     graph_demo_enabled: bool = False
     graph_data_dir: str = "./data/graph-poc"
     graph_site_url: str = ""
@@ -32,6 +33,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_graph_demo(self):
+        if self.agentic_rag_enabled and not self.graph_enabled:
+            raise ValueError("agentic_rag_enabled requires graph_enabled")
         if self.graph_demo_enabled and not self.graph_enabled:
             raise ValueError("graph_demo_enabled requires graph_enabled")
         return self
