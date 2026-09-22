@@ -111,11 +111,12 @@ def main():
     args = parser.parse_args()
     if args.repeats < 1 or not 1 <= args.workers <= 3:
         parser.error('repeats must be positive; workers must be 1..3')
-    # Graph fixtures may contain a dummy OpenAI key: take provider credentials only
+    # Take Gateway credentials only
     # from the explicitly selected main env file, never the graph-only overlay.
     provider = dotenv_values(args.env_file)
     agentic.settings = Settings(_env_file=(args.env_file, args.graph_env_file), graph_data_dir=args.data_dir,
-                                openai_api_key=provider.get('OPENAI_API_KEY') or agentic.settings.openai_api_key)
+                                ai_gateway_base_url=provider['AI_GATEWAY_BASE_URL'],
+                                ai_gateway_api_key=provider['AI_GATEWAY_API_KEY'])
     fixture = json.loads(Path(args.cases).read_text(encoding='utf-8'))
     implementation = hashlib.sha256()
     for path in sorted([*Path('app/agentic').glob('*.py'), Path('app/api/agentic.py'), Path(__file__)]):

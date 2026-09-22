@@ -1,5 +1,11 @@
+import os
+
 import pymupdf
 import pytest
+
+os.environ["JIRA_URL"] = ""
+os.environ["AI_GATEWAY_BASE_URL"] = "http://gateway.test/v1"
+os.environ["AI_GATEWAY_API_KEY"] = "test-key"
 
 
 @pytest.fixture(scope="session")

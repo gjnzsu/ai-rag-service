@@ -6,6 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.graph.api_models import (DependenciesResponse, EpicDetailResponse, OverviewResponse,
                                   GraphRetrieveRequest, GraphRetrieveResponse, GraphQueryResponse)
 from app.graph.retrieval import GraphRetrievalService
@@ -79,10 +80,9 @@ def get_graph_retrieval_service():
                 raise ValueError('Unsupported snapshot embedding model')
             def load(text):
                 if not clients:
-                    import httpx
                     from openai import OpenAI
-                    clients.append(OpenAI(api_key=settings.openai_api_key, timeout=15, max_retries=0,
-                                          http_client=httpx.Client()))
+                    clients.append(OpenAI(**gateway_options(settings), timeout=15, max_retries=0,
+                                          http_client=gateway_http_client()))
                 return OpenAIChunkEmbedder(clients[0])([text])[0]
 
             return [embed_query(

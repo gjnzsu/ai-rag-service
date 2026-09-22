@@ -14,15 +14,15 @@ from app.query_embedding_cache import DIMENSIONS, MODEL, QueryEmbeddingCache  # 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--live', action='store_true', help='Use configured OpenAI credentials (4 paid calls)')
+    parser.add_argument('--live', action='store_true', help='Use configured AI Gateway credentials (4 paid calls)')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     client = None
     if args.live:
         import httpx
         from openai import OpenAI
-        from app.config import settings
-        client = OpenAI(api_key=settings.openai_api_key, timeout=15, max_retries=0,
+        from app.model_access import gateway_options
+        client = OpenAI(**gateway_options(), timeout=15, max_retries=0,
                         http_client=httpx.Client())
     store = QueryEmbeddingCache()
     calls = 0

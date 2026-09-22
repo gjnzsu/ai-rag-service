@@ -373,13 +373,14 @@ def test_default_pipeline_reuses_one_openai_client_for_vector_retrieval_and_gene
 
     monkeypatch.setattr("app.rag.query_engine.OpenAI", openai)
     monkeypatch.setattr("app.rag.query_engine.ChromaVectorRetriever", Vector)
-    monkeypatch.setattr("app.rag.query_engine.httpx.Client", lambda: "compatible-http-client")
+    transport = SimpleNamespace()
+    monkeypatch.setattr("app.rag.query_engine.httpx.Client", lambda: transport)
 
     pipeline = QueryPipeline()
 
     assert len(openai_calls) == 1
     assert openai_calls[0]["api_key"] == "test-key"
-    assert openai_calls[0]["http_client"] == "compatible-http-client"
+    assert openai_calls[0]["http_client"] is transport
     assert vector_clients == [shared_client]
     assert pipeline.generator._client is shared_client
 
@@ -419,7 +420,7 @@ def test_owned_client_is_shared_with_vector_generation_and_openai_reranker_then_
             self.close_count += 1
 
     class OpenAIClient:
-        def __init__(self, *, api_key, http_client):
+        def __init__(self, *, api_key, http_client, **kwargs):
             self.api_key = api_key
             self.http_client = http_client
             self.close_count = 0
@@ -510,7 +511,7 @@ def test_pipeline_closes_newly_owned_client_when_downstream_construction_fails(m
             self.close_count += 1
 
     class Client:
-        def __init__(self, *, api_key, http_client):
+        def __init__(self, *, api_key, http_client, **kwargs):
             self.http_client = http_client
             self.close_count = 0
 

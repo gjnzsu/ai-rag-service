@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import os
 from pathlib import Path
 import sys
 from urllib.parse import urlsplit
@@ -13,7 +12,7 @@ def run(args) -> dict:
 
     credentials = dotenv_values(args.env_file)
     graph_credentials = dotenv_values(args.graph_env_file)
-    required = ("JIRA_URL", "JIRA_EMAIL", "JIRA_API_TOKEN", "OPENAI_API_KEY")
+    required = ("JIRA_URL", "JIRA_EMAIL", "JIRA_API_TOKEN", "AI_GATEWAY_BASE_URL", "AI_GATEWAY_API_KEY")
     if any(not credentials.get(key) for key in required) or not graph_credentials.get("GRAPH_NEO4J_PASSWORD"):
         raise ValueError("Required local credentials unavailable")
     site_url = credentials["JIRA_URL"].rstrip("/")
@@ -22,7 +21,12 @@ def run(args) -> dict:
         raise ValueError("Jira origin must be an HTTPS site origin")
     # Legacy text-index modules require global settings at import. All remote calls below
     # receive explicit credentials; real secrets never enter test/default settings.
-    os.environ.setdefault("OPENAI_API_KEY", "test-key")
+    from app.config import Settings
+    from app.model_access import gateway_options
+
+    model_options = gateway_options(Settings(_env_file=None,
+        ai_gateway_base_url=credentials["AI_GATEWAY_BASE_URL"],
+        ai_gateway_api_key=credentials["AI_GATEWAY_API_KEY"]))
     import httpx
     from openai import OpenAI
 
@@ -39,7 +43,7 @@ def run(args) -> dict:
         with httpx.Client(auth=(credentials["JIRA_EMAIL"], credentials["JIRA_API_TOKEN"]),
                           timeout=30, follow_redirects=False) as jira_client:
             captured = JiraSnapshotReader(jira_client, site_url, ("AIPLAT",)).capture(args.project)
-        with OpenAI(api_key=credentials["OPENAI_API_KEY"], timeout=30, max_retries=0,
+        with OpenAI(**model_options, timeout=30, max_retries=0,
                     http_client=httpx.Client()) as client:
             embedder = OpenAIChunkEmbedder(client)
             manifest = build_snapshot(repository, store, captured, site_url, args.project, embedder)

@@ -2,6 +2,11 @@
 
 A RAG (Retrieval-Augmented Generation) service for ingesting data from Jira, Confluence, Market Data (FX), and PDF files, using OpenAI and ChromaDB.
 
+All remote model calls now require explicit AI Gateway configuration, including
+ingestion/query embeddings, generation, reranking, Graph builds and evaluation
+scripts. See [Gateway migration and verification](docs/guides/ai-gateway-migration.md).
+The runtime no longer reads provider `OPENAI_API_KEY` / `OPENAI_BASE_URL`.
+
 ## Architecture overview
 
 ![Hybrid + Graph + Agentic RAG architecture](docs/illustrations/hybrid-grounded-rag-poc-architecture.drawio.png)
@@ -268,7 +273,8 @@ callers to `/documents/upsert` after they extract PDF text themselves.
 1. Clone the repository
 2. Create a `.env` file with your API keys:
    ```env
-   OPENAI_API_KEY=...
+   AI_GATEWAY_BASE_URL=http://localhost:4000/v1
+   AI_GATEWAY_API_KEY=your-gateway-service-token
    JIRA_URL=...
    JIRA_EMAIL=...
    JIRA_API_TOKEN=...

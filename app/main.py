@@ -8,6 +8,8 @@ from app.api.lifecycle import router as lifecycle_router
 from app.api.query import router as query_router
 from app.config import settings
 from app.rag import query_engine
+from app.model_access import CONTEXT_HEADERS, request_context
+from uuid import uuid4
 
 logger = structlog.get_logger()
 
@@ -29,6 +31,19 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
         lifespan=lifespan,
     )
+
+    @app.middleware('http')
+    async def correlate_model_requests(request, call_next):
+        context = {key: request.headers[key] for key in CONTEXT_HEADERS if key in request.headers}
+        context.setdefault('x-request-id', str(uuid4()))
+        token = request_context.set(context)
+        try:
+            response = await call_next(request)
+            response.headers['x-request-id'] = context['x-request-id']
+            return response
+        finally:
+            request_context.reset(token)
+
     app.include_router(ingest_router, prefix="/ingest", tags=["ingest"])
     app.include_router(lifecycle_router, tags=["lifecycle"])
     app.include_router(query_router, tags=["query"])

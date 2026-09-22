@@ -7,6 +7,7 @@ from typing import Any
 import structlog
 
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.grounding.models import Evidence, GeneratedAnswer, REFUSAL_ANSWER
 
 logger = structlog.get_logger()
@@ -84,12 +85,11 @@ class GroundedAnswerGenerator:
 
 
 def _build_openai_client() -> Any:
-    import httpx
     from openai import OpenAI
 
     return OpenAI(
-        api_key=settings.openai_api_key,
-        http_client=httpx.Client(),
+        **gateway_options(settings),
+        http_client=gateway_http_client(),
     )
 
 

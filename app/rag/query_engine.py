@@ -8,6 +8,7 @@ import structlog
 from openai import OpenAI
 
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.grounding.citations import CitationValidator
 from app.grounding.evidence import EvidenceSelector
 from app.grounding.generator import GroundedAnswerGenerator
@@ -243,10 +244,10 @@ def close_default_query_pipeline() -> None:
 
 
 def _create_owned_openai_client() -> Any:
-    http_client = httpx.Client()
+    http_client = gateway_http_client(client=httpx.Client())
     try:
         return OpenAI(
-            api_key=settings.openai_api_key,
+            **gateway_options(settings),
             http_client=http_client,
         )
     except Exception:

@@ -11,7 +11,9 @@ _COMMIT_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    openai_api_key: str
+    ai_gateway_base_url: str = ""
+    ai_gateway_api_key: SecretStr = SecretStr("")
+    ai_gateway_application_id: str = "ai-rag-service"
     jira_url: str = ""
     jira_email: str = ""
     jira_api_token: str = ""

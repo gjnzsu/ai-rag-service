@@ -41,7 +41,7 @@ class GPT5Reranker:
         *,
         model: str,
         timeout_seconds: float,
-        api_key: str | None = None,
+        gateway_config: Any | None = None,
         client: Any | None = None,
     ) -> None:
         if model != "gpt-5.5-2026-04-23" and not _SNAPSHOT_PATTERN.fullmatch(model):
@@ -51,10 +51,12 @@ class GPT5Reranker:
         self.model = model
         self.timeout_seconds = timeout_seconds
         if client is None:
-            import httpx
             from openai import OpenAI
 
-            client = OpenAI(api_key=api_key, http_client=httpx.Client())
+            from app.model_access import gateway_options, gateway_http_client
+
+            options = gateway_options() if gateway_config is None else gateway_options(gateway_config)
+            client = OpenAI(**options, http_client=gateway_http_client())
         self.client = client
         self.last_status = "ok"
         self.last_error_type: str | None = None

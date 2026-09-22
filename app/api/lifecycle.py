@@ -8,6 +8,7 @@ from openai import OpenAI
 from pydantic import BaseModel, Field, model_validator
 
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.connectors.base import Document
 from app.pipeline.indexer import index_documents
 from app.rag import query_engine
@@ -127,7 +128,7 @@ def validate_filters(filters: dict[str, FilterValue] | None) -> None:
 
 
 def embed_text(text: str) -> list[float]:
-    client = OpenAI(api_key=settings.openai_api_key)
+    client = OpenAI(**gateway_options(settings), http_client=gateway_http_client())
     return client.embeddings.create(
         model=EMBEDDING_MODEL,
         input=[text],

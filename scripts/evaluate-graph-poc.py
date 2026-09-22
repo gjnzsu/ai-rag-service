@@ -4,14 +4,12 @@ import argparse
 import hashlib
 import json
 import math
-import os
 from pathlib import Path
 import statistics
 import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-os.environ.setdefault('OPENAI_API_KEY', 'test-key')
 
 
 def main():
@@ -24,6 +22,8 @@ def main():
     from dotenv import dotenv_values
     import httpx
     from openai import OpenAI
+    from app.config import Settings
+    from app.model_access import gateway_options
     from app.graph.embedding import OpenAIChunkEmbedder
     from app.graph.evaluation import evaluate_cases
     from app.graph.models import Issue, Edge
@@ -48,7 +48,7 @@ def main():
     edges = [Edge.model_validate(x) for x in source['edges']]
     store = Neo4jGraphStore.connect('bolt://127.0.0.1:7687', 'neo4j', graph_credentials['GRAPH_NEO4J_PASSWORD'])
     try:
-        with OpenAI(api_key=credentials['OPENAI_API_KEY'], timeout=20, max_retries=0, http_client=httpx.Client()) as client:
+        with OpenAI(**gateway_options(Settings(_env_file=None, ai_gateway_base_url=credentials['AI_GATEWAY_BASE_URL'], ai_gateway_api_key=credentials['AI_GATEWAY_API_KEY'])), timeout=20, max_retries=0, http_client=httpx.Client()) as client:
             embedder = OpenAIChunkEmbedder(client)
             questions = list(dict.fromkeys(case['question'] for case in dataset['cases']))
             started = time.perf_counter()

@@ -10,6 +10,7 @@ from app.agentic.model import ModelDecider, ReportGenerator
 from app.agentic.models import AnalysisRequest, AnalysisResponse
 from app.agentic.tools import EpicTools, ReadBudget, TimedGraphStore
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.graph.service import GraphNotFound, GraphService, GraphUnavailable
 from app.graph.snapshots import SnapshotRepository
 
@@ -17,7 +18,6 @@ router = APIRouter()
 
 
 def get_coordinator(request: AnalysisRequest):
-    import httpx
     from neo4j import GraphDatabase
     from openai import OpenAI
 
@@ -35,8 +35,8 @@ def get_coordinator(request: AnalysisRequest):
                            settings.graph_site_url or settings.jira_url, settings.graph_allowed_projects)
     client = None
     try:
-        client = OpenAI(api_key=settings.openai_api_key, max_retries=0, timeout=15,
-                        http_client=httpx.Client())
+        client = OpenAI(**gateway_options(settings), max_retries=0, timeout=15,
+                        http_client=gateway_http_client())
         yield Coordinator(EpicTools(service, request, budget=budget),
                           ModelDecider(client, settings.answer_openai_model),
                           ReportGenerator(client, settings.answer_openai_model))

@@ -6,6 +6,7 @@ import chromadb
 from openai import OpenAI
 
 from app.config import settings
+from app.model_access import gateway_options, gateway_http_client
 from app.pipeline.store import _to_chroma_where
 from app.query_embedding_cache import embed_query
 from app.retrieval.models import RetrievalCandidate
@@ -15,7 +16,7 @@ class ChromaVectorRetriever:
     """Embed one query and map Chroma's records to canonical candidates."""
 
     def __init__(self, openai_client: Any | None = None, chroma_client: Any | None = None) -> None:
-        self.openai_client = openai_client if openai_client is not None else OpenAI(api_key=settings.openai_api_key)
+        self.openai_client = openai_client if openai_client is not None else OpenAI(**gateway_options(settings), http_client=gateway_http_client())
         self.chroma_client = chroma_client if chroma_client is not None else chromadb.PersistentClient(path=settings.chroma_persist_dir)
 
     def search(

@@ -54,7 +54,7 @@ def test_client_cleanup_error_does_not_hide_published_snapshot(tmp_path, monkeyp
     from types import SimpleNamespace
     module = cli()
     (tmp_path / "source.env").write_text(
-        "JIRA_URL=https://example.test\nJIRA_EMAIL=test\nJIRA_API_TOKEN=test\nOPENAI_API_KEY=test-key\n",
+        "JIRA_URL=https://example.test\nJIRA_EMAIL=test\nJIRA_API_TOKEN=test\nAI_GATEWAY_BASE_URL=http://gateway.test/v1\nAI_GATEWAY_API_KEY=test-key\n",
     )
     (tmp_path / "graph.env").write_text("GRAPH_NEO4J_PASSWORD=test-password\n")
     manifest = SimpleNamespace(scope=SimpleNamespace(snapshot_id="committed"))

@@ -4,7 +4,6 @@ from collections import OrderedDict
 from hashlib import sha256
 import json
 import math
-import os
 from threading import Lock
 from time import monotonic, perf_counter
 from typing import Callable
@@ -103,10 +102,10 @@ def embed_query(text: str, *, scope: tuple[str, ...], load: Callable[[], list[fl
                 client=None) -> list[float]:
     if not settings.query_embedding_cache_enabled:
         return load()
-    endpoint = str(getattr(client, 'base_url', os.getenv('OPENAI_BASE_URL') or 'https://api.openai.com/v1'))
-    credential = getattr(client, 'api_key', settings.openai_api_key)
+    endpoint = str(getattr(client, 'base_url', settings.ai_gateway_base_url))
+    credential = getattr(client, 'api_key', settings.ai_gateway_api_key.get_secret_value())
     if not isinstance(credential, str):
-        credential = settings.openai_api_key
+        credential = settings.ai_gateway_api_key.get_secret_value()
     deployment = json.dumps([endpoint.rstrip('/'), sha256(credential.encode()).hexdigest()])
     return query_embedding_cache.embed(
         text, scope=scope, model=MODEL, deployment=deployment, dimensions=DIMENSIONS, load=load,
