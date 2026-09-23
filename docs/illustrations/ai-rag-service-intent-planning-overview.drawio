@@ -1,0 +1,103 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram id="intent-planning-overview" name="Overview">
+    <mxGraphModel dx="1830" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1450" pageHeight="920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=25;fontStyle=1;fontColor=#222222;" value="ai-rag-service: Simpler Multi-intent Epic Analysis" vertex="1">
+          <mxGeometry height="42" width="1030" x="24" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="badge" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#7A4B00;" value="PLANNED · NOT IMPLEMENTED" vertex="1">
+          <mxGeometry height="34" width="275" x="1140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#4B4B4B;" value="Compare the current bounded ReAct loop with one Intent Plan followed by deterministic execution" vertex="1">
+          <mxGeometry height="30" width="1200" x="24" y="73" as="geometry" />
+        </mxCell>
+        <mxCell id="caller" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F5F5F5;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Applications + other agents&lt;/b&gt;&lt;br&gt;POST /agentic/query · question + trusted project / Epic" vertex="1">
+          <mxGeometry height="72" width="720" x="365" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="current-header" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;fontStyle=1;fillColor=#DCE6F5;strokeColor=#A0A0A0;fontColor=#222222;" value="1  CURRENT WORKFLOW · IMPLEMENTED" vertex="1">
+          <mxGeometry height="48" width="680" x="24" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="planned-header" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;fontStyle=1;fillColor=#E2EFDA;strokeColor=#A0A0A0;fontColor=#222222;" value="2  PLANNED WORKFLOW · DESIGN ONLY" vertex="1">
+          <mxGeometry height="48" width="680" x="746" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="current-backlog" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F5F5F5;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Initial backlog read&lt;/b&gt;&lt;br&gt;Validate Epic + load Stories and Bugs" vertex="1">
+          <mxGeometry height="72" width="575" x="75" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="current-react" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#DCE6F5;strokeColor=#8EA9DB;fontColor=#222222;" value="&lt;b&gt;Bounded ReAct Coordinator&lt;/b&gt;&lt;br&gt;Read observations · choose lookup or finish · repeat" vertex="1">
+          <mxGeometry height="82" width="575" x="75" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="current-tools" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F5F5F5;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Scoped Graph lookups&lt;/b&gt;&lt;br&gt;Epic backlog + one-hop BLOCKS dependencies" vertex="1">
+          <mxGeometry height="72" width="575" x="75" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="current-report" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#E2EFDA;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Epic report&lt;/b&gt;&lt;br&gt;Facts + findings + coverage + citations" vertex="1">
+          <mxGeometry height="72" width="575" x="75" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="planned-read" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F5F5F5;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Backlog validation + internal data&lt;/b&gt;&lt;br&gt;Read once and retain for the Executor" vertex="1">
+          <mxGeometry height="72" width="575" x="798" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="planner" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#E2EFDA;strokeColor=#70AD47;strokeWidth=2;dashed=1;fontColor=#222222;" value="&lt;b&gt;One-shot Intent Planner&lt;/b&gt;&lt;br&gt;Question + trusted subject only · no backlog content&lt;br&gt;completion · bugs · blockers · unsupported" vertex="1">
+          <mxGeometry height="92" width="575" x="798" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="executor" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#E2EFDA;strokeColor=#70AD47;strokeWidth=2;dashed=1;fontColor=#222222;" value="&lt;b&gt;Deterministic Executor&lt;/b&gt;&lt;br&gt;Reuse backlog · derive Story keys · run required Graph lookups" vertex="1">
+          <mxGeometry height="82" width="575" x="798" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="coverage" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#E2EFDA;strokeColor=#70AD47;strokeWidth=2;dashed=1;fontColor=#222222;" value="&lt;b&gt;Per-intent coverage&lt;/b&gt;&lt;br&gt;complete · partial · unavailable · unsupported&lt;br&gt;Empty result is different from failed lookup" vertex="1">
+          <mxGeometry height="88" width="360" x="798" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="planned-report" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#E2EFDA;strokeColor=#A0A0A0;fontColor=#222222;" value="&lt;b&gt;Same Epic report&lt;/b&gt;&lt;br&gt;Verified evidence only&lt;br&gt;One final LLM call" vertex="1">
+          <mxGeometry height="88" width="183" x="1190" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="fallback" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#5F4500;" value="&lt;b&gt;Planner failure → fall back once to the current bounded ReAct workflow&lt;/b&gt;&lt;br&gt;Mark the result as fallback-assisted and count both stages&#39; latency and token usage" vertex="1">
+          <mxGeometry height="65" width="1090" x="180" y="785" as="geometry" />
+        </mxCell>
+        <mxCell id="scope" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=13;fontColor=#555555;" value="Scope: explicit parallel intents for completion, direct Bugs and blockers. No free-text retrieval rewrite, vocabulary expansion, conversation memory, health/risk scoring or unbounded exploration." vertex="1">
+          <mxGeometry height="32" width="1290" x="80" y="862" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="caller" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#777777;endArrow=block;" target="current-header" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="725" y="220" />
+              <mxPoint x="360" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="caller" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#777777;endArrow=block;entryX=0.539;entryY=-0.092;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.531;exitY=1.006;exitDx=0;exitDy=0;exitPerimeter=0;" target="planned-header" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="747" y="220" />
+              <mxPoint x="1113" y="220" />
+            </Array>
+            <mxPoint x="1085" y="197" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c1" edge="1" parent="1" source="current-backlog" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#777777;endArrow=block;" target="current-react" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" edge="1" parent="1" source="current-react" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#777777;endArrow=block;" target="current-tools" value="Multiple decisions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" edge="1" parent="1" source="current-tools" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#777777;endArrow=block;" target="current-report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" edge="1" parent="1" source="planned-read" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70AD47;endArrow=block;dashed=1;" target="planner" value="Question + subject only">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" edge="1" parent="1" source="planner" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70AD47;endArrow=block;dashed=1;" target="executor" value="IntentPlan">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" edge="1" parent="1" source="executor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70AD47;endArrow=block;dashed=1;" target="coverage" value="Verify each intent">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="978" y="638" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4" edge="1" parent="1" source="coverage" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70AD47;endArrow=block;dashed=1;" target="planned-report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
