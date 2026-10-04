@@ -28,7 +28,7 @@ Assumption: “ai-rag-service” means an application that ingests internal know
 
 The initial assessment above was prepared before inspecting this service repository. Its current README documents FastAPI, PyMuPDF PDF ingestion, ChromaDB vectors, SQLite FTS5 lexical retrieval, and hybrid RRF (`k=60`), with remote model calls routed through AI Gateway. This narrows the recommendation: evaluate zg as an optional retrieval adapter or agent-facing MCP interface against the existing hybrid baseline, rather than assuming hybrid retrieval or PDF ingestion must be built from scratch. Existing PDF extraction may be reused to produce a versioned text/Markdown corpus with page/source mappings. zg’s remote embedding backend is not established here as compatible with this service’s required AI Gateway contract; keep the initial experiment local or validate that integration separately.
 
-Service references: [README](../../README.md) and [AI Gateway migration guide](../guides/ai-gateway-migration.md). This context is based on repository documentation, not a fresh runtime validation of the service.
+Service references: [README](../../README.md) and [AI Gateway migration guide](ai-gateway-migration.md). This context is based on repository documentation, not a fresh runtime validation of the service.
 
 ## 2. What the project actually is
 
